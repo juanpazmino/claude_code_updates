@@ -185,6 +185,48 @@ def collect_chase_ai():
     return items
 
 
+def collect_tylergermain_gists():
+    """Scrape tylergermain's GitHub Gists for Claude Code related entries."""
+    items = []
+
+    try:
+        resp = requests.get(config.TYLERGERMAIN_GISTS_URL, headers=HEADERS, timeout=15)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "html.parser")
+
+        # Each gist is listed as an <article> or a link with /tylergermain/ in href
+        seen_urls = set()
+        for a in soup.find_all("a", href=True):
+            href = a.get("href", "")
+            # Gist links look like /tylergermain/<hex-id>
+            if not href.startswith("/tylergermain/") or href in seen_urls:
+                continue
+            parts = href.strip("/").split("/")
+            if len(parts) != 2:
+                continue
+            seen_urls.add(href)
+
+            text = a.get_text(separator=" ", strip=True)
+            combined = text.lower()
+            if not any(kw in combined for kw in config.KEYWORDS + ["claude"]):
+                continue
+
+            url = f"https://gist.github.com{href}"
+            items.append({
+                "title": text[:200] or href,
+                "date": datetime.now(timezone.utc).isoformat(),
+                "content": text[:2000],
+                "source": "Tyler Germain Gists",
+                "url": url,
+            })
+
+        logger.info(f"Tyler Germain Gists: found {len(items)} relevant gist(s)")
+    except Exception as e:
+        logger.warning(f"Tyler Germain Gists collector failed: {e}")
+
+    return items
+
+
 def collect_all():
     """Run all collectors and return combined results."""
     all_items = []
@@ -193,6 +235,7 @@ def collect_all():
         ("Anthropic Blog", collect_anthropic_blog),
         ("Docs Changelog", collect_changelog),
         ("Chase AI Blog", collect_chase_ai),
+        ("Tyler Germain Gists", collect_tylergermain_gists),
     ]
 
     for name, fn in collectors:

@@ -17,10 +17,10 @@ Claude Code Daily Digest — a self-updating web page that collects, summarizes,
 ## Pipeline
 
 ```
-collect (4 sources) → summarize (Ollama) → write digest.json → deploy (Vercel)
+collect (5 sources) → summarize (Ollama) → write digest.json → deploy (Vercel)
 ```
 
-1. `collectors.py` scrapes GitHub Releases, Anthropic Blog, Docs Changelog, Chase AI Blog
+1. `collectors.py` scrapes GitHub Releases, Anthropic Blog, Docs Changelog, Chase AI Blog, Tyler Germain Gists
 2. `summarizer.py` sends items to Ollama, outputs markdown grouped by: New Features, News, New Versions
 3. `generate_digest.py` converts markdown → HTML, adds tip-of-the-day, writes `public/digest.json`
 4. `run_updates.sh` runs the pipeline + `npx vercel deploy --prod --yes`
@@ -34,6 +34,7 @@ python generate_digest.py --collect    # Only collect, print raw items
 python generate_digest.py --dry-run    # Collect + summarize, don't write
 npx vercel deploy --prod --yes         # Deploy to Vercel
 ./run_updates.sh                       # Full pipeline + deploy
+# generate_digest.command              # macOS double-click launcher (runs full pipeline)
 ```
 
 ## Conventions
@@ -43,8 +44,11 @@ npx vercel deploy --prod --yes         # Deploy to Vercel
 - Error handling: try/except with `logging.warning`, graceful degradation
 - Logging: module-based `logging.getLogger(__name__)` pattern
 - Frontend: dark theme (#0d0d0d bg, #C46849 accent), DM Sans + JetBrains Mono fonts
+- Byline "by Juan Pazmino B" shown beneath the main title in the header
+- Footer has dynamic "Last updated" timestamp + static legal/copyright block
 - Vercel CLI is local (use `npx vercel`, not `vercel`)
 - `public/digest.json` is gitignored — generated artifact, not source
+- `tips.py` holds the TIPS list + `get_tip_of_the_day()` — uses date-based MD5 hash for daily rotation; add new tips to the TIPS list there
 
 ## Rules
 

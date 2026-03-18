@@ -53,6 +53,14 @@
       font-weight: 500;
     }
 
+    .byline {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      color: #999;
+      letter-spacing: 0.04em;
+      margin-top: 4px;
+    }
+
     /* Card */
     .card {
       background: #242424;
@@ -167,6 +175,23 @@
     }
 
     /* Footer */
+    .footer-legal {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid #333;
+      font-size: 0.75rem;
+      color: #555;
+      line-height: 1.7;
+      text-align: center;
+    }
+    .footer-legal a {
+      color: #777;
+      text-decoration: none;
+    }
+    .footer-legal a:hover {
+      color: #C46849;
+    }
+
     .footer {
       text-align: center;
       color: #555;
@@ -236,6 +261,7 @@
     <header class="header">
       <div class="header-accent"></div>
       <h1>Claude Code Daily Digest</h1>
+      <p class="byline">by Juan Pazmino B</p>
       <div class="date" id="digest-date"></div>
     </header>
 
@@ -253,6 +279,19 @@
     </main>
 
     <footer class="footer" id="footer"></footer>
+    <div class="footer-legal">
+      <p>© 2026 Juan Pazmino B. All rights reserved.</p>
+      <p>
+        Claude Code Daily Digest is an independent, unofficial aggregator of publicly
+        available information. It is not affiliated with, endorsed by, or sponsored by
+        Anthropic, PBC. "Claude" and "Claude Code" are trademarks of Anthropic, PBC.
+      </p>
+      <p>
+        Content is collected from public sources for informational purposes only.
+        No warranties are made regarding accuracy or completeness.
+        Use at your own discretion.
+      </p>
+    </div>
   </div>
 
   <script>
