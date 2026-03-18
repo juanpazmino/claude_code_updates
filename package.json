@@ -1,0 +1,16 @@
+{
+  "name": "claude-code-updates",
+  "version": "1.0.0",
+  "description": "A self-updating web page that collects, summarizes, and publishes daily Claude Code updates. Runs locally with Python + Ollama, deploys to Vercel as a static site.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "vercel": "^50.33.0"
+  }
+}

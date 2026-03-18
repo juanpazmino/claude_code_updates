@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code Daily Digest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #0d0d0d;
+      color: #f0f0f0;
+      min-height: 100vh;
+      line-height: 1.6;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 38px 24px 52px;
+    }
+
+    /* Header */
+    .header {
+      margin-bottom: 32px;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #f0f0f0;
+      margin-bottom: 6px;
+    }
+
+    .header-accent {
+      width: 48px;
+      height: 3px;
+      background: #C46849;
+      border-radius: 2px;
+      margin-bottom: 12px;
+    }
+
+    .header .date {
+      font-size: 15px;
+      color: #999;
+      font-weight: 500;
+    }
+
+    /* Card */
+    .card {
+      background: #242424;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 26px;
+      margin-bottom: 19px;
+      animation: fadeIn 0.6s ease-out 0.15s both;
+    }
+
+    /* Digest content */
+    .digest-content h2 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #f0f0f0;
+      margin-top: 22px;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+    }
+
+    .digest-content h2:first-child { margin-top: 0; }
+
+    .digest-content h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #ccc;
+      margin-top: 16px;
+      margin-bottom: 6px;
+    }
+
+    .digest-content .item {
+      color: #ccc;
+      margin-bottom: 16px;
+    }
+
+    .digest-content .item:last-child { margin-bottom: 0; }
+
+    /* Items right after headings need no top margin */
+    .digest-content h2 + .item { margin-top: 0; }
+
+    .digest-content .item br { line-height: 1.6; }
+
+    .digest-content strong { color: #f0f0f0; }
+
+    .digest-content a {
+      color: #C46849;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .digest-content a:hover { color: #e07a5a; text-decoration: underline; }
+
+    .digest-content code {
+      font-family: 'JetBrains Mono', monospace;
+      background: #1a1a1a;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 13px;
+      color: #e0a88a;
+    }
+
+    .digest-content pre {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 16px;
+      overflow-x: auto;
+      margin-bottom: 12px;
+    }
+
+    .digest-content pre code {
+      background: none;
+      padding: 0;
+      font-size: 13px;
+      color: #ccc;
+    }
+
+    /* Tip of the Day */
+    .tip-card {
+      background: #2a1f1a;
+      border: 1px solid #333;
+      border-left: 4px solid #C46849;
+      border-radius: 12px;
+      padding: 19px 22px;
+      margin-bottom: 19px;
+      animation: fadeIn 0.6s ease-out 0.3s both;
+    }
+
+    .tip-card h2 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #C46849;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+
+    .tip-command {
+      font-family: 'JetBrains Mono', monospace;
+      background: #1a1a1a;
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #C46849;
+    }
+
+    .tip-description {
+      color: #ccc;
+      margin-top: 4px;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      color: #555;
+      font-size: 13px;
+      padding-top: 12px;
+      animation: fadeIn 0.6s ease-out 0.45s both;
+    }
+
+    /* Loading skeleton */
+    .skeleton { animation: fadeIn 0.3s ease-out; }
+
+    .skeleton-line {
+      height: 14px;
+      background: #333;
+      border-radius: 4px;
+      margin-bottom: 12px;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    .skeleton-line:nth-child(1) { width: 40%; height: 20px; margin-bottom: 20px; }
+    .skeleton-line:nth-child(2) { width: 90%; }
+    .skeleton-line:nth-child(3) { width: 75%; }
+    .skeleton-line:nth-child(4) { width: 85%; }
+    .skeleton-line:nth-child(5) { width: 60%; margin-top: 24px; height: 20px; }
+    .skeleton-line:nth-child(6) { width: 80%; }
+    .skeleton-line:nth-child(7) { width: 70%; }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: #666;
+    }
+
+    .empty-state .icon {
+      font-size: 40px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .empty-state p {
+      font-size: 16px;
+      color: #777;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.7; }
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .page { padding: 32px 16px 48px; }
+      .card, .tip-card { padding: 20px; }
+      .header h1 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="header-accent"></div>
+      <h1>Claude Code Daily Digest</h1>
+      <div class="date" id="digest-date"></div>
+    </header>
+
+    <main id="content">
+      <!-- Loading skeleton -->
+      <div class="card skeleton" id="skeleton">
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+      </div>
+    </main>
+
+    <footer class="footer" id="footer"></footer>
+  </div>
+
+  <script>
+    (async function() {
+      const contentEl = document.getElementById('content');
+      const dateEl = document.getElementById('digest-date');
+      const footerEl = document.getElementById('footer');
+
+      try {
+        const resp = await fetch('./digest.json');
+        if (!resp.ok) throw new Error(resp.status);
+        const data = await resp.json();
+
+        dateEl.textContent = data.date_display || '';
+
+        // Build digest card
+        let html = '';
+        if (data.summary_html) {
+          html += `<div class="card"><div class="digest-content">${data.summary_html}</div></div>`;
+        }
+
+        // Tip of the day
+        if (data.tip) {
+          html += `
+            <div class="tip-card">
+              <h2>Tip of the Day</h2>
+              <div>
+                <span class="tip-command">${data.tip.command}</span>
+                <span class="tip-description"> &mdash; ${data.tip.description}</span>
+              </div>
+            </div>`;
+        }
+
+        contentEl.innerHTML = html || renderEmpty();
+
+        if (data.generated_at) {
+          const ts = new Date(data.generated_at);
+          footerEl.textContent = `Last updated ${ts.toLocaleString()}`;
+        }
+      } catch (e) {
+        contentEl.innerHTML = renderEmpty();
+      }
+
+      function renderEmpty() {
+        return `
+          <div class="card">
+            <div class="empty-state">
+              <div class="icon">&gt;_</div>
+              <p>No updates available yet.</p>
+            </div>
+          </div>`;
+      }
+    })();
+  </script>
+</body>
+</html>

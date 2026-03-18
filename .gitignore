@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+*.log
+.env
+public/digest.json
+.vercel/
+node_modules/
+package-lock.json
+screenshots_playwright/
+.playwright-mcp/
