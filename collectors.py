@@ -185,6 +185,75 @@ def collect_chase_ai():
     return items
 
 
+def collect_chase_ai_youtube():
+    """Scrape Chase AI YouTube channel for Claude Code related videos."""
+    import json as _json
+    import re as _re
+    items = []
+
+    try:
+        resp = requests.get(config.CHASE_AI_YOUTUBE_URL, headers=HEADERS, timeout=15)
+        resp.raise_for_status()
+
+        # YouTube embeds initial data as JSON in a script tag
+        match = _re.search(r"var ytInitialData\s*=\s*(\{.+?\});</script>", resp.text, _re.DOTALL)
+        if not match:
+            logger.warning("Chase AI YouTube: could not find ytInitialData")
+            return items
+
+        data = _json.loads(match.group(1))
+
+        # Drill into the video grid
+        tabs = (
+            data.get("contents", {})
+            .get("twoColumnBrowseResultsRenderer", {})
+            .get("tabs", [])
+        )
+        video_items = []
+        for tab in tabs:
+            tab_content = tab.get("tabRenderer", {}).get("content", {})
+            section_list = tab_content.get("sectionListRenderer", {}).get("contents", [])
+            for section in section_list:
+                for item in section.get("itemSectionRenderer", {}).get("contents", []):
+                    grid = item.get("gridRenderer", {})
+                    video_items.extend(grid.get("items", []))
+                    rich_grid = item.get("richGridRenderer", {})
+                    video_items.extend(rich_grid.get("contents", []))
+
+        seen_ids = set()
+        for vi in video_items:
+            renderer = vi.get("richItemRenderer", {}).get("content", {}).get("videoRenderer") \
+                       or vi.get("gridVideoRenderer")
+            if not renderer:
+                continue
+            video_id = renderer.get("videoId", "")
+            if not video_id or video_id in seen_ids:
+                continue
+            seen_ids.add(video_id)
+
+            title = "".join(
+                r.get("text", "") for r in renderer.get("title", {}).get("runs", [])
+            )
+            combined = title.lower()
+            if not any(kw in combined for kw in config.KEYWORDS + ["claude"]):
+                continue
+
+            url = f"https://www.youtube.com/watch?v={video_id}"
+            items.append({
+                "title": title[:200],
+                "date": datetime.now(timezone.utc).isoformat(),
+                "content": title[:2000],
+                "source": "Chase AI YouTube",
+                "url": url,
+            })
+
+        logger.info(f"Chase AI YouTube: found {len(items)} relevant video(s)")
+    except Exception as e:
+        logger.warning(f"Chase AI YouTube collector failed: {e}")
+
+    return items
+
+
 def collect_tylergermain_gists():
     """Scrape tylergermain's GitHub Gists for Claude Code related entries."""
     items = []
@@ -227,14 +296,32 @@ def collect_tylergermain_gists():
     return items
 
 
+def get_latest_github_release():
+    """Return {version, url} for the most recent Claude Code release, or None."""
+    try:
+        resp = requests.get(config.GITHUB_RELEASES_URL, headers=HEADERS, timeout=15)
+        resp.raise_for_status()
+        releases = resp.json()
+        if releases:
+            r = releases[0]
+            return {
+                "version": r.get("name") or r.get("tag_name", ""),
+                "url": r.get("html_url", ""),
+            }
+    except Exception as e:
+        logger.warning(f"get_latest_github_release failed: {e}")
+    return None
+
+
 def collect_all():
     """Run all collectors and return combined results."""
     all_items = []
     collectors = [
+        ("Chase AI Blog", collect_chase_ai),
+        ("Chase AI YouTube", collect_chase_ai_youtube),
         ("GitHub Releases", collect_github_releases),
         ("Anthropic Blog", collect_anthropic_blog),
         ("Docs Changelog", collect_changelog),
-        ("Chase AI Blog", collect_chase_ai),
         ("Tyler Germain Gists", collect_tylergermain_gists),
     ]
 

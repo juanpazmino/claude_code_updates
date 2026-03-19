@@ -11,6 +11,7 @@ GITHUB_RELEASES_URL = "https://api.github.com/repos/anthropics/claude-code/relea
 ANTHROPIC_BLOG_URL = "https://www.anthropic.com/news"
 DOCS_CHANGELOG_URL = "https://docs.anthropic.com/en/docs/changelog"
 CHASE_AI_BLOG_URL = "https://www.chaseai.io/blog"
+CHASE_AI_YOUTUBE_URL = "https://www.youtube.com/@Chase-H-AI/videos"
 TYLERGERMAIN_GISTS_URL = "https://gist.github.com/tylergermain"
 
 # Keywords to filter relevant posts

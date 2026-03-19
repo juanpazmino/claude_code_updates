@@ -93,8 +93,11 @@
     }
 
     .digest-content .item {
-      color: #ccc;
-      margin-bottom: 16px;
+      color: #999;
+      font-size: 14px;
+      margin-bottom: 18px;
+      padding-bottom: 0.5rem;
+      line-height: 1.65;
     }
 
     .digest-content .item:last-child { margin-bottom: 0; }
@@ -102,13 +105,22 @@
     /* Items right after headings need no top margin */
     .digest-content h2 + .item { margin-top: 0; }
 
-    .digest-content .item br { line-height: 1.6; }
+    /* Tier 2: article title */
+    .digest-content .item-title {
+      display: block;
+      font-size: 15px;
+      font-weight: 600;
+      color: #f0f0f0;
+      margin-bottom: 2px;
+    }
 
     .digest-content strong { color: #f0f0f0; }
 
+    /* Tier 3: Read More link */
     .digest-content a {
       color: #C46849;
       text-decoration: none;
+      font-size: 13px;
       transition: color 0.15s;
     }
 
@@ -179,9 +191,9 @@
       margin-top: 28px;
       padding-top: 20px;
       border-top: 1px solid #333;
-      font-size: 0.75rem;
+      font-size: 0.65rem;
       color: #555;
-      line-height: 1.7;
+      line-height: 1.6;
       text-align: center;
     }
     .footer-legal a {
