@@ -17,13 +17,23 @@ Claude Code Daily Digest — a self-updating web page that collects, summarizes,
 ## Pipeline
 
 ```
-collect (5 sources) → summarize (Ollama) → write digest.json → deploy (Vercel)
+collect (6 sources) → select features + news → summarize (Ollama) → append New Versions (Python) → write digest.json → deploy (Vercel)
 ```
 
-1. `collectors.py` scrapes GitHub Releases, Anthropic Blog, Docs Changelog, Chase AI Blog, Tyler Germain Gists
-2. `summarizer.py` sends items to Ollama, outputs markdown grouped by: New Features, News, New Versions
-3. `generate_digest.py` converts markdown → HTML, adds tip-of-the-day, writes `public/digest.json`
-4. `run_updates.sh` runs the pipeline + `npx vercel deploy --prod --yes`
+1. `collectors.py` scrapes: GitHub Releases, Anthropic Blog, Docs Changelog, Chase AI Blog, Chase AI YouTube, Tyler Germain Gists
+2. `generate_digest.py` selects items: 2 Chase AI + 3 other (never GitHub Releases) for New Features; Anthropic Blog + Docs Changelog (deduped from features) for General News
+3. `summarizer.py` sends selected items to Ollama, outputs markdown with **New Features** and **General News** only
+4. `generate_digest.py` appends **New Versions** deterministically via `collectors.get_latest_github_release()` — never LLM-generated
+5. `generate_digest.py` converts markdown → HTML, adds tip-of-the-day, writes `public/digest.json`
+6. `run_updates.sh` runs the pipeline + `npx vercel deploy --prod --yes`
+
+### Section definitions
+
+| Section | What goes in it |
+|---|---|
+| `## New Features` | New Claude Code capabilities: tools, MCPs, skills, CLI features (Chase AI + other, no GitHub Releases) |
+| `## General News` | Anthropic/Claude company-level news: model launches, funding, partnerships (Anthropic Blog + Docs Changelog, never duplicates from Features) |
+| `## New Versions` | Latest Claude Code GitHub release — deterministic Python, never LLM |
 
 ## Key Commands
 
@@ -45,10 +55,31 @@ npx vercel deploy --prod --yes         # Deploy to Vercel
 - Logging: module-based `logging.getLogger(__name__)` pattern
 - Frontend: dark theme (#0d0d0d bg, #C46849 accent), DM Sans + JetBrains Mono fonts
 - Byline "by Juan Pazmino B" shown beneath the main title in the header
-- Footer has dynamic "Last updated" timestamp + static legal/copyright block
+- Footer has dynamic "Last updated" timestamp + static legal/copyright block (font-size 0.65rem)
 - Vercel CLI is local (use `npx vercel`, not `vercel`)
 - `public/digest.json` is gitignored — generated artifact, not source
-- `tips.py` holds the TIPS list + `get_tip_of_the_day()` — uses date-based MD5 hash for daily rotation; add new tips to the TIPS list there
+- `tips.py` — `get_tip_of_the_day()` uses sequential day-number rotation (epoch 2025-01-01); tries `fetch_dynamic_tips()` from Anthropic docs first, falls back to static `TIPS` list
+- `summarizer.py` — `PLATFORM_MAP` maps source names to display labels (e.g. "Chase AI Blog" → "Chase AI"); `_format_item()` formats input without source prefix to prevent LLM using source name as title
+
+### Item format (LLM output, all sections except New Versions)
+
+```
+- **Short Descriptive Title**
+  One-line description.
+  [Read on Platform](url)
+```
+
+- Title: 3–6 words describing content, never the source/platform name
+- Link text: "Read on Platform" (e.g. Read on GitHub, Watch on YouTube, Read on Anthropic)
+
+### Frontend visual hierarchy
+
+| Tier | Element | Size | Color | Weight |
+|---|---|---|---|---|
+| Section heading | `h2` | 18px | #f0f0f0 | 600 |
+| Article title | `.item-title` | 15px | #f0f0f0 | 600 |
+| Summary | `.item` text | 14px | #999 | 400 |
+| Read More link | `a` | 13px | #C46849 | 400 |
 
 ## Rules
 
@@ -59,4 +90,6 @@ npx vercel deploy --prod --yes         # Deploy to Vercel
 - Ollama must be running before `generate_digest.py` (`ollama serve`)
 - No API keys needed — all sources are public, LLM is local
 - Cron at 8 AM daily: `0 8 * * * /path/to/Claude\ Code\ Updates/run_updates.sh`
-- The summarizer prompt explicitly separates features vs news vs versions — if categorization is wrong, adjust the prompt in `summarizer.py`
+- The summarizer prompt explicitly separates features vs news — if categorization is wrong, adjust the prompt in `summarizer.py`
+- GitHub Releases is intentionally excluded from the LLM entirely — New Versions is always Python-built
+- General News deduplication is enforced in `generate_digest.py` by `selected_urls` set — items in Features never appear in News
