@@ -41,6 +41,20 @@ def _safe_link(match):
     return f'<a href="{url}" target="_blank" rel="noopener noreferrer">{text}</a>'
 
 
+def _ensure_complete_descriptions(md):
+    """Append ellipsis to description lines that don't end with sentence-ending punctuation."""
+    lines = md.split("\n")
+    result = []
+    for line in lines:
+        # Description lines: indented 1–4 spaces, not a link ([...]), not empty
+        if re.match(r"^ {1,4}[^\[\s]", line):
+            stripped = line.rstrip()
+            if stripped and stripped[-1] not in ".!?:;\u2026":
+                line = stripped + "..."
+        result.append(line)
+    return "\n".join(result)
+
+
 def markdown_to_html(md):
     """Convert markdown summary to simple HTML with XSS protection."""
     # First, escape all HTML entities in the raw markdown
@@ -131,7 +145,7 @@ def main():
     digest = {
         "generated_at": now.isoformat(),
         "date_display": now.strftime("%B %d, %Y"),
-        "summary_html": markdown_to_html(summary),
+        "summary_html": markdown_to_html(_ensure_complete_descriptions(summary)),
         "tip": {"command": tip["command"], "description": tip["description"]},
         "item_count": len(items),
     }
