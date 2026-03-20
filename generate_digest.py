@@ -14,7 +14,7 @@ import logging
 import os
 import re
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 import collectors
 import summarizer
@@ -29,6 +29,34 @@ logger = logging.getLogger("generate_digest")
 
 OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public")
 OUTPUT_PATH = os.path.join(OUTPUT_DIR, "digest.json")
+SEEN_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "seen_urls.json")
+SEEN_TTL_DAYS = 30
+
+
+def _load_seen_urls():
+    """Load seen URLs dict {url: first_seen_iso}, pruning entries older than SEEN_TTL_DAYS."""
+    if not os.path.exists(SEEN_PATH):
+        return {}
+    try:
+        with open(SEEN_PATH) as f:
+            data = json.load(f)
+        cutoff = (datetime.now(timezone.utc) - timedelta(days=SEEN_TTL_DAYS)).isoformat()
+        return {url: ts for url, ts in data.items() if ts >= cutoff}
+    except Exception:
+        return {}
+
+
+def _save_seen_urls(seen, new_urls):
+    """Add new_urls to seen dict and write to disk."""
+    now = datetime.now(timezone.utc).isoformat()
+    for url in new_urls:
+        if url not in seen:
+            seen[url] = now
+    try:
+        with open(SEEN_PATH, "w") as f:
+            json.dump(seen, f, indent=2)
+    except Exception as e:
+        logger.warning(f"Could not save seen_urls: {e}")
 
 
 def _safe_link(match):
@@ -104,10 +132,17 @@ def main():
         return
 
     # Step 2: Select feature items — Chase AI + non-GitHub, non-Chase sources
+    seen_urls = _load_seen_urls()
+
+    def _prefer_unseen(pool):
+        """Sort pool so unseen items come first, seen items last."""
+        return [i for i in pool if i["url"] not in seen_urls] + \
+               [i for i in pool if i["url"] in seen_urls]
+
     chase_sources = {"Chase AI Blog", "Chase AI YouTube"}
-    feature_excluded = chase_sources | {"GitHub Releases"}
-    chase_items = [i for i in items if i["source"] in chase_sources]
-    other_items = [i for i in items if i["source"] not in feature_excluded]
+    feature_excluded = chase_sources | {"GitHub Releases", "Anthropic Blog", "Claude Release Notes"}
+    chase_items = _prefer_unseen([i for i in items if i["source"] in chase_sources])
+    other_items = _prefer_unseen([i for i in items if i["source"] not in feature_excluded])
     n_chase = min(2, len(chase_items))
     n_other = min(5 - n_chase, len(other_items))
     selected = chase_items[:n_chase] + other_items[:n_other]
@@ -120,14 +155,19 @@ def main():
     logger.info(f"Selected {len(selected)} feature items: {n_chase} Chase AI, {n_other} other")
 
     # Step 2b: Build General News items — only Anthropic Blog + Docs Changelog, never repeat features
-    news_sources = {"Anthropic Blog", "Docs Changelog"}
+    news_sources = {"Anthropic Blog", "Docs Changelog", "Claude Release Notes"}
     selected_urls = {i["url"] for i in selected}
     news_items = [i for i in items if i["source"] in news_sources and i["url"] not in selected_urls]
-    logger.info(f"General News pool: {len(news_items)} items")
+
+    # Pin the most recent Claude Release Notes entry — always shown in General News
+    release_notes_items = [i for i in news_items if i["source"] == "Claude Release Notes"]
+    pinned_news = release_notes_items[:1]  # most recent (list is in collection order)
+    optional_news = [i for i in news_items if i not in pinned_news]
+    logger.info(f"General News pool: {len(news_items)} items ({len(pinned_news)} pinned)")
 
     # Step 3: Summarize with Ollama
     logger.info("Summarizing with Ollama...")
-    summary = summarizer.summarize(items, feature_items=selected, news_items=news_items)
+    summary = summarizer.summarize(items, feature_items=selected, news_items=optional_news, pinned_news_items=pinned_news)
     logger.info("Summary generated.")
 
     # Step 3b: Append New Versions section (deterministic, not LLM-generated)
@@ -162,6 +202,9 @@ def main():
 
     logger.info(f"Digest written to {OUTPUT_PATH}")
     logger.info(f"Items: {len(items)}, Tip: {tip['command']}")
+
+    # Step 7: Save seen URLs so next run prefers fresh content
+    _save_seen_urls(seen_urls, [i["url"] for i in selected])
 
 
 if __name__ == "__main__":

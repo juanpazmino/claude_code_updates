@@ -8,8 +8,9 @@ OLLAMA_MODEL = "qwen2.5"
 
 # Source URLs
 GITHUB_RELEASES_URL = "https://api.github.com/repos/anthropics/claude-code/releases"
-ANTHROPIC_BLOG_URL = "https://www.anthropic.com/news"
-DOCS_CHANGELOG_URL = "https://docs.anthropic.com/en/docs/changelog"
+ANTHROPIC_BLOG_RSS_URL = "https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_anthropic_news.xml"
+CLAUDE_RELEASE_NOTES_URL = "https://support.claude.com/en/articles/12138966-release-notes"
+DOCS_CHANGELOG_URL = "https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md"
 CHASE_AI_BLOG_URL = "https://www.chaseai.io/blog"
 CHASE_AI_YOUTUBE_URL = "https://www.youtube.com/@Chase-H-AI/videos"
 TYLERGERMAIN_GISTS_URL = "https://gist.github.com/tylergermain"

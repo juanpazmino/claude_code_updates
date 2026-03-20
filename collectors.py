@@ -1,7 +1,9 @@
 """Collectors for Claude Code update sources."""
 
 import logging
+import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
+from email.utils import parsedate_to_datetime
 
 import requests
 from bs4 import BeautifulSoup
@@ -45,37 +47,37 @@ def collect_github_releases():
 
 
 def collect_anthropic_blog():
-    """Scrape Anthropic blog for Claude Code related posts."""
+    """Fetch Anthropic blog posts via RSS feed."""
     items = []
+    keywords = config.KEYWORDS + ["claude", "anthropic"]
 
     try:
-        resp = requests.get(config.ANTHROPIC_BLOG_URL, headers=HEADERS, timeout=15)
+        resp = requests.get(config.ANTHROPIC_BLOG_RSS_URL, headers=HEADERS, timeout=15)
         resp.raise_for_status()
-        soup = BeautifulSoup(resp.text, "html.parser")
+        root = ET.fromstring(resp.text)
 
-        # Find article/post elements - Anthropic uses various structures
-        articles = soup.find_all("a", href=True)
-        seen_urls = set()
+        for item in list(root.iter("item"))[:10]:
+            title = (item.findtext("title") or "").strip()
+            link = (item.findtext("link") or "").strip()
+            pub_date = (item.findtext("pubDate") or "").strip()
+            description = (item.findtext("description") or "").strip()
 
-        for a in articles:
-            href = a.get("href", "")
-            if "/news/" not in href or href in seen_urls:
-                continue
-            seen_urls.add(href)
-
-            text = a.get_text(separator=" ", strip=True).lower()
-            if not any(kw in text for kw in config.KEYWORDS + ["claude"]):
+            try:
+                published = parsedate_to_datetime(pub_date)
+            except Exception:
                 continue
 
-            title = a.get_text(separator=" ", strip=True)[:200]
-            url = href if href.startswith("http") else f"https://www.anthropic.com{href}"
+            # Filter by keywords (title + description)
+            combined = (title + " " + description).lower()
+            if not any(kw in combined for kw in keywords):
+                continue
 
             items.append({
                 "title": title,
-                "date": datetime.now(timezone.utc).isoformat(),
-                "content": title,
+                "date": published.isoformat(),
+                "content": description,
                 "source": "Anthropic Blog",
-                "url": url,
+                "url": link,
             })
 
         logger.info(f"Anthropic blog: found {len(items)} relevant post(s)")
@@ -86,60 +88,116 @@ def collect_anthropic_blog():
 
 
 def collect_changelog():
-    """Fetch and parse the Anthropic docs changelog."""
+    """Fetch and parse the Claude Code CHANGELOG.md from GitHub."""
+    import re as _re
     items = []
+    VIEW_URL = "https://code.claude.com/docs/en/changelog"
+    MAX_VERSIONS = 5
 
     try:
         resp = requests.get(config.DOCS_CHANGELOG_URL, headers=HEADERS, timeout=15)
         resp.raise_for_status()
-        soup = BeautifulSoup(resp.text, "html.parser")
+        text = resp.text
 
-        # Changelog entries are typically in heading + content blocks
-        headings = soup.find_all(["h2", "h3"])
-        cutoff = datetime.now(timezone.utc) - timedelta(hours=config.LOOKBACK_HOURS)
+        # Split into version blocks on "## X.Y.Z" headings
+        blocks = _re.split(r"\n(?=## \d+\.\d+\.\d+)", text)
+        now = datetime.now(timezone.utc).isoformat()
 
-        for h in headings:
-            heading_text = h.get_text(strip=True)
-
-            # Try to parse a date from the heading
-            date_parsed = None
-            for fmt in ["%B %d, %Y", "%Y-%m-%d", "%b %d, %Y"]:
-                try:
-                    date_parsed = datetime.strptime(heading_text, fmt).replace(tzinfo=timezone.utc)
-                    break
-                except ValueError:
-                    continue
-
-            if date_parsed and date_parsed < cutoff:
+        for block in blocks[1:MAX_VERSIONS + 1]:  # skip preamble, take top N versions
+            lines = block.strip().splitlines()
+            if not lines:
                 continue
 
-            # Collect sibling content until next heading
-            content_parts = []
-            for sib in h.find_next_siblings():
-                if sib.name in ["h2", "h3"]:
-                    break
-                content_parts.append(sib.get_text(separator=" ", strip=True))
-
-            content = "\n".join(content_parts)[:2000]
-            if not content:
+            version = lines[0].lstrip("#").strip()  # e.g. "2.1.80"
+            bullet_lines = [l.strip() for l in lines[1:] if l.strip().startswith("-")]
+            if not bullet_lines:
                 continue
 
-            # Filter for Claude Code relevance
-            combined = (heading_text + " " + content).lower()
-            if not any(kw in combined for kw in config.KEYWORDS + ["claude"]):
-                continue
-
+            content = "\n".join(bullet_lines)[:2000]
+            anchor = version.replace(".", "-")  # e.g. "2-1-80"
             items.append({
-                "title": heading_text,
-                "date": date_parsed.isoformat() if date_parsed else datetime.now(timezone.utc).isoformat(),
+                "title": f"Claude Code {version}",
+                "date": now,
                 "content": content,
                 "source": "Docs Changelog",
-                "url": config.DOCS_CHANGELOG_URL,
+                "url": f"{VIEW_URL}#{anchor}",
             })
 
         logger.info(f"Docs changelog: found {len(items)} relevant entry(ies)")
     except Exception as e:
         logger.warning(f"Docs changelog collector failed: {e}")
+
+    return items
+
+
+def collect_claude_release_notes():
+    """Fetch recent entries from Claude's official release notes page."""
+    items = []
+    MAX_ENTRIES = 7
+
+    try:
+        resp = requests.get(config.CLAUDE_RELEASE_NOTES_URL, headers=HEADERS, timeout=15)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "html.parser")
+
+        for h3 in soup.find_all("h3"):
+            if len(items) >= MAX_ENTRIES:
+                break
+            date_text = h3.get_text(strip=True)
+            try:
+                entry_date = datetime.strptime(date_text, "%B %d, %Y").replace(tzinfo=timezone.utc)
+            except ValueError:
+                continue
+
+            # Collect paragraph divs that follow this h3's parent div
+            parent_div = h3.parent
+            paragraphs = []
+            for sibling in parent_div.next_siblings:
+                if not hasattr(sibling, "find_all"):
+                    continue
+                # Stop at the next date heading (h3 or h2)
+                if sibling.find(["h2", "h3"]):
+                    break
+                if "intercom-interblocks-paragraph" in sibling.get("class", []):
+                    text = sibling.get_text(separator=" ", strip=True)
+                    if text:
+                        paragraphs.append(text)
+
+            if not paragraphs:
+                continue
+
+            content = "\n".join(paragraphs)[:2000]
+
+            # Use first bold text as title, fall back to date string
+            first_bold = None
+            for p in paragraphs:
+                # Bold text in the paragraph was <b>...</b>, get_text strips tags
+                # Re-parse to find actual <b> tags
+                break
+            bold_tag = None
+            for sibling in parent_div.next_siblings:
+                if not hasattr(sibling, "find"):
+                    continue
+                if sibling.find(["h2", "h3"]):
+                    break
+                bold_tag = sibling.find("b")
+                if bold_tag:
+                    first_bold = bold_tag.get_text(strip=True)
+                    break
+
+            title = first_bold or date_text
+
+            items.append({
+                "title": title,
+                "date": entry_date.isoformat(),
+                "content": content,
+                "source": "Claude Release Notes",
+                "url": config.CLAUDE_RELEASE_NOTES_URL,
+            })
+
+        logger.info(f"Claude release notes: found {len(items)} recent entry(ies)")
+    except Exception as e:
+        logger.warning(f"Claude release notes collector failed: {e}")
 
     return items
 
@@ -163,11 +221,12 @@ def collect_chase_ai():
                 continue
             seen_urls.add(href)
 
-            text = a.get_text(separator=" ", strip=True).lower()
+            img_tag = a.find("img", alt=True)
+            title_text = img_tag["alt"].strip() if img_tag and img_tag.get("alt", "").strip() else a.get_text(separator=" ", strip=True)[:200]
+            text = title_text.lower()
             if not any(kw in text for kw in config.KEYWORDS + ["claude"]):
                 continue
-
-            title = a.get_text(separator=" ", strip=True)[:200]
+            title = title_text
             url = href if href.startswith("http") else f"https://www.chaseai.io{href}"
 
             items.append({
@@ -322,6 +381,7 @@ def collect_all():
         ("GitHub Releases", collect_github_releases),
         ("Anthropic Blog", collect_anthropic_blog),
         ("Docs Changelog", collect_changelog),
+        ("Claude Release Notes", collect_claude_release_notes),
         ("Tyler Germain Gists", collect_tylergermain_gists),
     ]
 

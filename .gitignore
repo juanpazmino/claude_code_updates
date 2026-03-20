@@ -4,6 +4,7 @@ __pycache__/
 *.log
 .env
 public/digest.json
+seen_urls.json
 .vercel/
 node_modules/
 package-lock.json
