@@ -34,7 +34,9 @@ PLATFORM_MAP = {
 
 def _format_item(item):
     platform = PLATFORM_MAP.get(item["source"], item["source"])
-    return f"- {item['title'][:120]} | {item['url']} | platform: {platform}"
+    content = item.get("content", "").strip()
+    content_hint = f" | content: {content[:300]}" if content else ""
+    return f"- {item['title'][:120]} | {item['url']} | platform: {platform}{content_hint}"
 
 
 def summarize(items, feature_items=None, news_items=None, pinned_news_items=None):
@@ -72,8 +74,11 @@ def summarize(items, feature_items=None, news_items=None, pinned_news_items=None
         f"- **Short Descriptive Title**\n"
         f"  One-line description.\n"
         f"  [Read on Platform](url)\n\n"
-        f"CRITICAL: The bold title must be 3–6 words describing the content — "
+        f"CRITICAL TITLE RULE: The bold title must be 3–6 words describing the SPECIFIC content — "
+        f"NEVER use version numbers, release names, or platform names as the title. "
+        f"When content is provided, read it and name the most notable feature or change (e.g. '`--bare` Flag for Scripted Calls', 'Rate Limit Display in Statusline'). "
         f"NEVER write the platform name (Chase AI, Anthropic, GitHub, etc.) as the title. "
+        f"The description must be one plain sentence summarizing what it does — do NOT copy raw content. "
         f"Use the 'platform:' label in each item to build the link text. "
         f"Blank line between items."
     )

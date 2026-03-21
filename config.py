@@ -4,7 +4,7 @@
 SITE_TITLE = "Claude Code Daily Digest"
 
 # Ollama settings
-OLLAMA_MODEL = "qwen2.5"
+OLLAMA_MODEL = "llama3.1:8b"
 
 # Source URLs
 GITHUB_RELEASES_URL = "https://api.github.com/repos/anthropics/claude-code/releases"
