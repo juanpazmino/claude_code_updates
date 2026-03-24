@@ -3,7 +3,7 @@ __pycache__/
 *.pyc
 *.log
 .env
-# public/digest.json is tracked so GitHub Actions can deploy on push
+public/digest.json
 seen_urls.json
 .vercel/
 node_modules/

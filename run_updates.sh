@@ -12,10 +12,8 @@ source "$VENV"
 cd "$SCRIPT_DIR"
 python generate_digest.py 2>&1 | tee -a "$LOG_FILE"
 
-echo "$(date): Pushing digest to GitHub (GitHub Actions will deploy to Vercel)" >> "$LOG_FILE"
-git add public/digest.json
-git commit -m "digest update $(date +%Y-%m-%d)" 2>&1 | tee -a "$LOG_FILE"
-git push 2>&1 | tee -a "$LOG_FILE"
+echo "$(date): Deploying to Vercel" >> "$LOG_FILE"
+npx vercel deploy --prod --yes 2>&1 | tee -a "$LOG_FILE"
 
 echo "$(date): Finished" >> "$LOG_FILE"
 echo "---" >> "$LOG_FILE"
