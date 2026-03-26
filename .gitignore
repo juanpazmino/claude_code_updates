@@ -11,3 +11,6 @@ package-lock.json
 screenshots_playwright/
 .playwright-mcp/
 .DS_Store
+.playwright/
+.playwright-cli/
+.claude/
