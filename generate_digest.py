@@ -70,15 +70,16 @@ def _safe_link(match):
 
 
 def _ensure_complete_descriptions(md):
-    """Append ellipsis to description lines that don't end with sentence-ending punctuation."""
+    """Clean description lines: strip trailing whitespace and bare URLs from prose."""
     lines = md.split("\n")
     result = []
     for line in lines:
         # Description lines: indented 1–4 spaces, not a link ([...]), not empty
         if re.match(r"^ {1,4}[^\[\s]", line):
-            stripped = line.rstrip()
-            if stripped and stripped[-1] not in ".!?:;\u2026":
-                line = stripped + "..."
+            line = line.rstrip()
+            # Strip bare URLs that the LLM leaks into prose (not inside [text](url))
+            if not re.search(r"\[.+\]\(.+\)", line):
+                line = re.sub(r"\s+https?://\S+", "", line).rstrip()
         result.append(line)
     return "\n".join(result)
 
@@ -94,10 +95,17 @@ def markdown_to_html(md):
     # Links: unescape brackets first (escaped by html.escape), then validate URLs
     text = text.replace("&#x27;", "'")
     text = re.sub(r"\[(.+?)\]\((.+?)\)", _safe_link, text)
-    # Convert bullet lines: - **Title** → structured item with title span + bullet
+    # Convert bullet lines: - **Title** or - **Title** | Description
+    def _bullet_replace(m):
+        title = m.group(1)
+        desc = m.group(2)
+        if desc and desc.strip():
+            return f'<span class="item-title">• {title}</span>\n{desc.strip()}'
+        return f'<span class="item-title">• {title}</span>'
+
     text = re.sub(
-        r"^- \*\*(.+?)\*\*$",
-        r'<span class="item-title">• \1</span>',
+        r"^- \*\*(.+?)\*\*(?:\s*\|\s*(.+))?$",
+        _bullet_replace,
         text,
         flags=re.MULTILINE,
     )
@@ -162,7 +170,7 @@ def main():
     # Pin the most recent Claude Release Notes entry — always shown in General News
     release_notes_items = [i for i in news_items if i["source"] == "Claude Release Notes"]
     pinned_news = release_notes_items[:1]  # most recent (list is in collection order)
-    optional_news = [i for i in news_items if i not in pinned_news]
+    optional_news = _prefer_unseen([i for i in news_items if i not in pinned_news])
     logger.info(f"General News pool: {len(news_items)} items ({len(pinned_news)} pinned)")
 
     # Step 3: Summarize with Ollama
@@ -203,8 +211,9 @@ def main():
     logger.info(f"Digest written to {OUTPUT_PATH}")
     logger.info(f"Items: {len(items)}, Tip: {tip['command']}")
 
-    # Step 7: Save seen URLs so next run prefers fresh content
-    _save_seen_urls(seen_urls, [i["url"] for i in selected])
+    # Step 7: Save seen URLs so next run prefers fresh content (features + top news shown to LLM)
+    shown_news = pinned_news + optional_news[:5]
+    _save_seen_urls(seen_urls, [i["url"] for i in selected + shown_news])
 
 
 if __name__ == "__main__":
