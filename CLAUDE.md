@@ -2,14 +2,14 @@
 
 ## Project Overview
 
-Claude Code Daily Digest — a self-updating web page that collects, summarizes, and publishes daily Claude Code updates. Runs locally with Python + Ollama, deploys to Vercel as a static site.
+Claude Code Daily Digest — a self-updating web page that collects, summarizes, and publishes daily Claude Code updates. Runs locally with Python + Anthropic API, deploys to Vercel as a static site.
 
 **Live site:** https://claude-code-digest.vercel.app
 
 ## Tech Stack
 
-- **Backend:** Python 3.10+ (requests, beautifulsoup4, ollama)
-- **LLM:** Ollama with `qwen2.5` model (local, no API keys)
+- **Backend:** Python 3.10+ (requests, beautifulsoup4, anthropic, python-dotenv)
+- **LLM:** Anthropic Haiku (`claude-haiku-4-5`) via API — requires `ANTHROPIC_API_KEY` in `.env`
 - **Frontend:** Vanilla HTML/CSS/JS, single `index.html` file
 - **Hosting:** Vercel static site (no serverless functions)
 - **Deploy tool:** Vercel CLI installed locally via npm (`npx vercel`)
@@ -17,13 +17,13 @@ Claude Code Daily Digest — a self-updating web page that collects, summarizes,
 ## Pipeline
 
 ```
-collect (7 sources) → seen-items filter → select features + news → summarize (Ollama) → append New Versions (Python) → write digest.json → deploy (Vercel)
+collect (7 sources) → seen-items filter → select features + news → summarize (Haiku) → append New Versions (Python) → write digest.json → deploy (Vercel)
 ```
 
-1. `collectors.py` scrapes: GitHub Releases, Anthropic Blog (RSS), Claude Release Notes, Docs Changelog, Chase AI Blog, Chase AI YouTube, Tyler Germain Gists
-2. `generate_digest.py` loads `seen_urls.json`, prefers unseen items, selects: 2 Chase AI + 3 Docs Changelog for New Features; Anthropic Blog + Claude Release Notes + remaining Docs Changelog for General News
-3. Most recent Claude Release Notes item is **pinned** — always appears first in General News regardless of LLM selection
-4. `summarizer.py` sends numbered items to Ollama, outputs markdown with **New Features** and **General News** only
+1. `collectors.py` scrapes: GitHub Releases, Anthropic Blog (direct scrape), Claude Release Notes, Docs Changelog, Chase AI Blog, Chase AI YouTube, Tyler Germain Gists
+2. `generate_digest.py` loads `seen_urls.json`, prefers unseen items, selects: 2 Chase AI + up to 3 from Docs Changelog + GitHub Releases for New Features; Anthropic Blog + Claude Release Notes + Docs Changelog overflow for General News
+3. **2 most recent** Claude Release Notes items are **pinned** — always appear first in General News regardless of LLM selection
+4. `summarizer_v2.py` sends numbered items to Anthropic Haiku, outputs markdown with **New Features** and **General News** only
 5. `generate_digest.py` appends **New Versions** deterministically via `collectors.get_latest_github_release()` — never LLM-generated
 6. `generate_digest.py` converts markdown → HTML, adds tip-of-the-day, writes `public/digest.json`
 7. `generate_digest.py` saves selected feature URLs to `seen_urls.json` (30-day TTL) so next run prefers fresh items
@@ -33,8 +33,8 @@ collect (7 sources) → seen-items filter → select features + news → summari
 
 | Section | What goes in it | Sources |
 |---|---|---|
-| `## New Features` | Claude Code CLI capabilities, version updates, plugin/tool guides | Chase AI Blog (2) + Docs Changelog (3) |
-| `## General News` | Anthropic/Claude company-level news: product launches, funding, partnerships | Anthropic Blog + Claude Release Notes (pinned first) + Docs Changelog overflow |
+| `## New Features` | Claude Code CLI capabilities, version updates, plugin/tool guides | Chase AI Blog (2) + GitHub Releases + Docs Changelog (fills to 5) |
+| `## General News` | Anthropic/Claude company-level news: product launches, funding, partnerships | Claude Release Notes (2 pinned) + Anthropic Blog + Docs Changelog overflow |
 | `## New Versions` | Latest Claude Code GitHub release — deterministic Python, never LLM | GitHub Releases API |
 
 ## Key Commands
@@ -62,20 +62,21 @@ npx vercel deploy --prod --yes         # Deploy to Vercel
 - `public/digest.json` is gitignored — generated artifact, not source
 - `seen_urls.json` is gitignored — tracks shown item URLs with 30-day TTL; deleted manually to reset freshness
 - `tips.py` — `get_tip_of_the_day()` uses sequential day-number rotation (epoch 2025-01-01); tries `fetch_dynamic_tips()` from Anthropic docs first, falls back to static `TIPS` list
-- `summarizer.py` — `PLATFORM_MAP` maps source names to display labels (e.g. "Chase AI Blog" → "Chase AI"); feature items are numbered 1–5 in the prompt to prevent the LLM from dropping items; `summarize()` accepts `pinned_news_items` for mandatory General News entries
-- `generate_digest.py` — `_ensure_complete_descriptions(md)` post-processes LLM output before HTML conversion: appends `...` to indented description lines that don't end with sentence-ending punctuation (`.!?:;…`); `_load_seen_urls()` / `_save_seen_urls()` manage the freshness filter; `_prefer_unseen()` sorts item pools so unseen items come first
+- `summarizer_v2.py` — active summarizer; uses Anthropic Haiku via `anthropic` SDK; `PLATFORM_MAP` maps source names to display labels (e.g. "Chase AI Blog" → "Chase AI"); feature items are numbered 1–5; `summarize()` accepts `pinned_news_items` for mandatory General News entries; loads `ANTHROPIC_API_KEY` from `.env` via `python-dotenv`
+- `summarizer.py` — legacy Ollama summarizer; kept for reference but no longer used by the pipeline
+- `generate_digest.py` — `_ensure_complete_descriptions(md)` post-processes LLM output before HTML conversion; `_load_seen_urls()` / `_save_seen_urls()` manage the freshness filter; `_prefer_unseen()` sorts item pools so unseen items come first; `markdown_to_html()` bullet regex accepts titles with or without `**` bold markers for LLM compatibility
 - `updates.log` — generated by `run_updates.sh` (pipeline stdout), gitignored; useful for debugging cron runs
 
 ### Collector details
 
 | Collector | Source | Notes |
 |---|---|---|
-| `collect_anthropic_blog()` | Olshansk RSS feed (`feed_anthropic_news.xml`) | Real publish dates; top 10 items; keyword-filtered |
-| `collect_claude_release_notes()` | `support.claude.com/en/articles/12138966-release-notes` | Intercom HTML, `h3` = date, bold text = title; top 7 entries; most recent is always pinned in news |
+| `collect_anthropic_blog()` | `anthropic.com/news` (direct scrape) | Uses semantic `<time>` + heading/`<span>` elements; sorted by date desc; top 10; keyword-filtered (`claude`, `anthropic`) |
+| `collect_claude_release_notes()` | `support.claude.com/en/articles/12138966-release-notes` | Intercom HTML, `h3` = date, bold text = title; top 7 entries; 2 most recent always pinned in General News |
 | `collect_changelog()` | Raw `CHANGELOG.md` from GitHub | Parses `## X.Y.Z` blocks; top 5 versions; each version gets unique URL anchor (`#X-Y-Z`) |
 | `collect_chase_ai()` | `chaseai.io/blog` | Uses `img[alt]` for clean article title (avoids tag-noise from `get_text()`) |
 | `collect_chase_ai_youtube()` | YouTube channel `ytInitialData` JSON | May fail silently if YouTube changes page structure |
-| `collect_github_releases()` | GitHub API | Date-filtered by `LOOKBACK_HOURS`; used only for New Versions section |
+| `collect_github_releases()` | GitHub API | Date-filtered by `LOOKBACK_HOURS`; release body (up to 2000 chars) passed as `content` to LLM for New Features; also used for New Versions (deterministic) |
 | `collect_tylergermain_gists()` | `gist.github.com/tylergermain` | Keyword-filtered |
 
 ### Item format (LLM output, all sections except New Versions)
@@ -104,12 +105,11 @@ npx vercel deploy --prod --yes         # Deploy to Vercel
 
 ## Important Notes
 
-- Ollama must be running before `generate_digest.py` (`ollama serve`)
-- No API keys needed — all sources are public, LLM is local
+- `ANTHROPIC_API_KEY` must be set in `.env` — see `.env.example`; the pipeline will fail without it
 - Cron at 8 AM daily: `0 8 * * * /path/to/Claude\ Code\ Updates/run_updates.sh`
-- The summarizer prompt explicitly separates features vs news — if categorization is wrong, adjust the prompt in `summarizer.py`
-- GitHub Releases is intentionally excluded from the LLM entirely — New Versions is always Python-built
+- The summarizer prompt explicitly separates features vs news — if categorization is wrong, adjust the prompt in `summarizer_v2.py`
+- GitHub Releases body content (up to 2000 chars) is passed to the LLM; the prompt instructs Haiku to name the most notable feature/fix, never the version number
 - General News deduplication is enforced in `generate_digest.py` by `selected_urls` set — items in Features never appear in News
 - If the site shows stale content, delete `seen_urls.json` to reset the freshness filter — the next run will re-evaluate all items
-- The Anthropic Blog RSS feed (`Olshansk/rss-feeds`) is maintained by a third party; if it goes stale, fall back to scraping `anthropic.com/news` directly
+- `anthropic.com/news` scraper uses semantic elements (`<time>`, heading, last `<span>`) to avoid fragile hashed CSS class names — but may need updating if Anthropic restructures the page
 - `support.claude.com` release notes is the authoritative source for Claude.ai product features (Cowork, Dispatch, memory, etc.) that don't appear on the main Anthropic blog
