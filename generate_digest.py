@@ -17,7 +17,7 @@ import sys
 from datetime import datetime, timedelta, timezone
 
 import collectors
-import summarizer
+import summarizer_v2 as summarizer
 from tips import get_tip_of_the_day
 
 logging.basicConfig(
@@ -95,16 +95,16 @@ def markdown_to_html(md):
     # Links: unescape brackets first (escaped by html.escape), then validate URLs
     text = text.replace("&#x27;", "'")
     text = re.sub(r"\[(.+?)\]\((.+?)\)", _safe_link, text)
-    # Convert bullet lines: - **Title** or - **Title** | Description
+    # Convert bullet lines: - **Title** or - Title (bold markers optional for LLM compatibility)
     def _bullet_replace(m):
         title = m.group(1)
         desc = m.group(2)
         if desc and desc.strip():
-            return f'<span class="item-title">• {title}</span>\n{desc.strip()}'
+            return f'<span class="item-title">• {title}</span>{desc.strip()}'
         return f'<span class="item-title">• {title}</span>'
 
     text = re.sub(
-        r"^- \*\*(.+?)\*\*(?:\s*\|\s*(.+))?$",
+        r"^- (?:\*\*)?(.+?)(?:\*\*)?(?:\s*\|\s*(.+))?$",
         _bullet_replace,
         text,
         flags=re.MULTILINE,
@@ -148,13 +148,13 @@ def main():
                [i for i in pool if i["url"] in seen_urls]
 
     chase_sources = {"Chase AI Blog", "Chase AI YouTube"}
-    feature_excluded = chase_sources | {"GitHub Releases", "Anthropic Blog", "Claude Release Notes"}
+    feature_excluded = chase_sources | {"Anthropic Blog", "Claude Release Notes"}
     chase_items = _prefer_unseen([i for i in items if i["source"] in chase_sources])
     other_items = _prefer_unseen([i for i in items if i["source"] not in feature_excluded])
     n_chase = min(2, len(chase_items))
     n_other = min(5 - n_chase, len(other_items))
     selected = chase_items[:n_chase] + other_items[:n_other]
-    # Backfill from Chase AI only (not GitHub Releases) if short
+    # Backfill if short
     if len(selected) < 5:
         remaining = 5 - len(selected)
         used = selected[:]
@@ -167,14 +167,14 @@ def main():
     selected_urls = {i["url"] for i in selected}
     news_items = [i for i in items if i["source"] in news_sources and i["url"] not in selected_urls]
 
-    # Pin the most recent Claude Release Notes entry — always shown in General News
+    # Pin the 2 most recent Claude Release Notes entries — always shown first in General News
     release_notes_items = [i for i in news_items if i["source"] == "Claude Release Notes"]
-    pinned_news = release_notes_items[:1]  # most recent (list is in collection order)
+    pinned_news = release_notes_items[:2]
     optional_news = _prefer_unseen([i for i in news_items if i not in pinned_news])
     logger.info(f"General News pool: {len(news_items)} items ({len(pinned_news)} pinned)")
 
     # Step 3: Summarize with Ollama
-    logger.info("Summarizing with Ollama...")
+    logger.info("Summarizing with LLM model...")
     summary = summarizer.summarize(items, feature_items=selected, news_items=optional_news, pinned_news_items=pinned_news)
     logger.info("Summary generated.")
 

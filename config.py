@@ -20,3 +20,6 @@ KEYWORDS = ["claude code", "claude-code", "claudecode", "cli"]
 
 # How many hours back to look for updates
 LOOKBACK_HOURS = 24
+
+# Anthropic Model
+ANTHROPIC_MODEL = "claude-haiku-4-5"

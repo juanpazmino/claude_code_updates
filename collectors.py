@@ -47,44 +47,65 @@ def collect_github_releases():
 
 
 def collect_anthropic_blog():
-    """Fetch Anthropic blog posts via RSS feed."""
+    """Fetch Anthropic news by scraping anthropic.com/news directly.
+
+    Uses semantic <time> + <span> elements — avoids hashed CSS class names.
+    """
     items = []
     keywords = config.KEYWORDS + ["claude", "anthropic"]
+    BASE_URL = "https://www.anthropic.com"
+    seen_urls = set()
 
     try:
-        resp = requests.get(config.ANTHROPIC_BLOG_RSS_URL, headers=HEADERS, timeout=15)
+        resp = requests.get(f"{BASE_URL}/news", headers=HEADERS, timeout=15)
         resp.raise_for_status()
-        root = ET.fromstring(resp.text)
+        soup = BeautifulSoup(resp.text, "html.parser")
 
-        for item in list(root.iter("item"))[:10]:
-            title = (item.findtext("title") or "").strip()
-            link = (item.findtext("link") or "").strip()
-            pub_date = (item.findtext("pubDate") or "").strip()
-            description = (item.findtext("description") or "").strip()
+        for a in soup.find_all("a", href=True):
+            href = a["href"]
+            if not href.startswith("/news/") or href == "/news":
+                continue
+            url = BASE_URL + href
+            if url in seen_urls:
+                continue
+            seen_urls.add(url)
 
+            # Rely on semantic elements rather than hashed class names
+            time_el = a.find("time")
+            if not time_el:
+                continue
             try:
-                published = parsedate_to_datetime(pub_date)
-            except Exception:
+                published = datetime.strptime(time_el.get_text(strip=True), "%b %d, %Y").replace(tzinfo=timezone.utc)
+            except ValueError:
                 continue
 
-            # Filter by keywords (title + description)
-            combined = (title + " " + description).lower()
-            if not any(kw in combined for kw in keywords):
+            # Featured cards use a heading; list items use the last <span>
+            heading = a.find(["h2", "h3", "h4", "h5"])
+            if heading:
+                title = heading.get_text(strip=True)
+            else:
+                spans = a.find_all("span")
+                title = spans[-1].get_text(strip=True) if spans else ""
+            if not title:
+                continue
+
+            if not any(kw in (title + " " + href).lower() for kw in keywords):
                 continue
 
             items.append({
                 "title": title,
                 "date": published.isoformat(),
-                "content": description,
+                "content": "",
                 "source": "Anthropic Blog",
-                "url": link,
+                "url": url,
             })
 
-        logger.info(f"Anthropic blog: found {len(items)} relevant post(s)")
+        items.sort(key=lambda x: x["date"], reverse=True)
+        logger.info(f"Anthropic blog: found {len(items[:10])} relevant post(s)")
     except Exception as e:
         logger.warning(f"Anthropic blog collector failed: {e}")
 
-    return items
+    return items[:10]
 
 
 def collect_changelog():
