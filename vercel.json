@@ -1,6 +1,7 @@
 {
   "outputDirectory": "public",
   "framework": null,
+  "git": { "deploymentEnabled": false },
   "headers": [
     {
       "source": "/(.*)",
