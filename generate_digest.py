@@ -71,6 +71,8 @@ def _safe_link(match):
 
 def _ensure_complete_descriptions(md):
     """Clean description lines: strip trailing whitespace and bare URLs from prose."""
+    # Strip any LLM-added top-level title that isn't a known section heading
+    md = re.sub(r"^##\s+(?!New Features|General News|New Versions).+\n?", "", md, flags=re.MULTILINE)
     lines = md.split("\n")
     result = []
     for line in lines:

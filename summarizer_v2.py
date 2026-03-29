@@ -12,7 +12,7 @@ load_dotenv()
 
 logger = logging.getLogger(__name__)
 
-SYSTEM_PROMPT = """Write a markdown newsletter digest. Group items by category. Do not ask questions.
+SYSTEM_PROMPT = """Write structured markdown. Group items by category. Do not add a title or heading. Do not ask questions.
 For each item use EXACTLY this format:
 
 - **Short Descriptive Title**
