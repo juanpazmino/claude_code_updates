@@ -266,59 +266,51 @@ def collect_chase_ai():
 
 
 def collect_chase_ai_youtube():
-    """Scrape Chase AI YouTube channel for Claude Code related videos."""
-    import json as _json
+    """Fetch Chase AI YouTube videos via the channel's Atom RSS feed."""
     import re as _re
     items = []
 
     try:
-        resp = requests.get(config.CHASE_AI_YOUTUBE_URL, headers=HEADERS, timeout=15)
-        resp.raise_for_status()
+        # Use hardcoded channel ID (scraping the channel page is blocked by YouTube's consent wall)
+        channel_id = config.CHASE_AI_YOUTUBE_CHANNEL_ID
+        if not channel_id:
+            # Fallback: try to extract from channel page
+            resp = requests.get(config.CHASE_AI_YOUTUBE_URL, headers=HEADERS, timeout=15)
+            resp.raise_for_status()
+            match = _re.search(r"channel_id=(UC[^\"&]+)", resp.text)
+            if not match:
+                logger.warning("Chase AI YouTube: could not find channel ID in page")
+                return items
+            channel_id = match.group(1)
 
-        # YouTube embeds initial data as JSON in a script tag
-        match = _re.search(r"var ytInitialData\s*=\s*(\{.+?\});</script>", resp.text, _re.DOTALL)
-        if not match:
-            logger.warning("Chase AI YouTube: could not find ytInitialData")
-            return items
+        rss_url = f"https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}"
 
-        data = _json.loads(match.group(1))
+        rss_resp = requests.get(rss_url, headers=HEADERS, timeout=15)
+        rss_resp.raise_for_status()
 
-        # Drill into the video grid
-        tabs = (
-            data.get("contents", {})
-            .get("twoColumnBrowseResultsRenderer", {})
-            .get("tabs", [])
-        )
-        video_items = []
-        for tab in tabs:
-            tab_content = tab.get("tabRenderer", {}).get("content", {})
-            section_list = tab_content.get("sectionListRenderer", {}).get("contents", [])
-            for section in section_list:
-                for item in section.get("itemSectionRenderer", {}).get("contents", []):
-                    grid = item.get("gridRenderer", {})
-                    video_items.extend(grid.get("items", []))
-                    rich_grid = item.get("richGridRenderer", {})
-                    video_items.extend(rich_grid.get("contents", []))
+        root = ET.fromstring(rss_resp.content)
+        ns = {
+            "atom": "http://www.w3.org/2005/Atom",
+            "yt": "http://www.youtube.com/xml/schemas/2015",
+        }
 
-        seen_ids = set()
-        for vi in video_items:
-            renderer = vi.get("richItemRenderer", {}).get("content", {}).get("videoRenderer") \
-                       or vi.get("gridVideoRenderer")
-            if not renderer:
+        for entry in root.findall("atom:entry", ns):
+            title_el = entry.find("atom:title", ns)
+            video_id_el = entry.find("yt:videoId", ns)
+
+            title = title_el.text.strip() if title_el is not None and title_el.text else ""
+            if not title:
                 continue
-            video_id = renderer.get("videoId", "")
-            if not video_id or video_id in seen_ids:
-                continue
-            seen_ids.add(video_id)
-
-            title = "".join(
-                r.get("text", "") for r in renderer.get("title", {}).get("runs", [])
-            )
-            combined = title.lower()
-            if not any(kw in combined for kw in config.KEYWORDS + ["claude"]):
+            if not any(kw in title.lower() for kw in config.KEYWORDS + ["claude"]):
                 continue
 
-            url = f"https://www.youtube.com/watch?v={video_id}"
+            video_id = video_id_el.text if video_id_el is not None else ""
+            url = f"https://www.youtube.com/watch?v={video_id}" if video_id else ""
+            for link_el in entry.findall("atom:link", ns):
+                if link_el.get("rel") == "alternate":
+                    url = link_el.get("href", url)
+                    break
+
             items.append({
                 "title": title[:200],
                 "date": datetime.now(timezone.utc).isoformat(),
@@ -330,6 +322,100 @@ def collect_chase_ai_youtube():
         logger.info(f"Chase AI YouTube: found {len(items)} relevant video(s)")
     except Exception as e:
         logger.warning(f"Chase AI YouTube collector failed: {e}")
+
+    return items
+
+
+def collect_hacker_news():
+    """Fetch Hacker News stories about Claude/Anthropic via Algolia search API."""
+    items = []
+    cutoff_ts = int((datetime.now(timezone.utc) - timedelta(hours=config.LOOKBACK_HOURS * 2)).timestamp())
+    keywords = config.KEYWORDS + ["claude", "anthropic"]
+
+    try:
+        resp = requests.get(
+            config.HN_SEARCH_URL,
+            params={
+                "query": "claude anthropic",
+                "tags": "story",
+                "hitsPerPage": 20,
+                "numericFilters": f"created_at_i>{cutoff_ts}",
+            },
+            headers=HEADERS,
+            timeout=15,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+
+        for hit in data.get("hits", []):
+            title = hit.get("title", "")
+            if not any(kw in title.lower() for kw in keywords):
+                continue
+            # Require minimum engagement to filter out noise
+            if (hit.get("points") or 0) < 5:
+                continue
+            url = hit.get("url") or f"https://news.ycombinator.com/item?id={hit.get('objectID', '')}"
+            # Skip raw GitHub issue URLs — those are bug reports, not news
+            if "github.com" in url and "/issues/" in url:
+                continue
+            items.append({
+                "title": title[:200],
+                "date": hit.get("created_at", datetime.now(timezone.utc).isoformat()),
+                "content": title[:2000],
+                "source": "Hacker News",
+                "url": url,
+            })
+
+        logger.info(f"Hacker News: found {len(items)} relevant story(ies)")
+    except Exception as e:
+        logger.warning(f"Hacker News collector failed: {e}")
+
+    return items
+
+
+def collect_reddit_claudeai():
+    """Fetch recent posts from r/ClaudeAI via Reddit JSON API."""
+    items = []
+    cutoff = datetime.now(timezone.utc) - timedelta(hours=config.LOOKBACK_HOURS * 2)
+    keywords = config.KEYWORDS + ["claude", "anthropic", "mcp"]
+    reddit_headers = {"User-Agent": "ClaudeCodeDigest/1.0 (automated digest bot)"}
+
+    try:
+        resp = requests.get(
+            config.REDDIT_CLAUDEAI_URL,
+            params={"limit": 25},
+            headers=reddit_headers,
+            timeout=15,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+
+        for post in data.get("data", {}).get("children", []):
+            pd = post.get("data", {})
+            title = pd.get("title", "")
+            if not any(kw in title.lower() for kw in keywords):
+                continue
+            post_date = datetime.fromtimestamp(pd.get("created_utc", 0), tz=timezone.utc)
+            if post_date < cutoff:
+                continue
+            # Require minimum score to filter out noise
+            if pd.get("score", 0) < 3:
+                continue
+            # Use external URL if it's not a self-post, otherwise use Reddit permalink
+            ext_url = pd.get("url", "")
+            permalink = f"https://www.reddit.com{pd.get('permalink', '')}"
+            url = ext_url if ext_url and not ext_url.startswith("https://www.reddit.com/r/") else permalink
+            items.append({
+                "title": title[:200],
+                "date": post_date.isoformat(),
+                "content": title[:2000],
+                "source": "Reddit r/ClaudeAI",
+                "url": url,
+            })
+
+        logger.info(f"Reddit r/ClaudeAI: found {len(items)} relevant post(s)")
+    except Exception as e:
+        logger.warning(f"Reddit r/ClaudeAI collector failed: {e}")
 
     return items
 
@@ -404,12 +490,14 @@ def collect_all():
         ("Docs Changelog", collect_changelog),
         ("Claude Release Notes", collect_claude_release_notes),
         ("Tyler Germain Gists", collect_tylergermain_gists),
+        ("Hacker News", collect_hacker_news),
+        ("Reddit r/ClaudeAI", collect_reddit_claudeai),
     ]
 
     for name, fn in collectors:
         try:
-            items = fn()
-            all_items.extend(items)
+            result = fn()
+            all_items.extend(result)
         except Exception as e:
             logger.error(f"Collector {name} crashed: {e}")
 

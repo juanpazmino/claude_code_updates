@@ -150,7 +150,7 @@ def main():
                [i for i in pool if i["url"] in seen_urls]
 
     chase_sources = {"Chase AI Blog", "Chase AI YouTube"}
-    feature_excluded = chase_sources | {"Anthropic Blog", "Claude Release Notes"}
+    feature_excluded = chase_sources | {"Anthropic Blog", "Claude Release Notes", "Docs Changelog", "Hacker News", "Reddit r/ClaudeAI"}
     chase_items = _prefer_unseen([i for i in items if i["source"] in chase_sources])
     other_items = _prefer_unseen([i for i in items if i["source"] not in feature_excluded])
     n_chase = min(2, len(chase_items))
@@ -165,7 +165,7 @@ def main():
     logger.info(f"Selected {len(selected)} feature items: {n_chase} Chase AI, {n_other} other")
 
     # Step 2b: Build General News items — only Anthropic Blog + Docs Changelog, never repeat features
-    news_sources = {"Anthropic Blog", "Docs Changelog", "Claude Release Notes"}
+    news_sources = {"Anthropic Blog", "Docs Changelog", "Claude Release Notes", "Hacker News", "Reddit r/ClaudeAI"}
     selected_urls = {i["url"] for i in selected}
     news_items = [i for i in items if i["source"] in news_sources and i["url"] not in selected_urls]
 

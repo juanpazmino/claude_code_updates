@@ -13,7 +13,10 @@ CLAUDE_RELEASE_NOTES_URL = "https://support.claude.com/en/articles/12138966-rele
 DOCS_CHANGELOG_URL = "https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md"
 CHASE_AI_BLOG_URL = "https://www.chaseai.io/blog"
 CHASE_AI_YOUTUBE_URL = "https://www.youtube.com/@Chase-H-AI/videos"
+CHASE_AI_YOUTUBE_CHANNEL_ID = "UCoy6cTJ7Tg0dqS-DI-_REsA"
 TYLERGERMAIN_GISTS_URL = "https://gist.github.com/tylergermain"
+HN_SEARCH_URL = "https://hn.algolia.com/api/v1/search"
+REDDIT_CLAUDEAI_URL = "https://www.reddit.com/r/ClaudeAI/new.json"
 
 # Keywords to filter relevant posts
 KEYWORDS = ["claude code", "claude-code", "claudecode", "cli"]

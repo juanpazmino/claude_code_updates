@@ -17,11 +17,11 @@ Claude Code Daily Digest — a self-updating web page that collects, summarizes,
 ## Pipeline
 
 ```
-collect (7 sources) → seen-items filter → select features + news → summarize (Haiku) → append New Versions (Python) → write digest.json → deploy (Vercel)
+collect (9 sources) → seen-items filter → select features + news → summarize (Haiku) → append New Versions (Python) → write digest.json → deploy (Vercel)
 ```
 
-1. `collectors.py` scrapes: GitHub Releases, Anthropic Blog (direct scrape), Claude Release Notes, Docs Changelog, Chase AI Blog, Chase AI YouTube, Tyler Germain Gists
-2. `generate_digest.py` loads `seen_urls.json`, prefers unseen items, selects: 2 Chase AI + up to 3 from Docs Changelog + GitHub Releases for New Features; Anthropic Blog + Claude Release Notes + Docs Changelog overflow for General News
+1. `collectors.py` scrapes: GitHub Releases, Anthropic Blog (direct scrape), Claude Release Notes, Docs Changelog, Chase AI Blog, Chase AI YouTube, Tyler Germain Gists, Hacker News, Reddit r/ClaudeAI
+2. `generate_digest.py` loads `seen_urls.json`, prefers unseen items, selects: 2 Chase AI + up to 3 from GitHub Releases/Gists for New Features; Anthropic Blog + Claude Release Notes + Docs Changelog + Hacker News + Reddit for General News
 3. **2 most recent** Claude Release Notes items are **pinned** — always appear first in General News regardless of LLM selection
 4. `summarizer_v2.py` sends numbered items to Anthropic Haiku, outputs markdown with **New Features** and **General News** only
 5. `generate_digest.py` appends **New Versions** deterministically via `collectors.get_latest_github_release()` — never LLM-generated
@@ -33,8 +33,8 @@ collect (7 sources) → seen-items filter → select features + news → summari
 
 | Section | What goes in it | Sources |
 |---|---|---|
-| `## New Features` | Claude Code CLI capabilities, version updates, plugin/tool guides | Chase AI Blog (2) + GitHub Releases + Docs Changelog (fills to 5) |
-| `## General News` | Anthropic/Claude company-level news: product launches, funding, partnerships | Claude Release Notes (2 pinned) + Anthropic Blog + Docs Changelog overflow |
+| `## New Features` | Claude Code CLI capabilities, version updates, plugin/tool guides | Chase AI Blog (2) + GitHub Releases + Gists (fills to 5) |
+| `## General News` | Anthropic/Claude company-level news: product launches, funding, partnerships | Claude Release Notes (2 pinned) + Anthropic Blog + Docs Changelog + Hacker News + Reddit r/ClaudeAI |
 | `## New Versions` | Latest Claude Code GitHub release — deterministic Python, never LLM | GitHub Releases API |
 
 ## Key Commands
@@ -51,7 +51,7 @@ npx vercel deploy --prod --yes         # Deploy to Vercel
 
 ## Conventions
 
-- Config in `config.py` (UPPERCASE constants, no personal data)
+- Config in `config.py` (UPPERCASE constants, no personal data) — includes `HN_SEARCH_URL`, `REDDIT_CLAUDEAI_URL`, `CHASE_AI_YOUTUBE_CHANNEL_ID`, and all source URLs
 - Collectors return standardized items: `{title, date, content, source, url}`
 - Error handling: try/except with `logging.warning`, graceful degradation
 - Logging: module-based `logging.getLogger(__name__)` pattern
@@ -62,9 +62,9 @@ npx vercel deploy --prod --yes         # Deploy to Vercel
 - `public/digest.json` is gitignored — generated artifact, not source
 - `seen_urls.json` is gitignored — tracks shown item URLs with 30-day TTL; deleted manually to reset freshness
 - `tips.py` — `get_tip_of_the_day()` uses sequential day-number rotation (epoch 2025-01-01); tries `fetch_dynamic_tips()` from Anthropic docs first, falls back to static `TIPS` list
-- `summarizer_v2.py` — active summarizer; uses Anthropic Haiku via `anthropic` SDK; `PLATFORM_MAP` maps source names to display labels (e.g. "Chase AI Blog" → "Chase AI"); feature items are numbered 1–5; `summarize()` accepts `pinned_news_items` for mandatory General News entries; loads `ANTHROPIC_API_KEY` from `.env` via `python-dotenv`
+- `summarizer_v2.py` — active summarizer; uses Anthropic Haiku via `anthropic` SDK; `PLATFORM_MAP` maps source names to display labels (e.g. "Chase AI Blog" → "Chase AI", "Reddit r/ClaudeAI" → "Reddit", "Hacker News" → "Hacker News"); feature items are numbered 1–5; `summarize()` accepts `pinned_news_items` for mandatory General News entries; loads `ANTHROPIC_API_KEY` from `.env` via `python-dotenv`
 - `summarizer.py` — legacy Ollama summarizer; kept for reference but no longer used by the pipeline
-- `generate_digest.py` — `_ensure_complete_descriptions(md)` post-processes LLM output before HTML conversion; `_load_seen_urls()` / `_save_seen_urls()` manage the freshness filter; `_prefer_unseen()` sorts item pools so unseen items come first; `markdown_to_html()` bullet regex accepts titles with or without `**` bold markers for LLM compatibility
+- `generate_digest.py` — `_ensure_complete_descriptions(md)` post-processes LLM output before HTML conversion; `_load_seen_urls()` / `_save_seen_urls()` manage the freshness filter; `_prefer_unseen()` sorts item pools so unseen items come first; `markdown_to_html()` bullet regex accepts titles with or without `**` bold markers for LLM compatibility; `feature_excluded` set blocks Docs Changelog, HN, and Reddit from Features; `news_sources` set includes Docs Changelog, HN, and Reddit for General News
 - `updates.log` — generated by `run_updates.sh` (pipeline stdout), gitignored; useful for debugging cron runs
 
 ### Collector details
@@ -75,9 +75,11 @@ npx vercel deploy --prod --yes         # Deploy to Vercel
 | `collect_claude_release_notes()` | `support.claude.com/en/articles/12138966-release-notes` | Intercom HTML, `h3` = date, bold text = title; top 7 entries; 2 most recent always pinned in General News |
 | `collect_changelog()` | Raw `CHANGELOG.md` from GitHub | Parses `## X.Y.Z` blocks; top 5 versions; each version gets unique URL anchor (`#X-Y-Z`) |
 | `collect_chase_ai()` | `chaseai.io/blog` | Uses `img[alt]` for clean article title (avoids tag-noise from `get_text()`) |
-| `collect_chase_ai_youtube()` | YouTube channel `ytInitialData` JSON | May fail silently if YouTube changes page structure |
+| `collect_chase_ai_youtube()` | YouTube channel Atom RSS feed | Uses hardcoded `CHASE_AI_YOUTUBE_CHANNEL_ID` from config; falls back to page scrape if missing |
 | `collect_github_releases()` | GitHub API | Date-filtered by `LOOKBACK_HOURS`; release body (up to 2000 chars) passed as `content` to LLM for New Features; also used for New Versions (deterministic) |
 | `collect_tylergermain_gists()` | `gist.github.com/tylergermain` | Keyword-filtered |
+| `collect_hacker_news()` | Algolia HN search API (`hn.algolia.com`) | `LOOKBACK_HOURS * 2` cutoff; min 5 points; skips raw GitHub issue URLs; General News only |
+| `collect_reddit_claudeai()` | `reddit.com/r/ClaudeAI/new.json` | `LOOKBACK_HOURS * 2` cutoff; min score 3; uses external URL when available; General News only |
 
 ### Item format (LLM output, all sections except New Versions)
 
@@ -102,6 +104,7 @@ npx vercel deploy --prod --yes         # Deploy to Vercel
 ## Rules
 
 - All Playwright screenshots must be saved to the `screenshots_playwright/` folder, not the project root.
+- `vercel.json` sets `"deploymentEnabled": false` — this disables Vercel's GitHub auto-deploy, which would overwrite the generated `digest.json` with an empty/stale version on every push. Deploy manually via `npx vercel deploy --prod --yes` or `./run_updates.sh`.
 
 ## Important Notes
 
