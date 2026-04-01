@@ -364,6 +364,7 @@ def collect_hacker_news():
                 "content": title[:2000],
                 "source": "Hacker News",
                 "url": url,
+                "score": hit.get("points") or 0,
             })
 
         logger.info(f"Hacker News: found {len(items)} relevant story(ies)")
@@ -374,24 +375,36 @@ def collect_hacker_news():
 
 
 def collect_reddit_claudeai():
-    """Fetch recent posts from r/ClaudeAI via Reddit JSON API."""
+    """Fetch recent posts from r/ClaudeAI via Reddit JSON API.
+
+    Queries both /new.json (recency) and /hot.json (engagement) so high-upvote
+    posts that have been pushed off the /new feed are still captured.
+    """
+    seen_ids = set()
     items = []
     cutoff = datetime.now(timezone.utc) - timedelta(hours=config.LOOKBACK_HOURS * 2)
     keywords = config.KEYWORDS + ["claude", "anthropic", "mcp"]
     reddit_headers = {"User-Agent": "ClaudeCodeDigest/1.0 (automated digest bot)"}
+    base = config.REDDIT_CLAUDEAI_URL.replace("/new.json", "")
+    endpoints = [
+        (f"{base}/new.json", {"limit": 50}),
+        (f"{base}/hot.json", {"limit": 25}),
+    ]
 
-    try:
-        resp = requests.get(
-            config.REDDIT_CLAUDEAI_URL,
-            params={"limit": 25},
-            headers=reddit_headers,
-            timeout=15,
-        )
-        resp.raise_for_status()
-        data = resp.json()
+    for endpoint, params in endpoints:
+        try:
+            resp = requests.get(endpoint, params=params, headers=reddit_headers, timeout=15)
+            resp.raise_for_status()
+            data = resp.json()
+        except Exception as e:
+            logger.warning(f"Reddit collector failed for {endpoint}: {e}")
+            continue
 
         for post in data.get("data", {}).get("children", []):
             pd = post.get("data", {})
+            post_id = pd.get("id", "")
+            if post_id in seen_ids:
+                continue
             title = pd.get("title", "")
             if not any(kw in title.lower() for kw in keywords):
                 continue
@@ -399,24 +412,25 @@ def collect_reddit_claudeai():
             if post_date < cutoff:
                 continue
             # Require minimum score to filter out noise
-            if pd.get("score", 0) < 3:
+            if pd.get("score", 0) < 2:
                 continue
-            # Use external URL if it's not a self-post, otherwise use Reddit permalink
+            # Use external URL only for real external links; fall back to permalink for
+            # native Reddit media (i.redd.it, v.redd.it, gallery) and self-posts
             ext_url = pd.get("url", "")
             permalink = f"https://www.reddit.com{pd.get('permalink', '')}"
-            url = ext_url if ext_url and not ext_url.startswith("https://www.reddit.com/r/") else permalink
+            native_reddit = ("https://i.redd.it", "https://v.redd.it", "https://www.reddit.com/gallery", "https://www.reddit.com/r/")
+            url = permalink if not ext_url or any(ext_url.startswith(p) for p in native_reddit) else ext_url
+            seen_ids.add(post_id)
             items.append({
                 "title": title[:200],
                 "date": post_date.isoformat(),
                 "content": title[:2000],
                 "source": "Reddit r/ClaudeAI",
                 "url": url,
+                "score": pd.get("score", 0),
             })
 
-        logger.info(f"Reddit r/ClaudeAI: found {len(items)} relevant post(s)")
-    except Exception as e:
-        logger.warning(f"Reddit r/ClaudeAI collector failed: {e}")
-
+    logger.info(f"Reddit r/ClaudeAI: found {len(items)} relevant post(s)")
     return items
 
 

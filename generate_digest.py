@@ -172,7 +172,24 @@ def main():
     # Pin the 2 most recent Claude Release Notes entries — always shown first in General News
     release_notes_items = [i for i in news_items if i["source"] == "Claude Release Notes"]
     pinned_news = release_notes_items[:2]
-    optional_news = _prefer_unseen([i for i in news_items if i not in pinned_news])
+    optional_news_pool = [i for i in news_items if i not in pinned_news]
+    # Two-tier sort: posts from the last 12 hours (fresh) always surface above older
+    # posts, so today's stories aren't buried by yesterday's viral content.
+    # Within each tier, rank by engagement score so the most-upvoted rises to the top.
+    # Official sources (no score field) get a baseline of 50 to stay competitive.
+    official_sources = {"Anthropic Blog", "Docs Changelog", "Claude Release Notes"}
+    fresh_cutoff = datetime.now(timezone.utc) - timedelta(hours=12)
+
+    def _news_sort_key(item):
+        try:
+            is_fresh = datetime.fromisoformat(item["date"]) >= fresh_cutoff
+        except Exception:
+            is_fresh = False
+        score = item.get("score", 50 if item["source"] in official_sources else 0)
+        return (1 if is_fresh else 0, score)
+
+    optional_news_pool.sort(key=_news_sort_key, reverse=True)
+    optional_news = _prefer_unseen(optional_news_pool)
     logger.info(f"General News pool: {len(news_items)} items ({len(pinned_news)} pinned)")
 
     # Step 3: Summarize with Ollama

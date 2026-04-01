@@ -92,8 +92,9 @@ def fetch_dynamic_tips():
         for row in soup.find_all("tr"):
             cells = row.find_all("td")
             if len(cells) >= 2:
-                command = cells[0].get_text(strip=True)
-                description = cells[1].get_text(strip=True)
+                import re as _re
+                command = cells[0].get_text(separator=" ", strip=True)
+                description = _re.sub(r'\s+([.,;:/])', r'\1', cells[1].get_text(separator=" ", strip=True))
                 if command and len(description) > 10:
                     tips.append({"command": command, "description": description})
 
