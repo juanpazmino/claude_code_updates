@@ -52,7 +52,6 @@ def collect_anthropic_blog():
     Uses semantic <time> + <span> elements — avoids hashed CSS class names.
     """
     items = []
-    keywords = config.KEYWORDS + ["claude", "anthropic"]
     BASE_URL = "https://www.anthropic.com"
     seen_urls = set()
 
@@ -61,9 +60,14 @@ def collect_anthropic_blog():
         resp.raise_for_status()
         soup = BeautifulSoup(resp.text, "html.parser")
 
+        # Accept any internal path with a <time> element; rely on that check to filter nav links
+        SKIP_EXACT = {"/news", "/"}
+        SKIP_PREFIXES = ("/company", "/careers", "/research", "/claude", "/api", "#", "http")
         for a in soup.find_all("a", href=True):
             href = a["href"]
-            if not href.startswith("/news/") or href == "/news":
+            if href in SKIP_EXACT:
+                continue
+            if not href.startswith("/") or any(href.startswith(p) for p in SKIP_PREFIXES):
                 continue
             url = BASE_URL + href
             if url in seen_urls:
@@ -80,6 +84,7 @@ def collect_anthropic_blog():
                 continue
 
             # Featured cards use a heading; list items use the last <span>
+            # Also check img[alt] for featured items that carry the title there
             heading = a.find(["h2", "h3", "h4", "h5"])
             if heading:
                 title = heading.get_text(strip=True)
@@ -87,9 +92,9 @@ def collect_anthropic_blog():
                 spans = a.find_all("span")
                 title = spans[-1].get_text(strip=True) if spans else ""
             if not title:
-                continue
-
-            if not any(kw in (title + " " + href).lower() for kw in keywords):
+                img = a.find("img", alt=True)
+                title = img["alt"].strip() if img else ""
+            if not title:
                 continue
 
             items.append({
@@ -106,6 +111,57 @@ def collect_anthropic_blog():
         logger.warning(f"Anthropic blog collector failed: {e}")
 
     return items[:10]
+
+
+def collect_anthropic_engineering():
+    """Fetch recent posts from anthropic.com/engineering.
+
+    The listing page has no dates, so items are assigned today's date —
+    seen_urls.json deduplicates across runs so stale articles don't resurface.
+    """
+    items = []
+    BASE_URL = "https://www.anthropic.com"
+    MAX_ITEMS = 8
+    seen_hrefs = set()
+    today = datetime.now(timezone.utc).isoformat()
+
+    try:
+        resp = requests.get(f"{BASE_URL}/engineering", headers=HEADERS, timeout=15)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "html.parser")
+
+        for a in soup.find_all("a", href=True):
+            href = a["href"]
+            if not href.startswith("/engineering/"):
+                continue
+            if href in seen_hrefs:
+                continue
+            seen_hrefs.add(href)
+
+            heading = a.find(["h2", "h3", "h4", "h5"])
+            title = heading.get_text(strip=True) if heading else ""
+            if not title:
+                spans = a.find_all("span")
+                title = spans[-1].get_text(strip=True) if spans else ""
+            if not title:
+                continue
+
+            items.append({
+                "title": title,
+                "date": today,
+                "content": "",
+                "source": "Anthropic Engineering",
+                "url": BASE_URL + href,
+            })
+
+            if len(items) >= MAX_ITEMS:
+                break
+
+        logger.info(f"Anthropic engineering: found {len(items)} post(s)")
+    except Exception as e:
+        logger.warning(f"Anthropic engineering collector failed: {e}")
+
+    return items
 
 
 def collect_changelog():
@@ -501,6 +557,7 @@ def collect_all():
         ("Chase AI YouTube", collect_chase_ai_youtube),
         ("GitHub Releases", collect_github_releases),
         ("Anthropic Blog", collect_anthropic_blog),
+        ("Anthropic Engineering", collect_anthropic_engineering),
         ("Docs Changelog", collect_changelog),
         ("Claude Release Notes", collect_claude_release_notes),
         ("Tyler Germain Gists", collect_tylergermain_gists),

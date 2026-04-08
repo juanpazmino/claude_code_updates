@@ -30,6 +30,7 @@ PLATFORM_MAP = {
     "Chase AI YouTube": "YouTube",
     "GitHub Releases": "GitHub",
     "Anthropic Blog": "Anthropic",
+    "Anthropic Engineering": "Anthropic Engineering",
     "Docs Changelog": "Anthropic Docs",
     "Claude Release Notes": "Anthropic",
     "Tyler Germain Gists": "GitHub",
