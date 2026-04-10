@@ -1,10 +1,18 @@
 # CLAUDE.md
 
+## Brand Anchor
+
+Before any design or copy work, read `/Users/coding/Desktop/AI consultant/BRAND.md`.
+All color tokens, typography, and the mathematical motif defined there are non-negotiable.
+Do not derive them from this file or from memory.
+
+---
+
 ## Project Overview
 
 Claude Code Daily Digest — a self-updating web page that collects, summarizes, and publishes daily Claude Code updates. Runs locally with Python + Anthropic API, deploys to Vercel as a static site.
 
-**Live site:** https://claude-code-digest.vercel.app
+**Live site:** https://www.claudecodedigest.com
 
 ## Tech Stack
 
@@ -55,7 +63,7 @@ npx vercel deploy --prod --yes         # Deploy to Vercel
 - Collectors return standardized items: `{title, date, content, source, url}`
 - Error handling: try/except with `logging.warning`, graceful degradation
 - Logging: module-based `logging.getLogger(__name__)` pattern
-- Frontend: dark theme (#0d0d0d bg, #C46849 accent), DM Sans + JetBrains Mono fonts
+- Frontend: dark theme (#060504 bg, #B89350 gold accent), Fraunces + IBM Plex Mono + Jost fonts
 - Byline "by Juan Pazmino B" shown beneath the main title in the header
 - Footer has dynamic "Last updated" timestamp + static legal/copyright block (font-size 0.65rem)
 - Vercel CLI is local (use `npx vercel`, not `vercel`)
@@ -104,6 +112,7 @@ npx vercel deploy --prod --yes         # Deploy to Vercel
 
 ## Rules
 
+- **Never add `Co-Authored-By` lines to git commits.** Vercel Hobby plan rejects pushes that contain co-author trailers, which breaks the deployment pipeline.
 - All Playwright screenshots must be saved to the `screenshots_playwright/` folder, not the project root.
 - `vercel.json` sets `"deploymentEnabled": false` — this disables Vercel's GitHub auto-deploy, which would overwrite the generated `digest.json` with an empty/stale version on every push. Deploy manually via `npx vercel deploy --prod --yes` or `./run_updates.sh`.
 
@@ -117,7 +126,7 @@ npx vercel deploy --prod --yes         # Deploy to Vercel
 ## Important Notes
 
 - `ANTHROPIC_API_KEY` must be set in `.env` — see `.env.example`; the pipeline will fail without it
-- Cron at 12 PM daily: `0 12 * * * /path/to/Claude\ Code\ Updates/run_updates.sh`
+- Scheduled via macOS LaunchAgent (`com.juanpazmino.claudedigest.plist`) — runs `run_updates.sh` daily at 12:00 PM; load with `launchctl load ~/Desktop/Claude\ Code\ Updates/com.juanpazmino.claudedigest.plist`
 - The summarizer prompt explicitly separates features vs news — if categorization is wrong, adjust the prompt in `summarizer_v2.py`
 - GitHub Releases body content (up to 2000 chars) is passed to the LLM; the prompt instructs Haiku to name the most notable feature/fix, never the version number
 - General News deduplication is enforced in `generate_digest.py` by `selected_urls` set — items in Features never appear in News

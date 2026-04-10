@@ -87,41 +87,72 @@ def _ensure_complete_descriptions(md):
 
 
 def markdown_to_html(md):
-    """Convert markdown summary to simple HTML with XSS protection."""
-    # First, escape all HTML entities in the raw markdown
+    """Convert markdown summary to branded HTML with XSS protection."""
     text = html.escape(md)
-    # Convert headings
-    text = re.sub(r"^### (.+)$", r"<h3>\1</h3>", text, flags=re.MULTILINE)
-    text = re.sub(r"^## (.+)$", r"<h2>\1</h2>", text, flags=re.MULTILINE)
-    text = re.sub(r"^# (.+)$", r"<h2>\1</h2>", text, flags=re.MULTILINE)
-    # Links: unescape brackets first (escaped by html.escape), then validate URLs
     text = text.replace("&#x27;", "'")
     text = re.sub(r"\[(.+?)\]\((.+?)\)", _safe_link, text)
-    # Convert bullet lines: - **Title** or - Title (bold markers optional for LLM compatibility)
-    def _bullet_replace(m):
-        title = m.group(1)
-        desc = m.group(2)
-        if desc and desc.strip():
-            return f'<span class="item-title">• {title}</span>{desc.strip()}'
-        return f'<span class="item-title">• {title}</span>'
 
-    text = re.sub(
-        r"^- (?:\*\*)?(.+?)(?:\*\*)?(?:\s*\|\s*(.+))?$",
-        _bullet_replace,
-        text,
-        flags=re.MULTILINE,
-    )
-    # Remaining bold (non-bullet)
-    text = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", text)
-    # Indented summary/link lines — strip leading spaces
-    text = re.sub(r"^ {1,4}", "", text, flags=re.MULTILINE)
-    # Double newlines = item separation
-    text = re.sub(r"\n\n+", "</div><div class=\"item\">", text)
-    # Single newlines = line break within item
-    text = text.replace("\n", "<br>")
-    # Wrap in container
-    text = '<div class="item">' + text + "</div>"
-    return text
+    parts = re.split(r"^## (.+)$", text, flags=re.MULTILINE)
+
+    result = []
+    i = 1
+    while i + 1 < len(parts):
+        heading = parts[i].strip()
+        content = parts[i + 1]
+        i += 2
+        result.append(
+            f'<section class="section">'
+            f'<h2 class="section-heading">{heading}</h2>'
+            f'{_parse_section_items(content, heading)}'
+            f'</section>'
+        )
+
+    return "".join(result)
+
+
+def _parse_section_items(content, section_title):
+    """Parse section content into branded item divs."""
+    items = []
+
+    if section_title == "New Versions":
+        line = content.strip()
+        if line:
+            anchor = re.search(r'(<a\b[^>]*>.*?</a>)', line)
+            if anchor:
+                desc = line[:anchor.start()].strip()
+                link = re.sub(r"^<a ", '<a class="item-link" ', anchor.group(1))
+                item = '<div class="item">'
+                if desc:
+                    item += f'<div class="item-desc">{desc}</div>'
+                item += link + '</div>'
+            else:
+                item = f'<div class="item"><div class="item-desc">{line}</div></div>'
+            items.append(item)
+        return "".join(items)
+
+    for block in [b.strip() for b in re.split(r"\n\s*\n", content) if b.strip()]:
+        title = desc = link_html = ""
+        for line in [l.strip() for l in block.split("\n") if l.strip()]:
+            m = re.match(r"^-\s+(?:\*\*)?(.+?)(?:\*\*)?\s*$", line)
+            if m and not title:
+                title = re.sub(r"\*\*(.+?)\*\*", r"\1", m.group(1)).strip()
+            elif re.match(r"^<a\b", line) and not link_html:
+                link_html = re.sub(r"^<a ", '<a class="item-link" ', line, count=1)
+            elif not desc:
+                desc = line
+
+        if title or desc:
+            item = '<div class="item">'
+            if title:
+                item += f'<div class="item-title">{title}</div>'
+            if desc:
+                item += f'<div class="item-desc">{desc}</div>'
+            if link_html:
+                item += link_html
+            item += '</div>'
+            items.append(item)
+
+    return "".join(items)
 
 
 def main():

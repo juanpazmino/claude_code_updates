@@ -8,367 +8,433 @@
   <meta name="description" content="Daily summary of the latest Claude Code updates, features, and news — curated automatically.">
   <meta property="og:title" content="Claude Code Daily Digest">
   <meta property="og:description" content="Daily summary of the latest Claude Code updates, features, and news — curated automatically.">
-  <meta property="og:url" content="https://claude-code-digest.vercel.app">
+  <meta property="og:url" content="https://www.claudecodedigest.com/">
   <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="https://www.claudecodedigest.com/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Claude Code Daily Digest">
   <meta name="twitter:description" content="Daily summary of the latest Claude Code updates, features, and news — curated automatically.">
+  <meta name="twitter:image" content="https://www.claudecodedigest.com/og-image.png">
   <link rel="icon" href="/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,100;9..144,300;9..144,400&family=IBM+Plex+Mono:wght@300;400&family=Jost:ital,wght@0,200;0,300;0,400;1,200&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --bg:      #060504;
+      --gold:    #B89350;
+      --gold-hi: #D4B068;
+      --cream:   rgba(245, 240, 232, 0.7);
+      --muted:   rgba(245, 240, 232, 0.55);
+    }
+
+    html { background: var(--bg); min-height: 100%; }
+
     body {
-      font-family: 'DM Sans', sans-serif;
-      background: #0d0d0d;
-      color: #f0f0f0;
-      min-height: 100vh;
-      line-height: 1.6;
-      font-size: 15px;
+      color: var(--cream);
       -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      position: relative;
     }
 
+    /* ── GRAIN ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10;
+      opacity: 0.042;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E");
+      background-size: 300px 300px;
+    }
+
+    /* ── VIGNETTE — subtle edges only ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9;
+      background:
+        radial-gradient(ellipse 50% 80% at 0% 50%, rgba(4,3,2,0.22) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 80% at 100% 50%, rgba(4,3,2,0.22) 0%, transparent 70%);
+    }
+
+    /* ── PAGE SHELL ── */
     .page {
-      max-width: 860px;
+      position: relative;
+      z-index: 20;
+      max-width: 1080px;
       margin: 0 auto;
-      padding: 38px 24px 52px;
+      padding: 56px 100px 96px;
     }
 
-    /* Header */
+    /* ── HEADER ── */
     .header {
-      margin-bottom: 32px;
-      animation: fadeIn 0.6s ease-out;
+      margin-bottom: 52px;
+      animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
-    .header h1 {
-      font-size: 28px;
-      font-weight: 700;
-      color: #f0f0f0;
-      margin-bottom: 6px;
+    .header-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 18px;
     }
 
-    .header-accent {
-      width: 48px;
-      height: 3px;
-      background: #C46849;
-      border-radius: 2px;
-      margin-bottom: 12px;
+    .masthead-title {
+      font-family: 'Fraunces', serif;
+      font-style: normal;
+      font-weight: 300;
+      font-size: clamp(38px, 4.8vw, 60px);
+      color: var(--cream);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
     }
 
-    .header .date {
-      font-size: 15px;
-      color: #999;
-      font-weight: 500;
+    .phi-mark {
+      flex-shrink: 0;
+      margin-top: 8px;
+      opacity: 0.22;
+    }
+
+    .header-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(245, 240, 232, 0.1);
     }
 
     .byline {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.85rem;
-      color: #999;
-      letter-spacing: 0.04em;
-      margin-top: 4px;
-    }
-
-    /* Card */
-    .card {
-      background: #242424;
-      border: 1px solid #333;
-      border-radius: 12px;
-      padding: 26px;
-      margin-bottom: 19px;
-      animation: fadeIn 0.6s ease-out 0.15s both;
-    }
-
-    /* Digest content */
-    .digest-content h2 {
-      font-size: 18px;
-      font-weight: 600;
-      color: #f0f0f0;
-      margin-top: 22px;
-      margin-bottom: 10px;
-      padding-bottom: 6px;
-      border-bottom: 1px solid #333;
-    }
-
-    .digest-content h2:first-child { margin-top: 0; }
-
-    .digest-content h3 {
-      font-size: 15px;
-      font-weight: 600;
-      color: #ccc;
-      margin-top: 16px;
-      margin-bottom: 6px;
-    }
-
-    .digest-content .item {
-      color: #999;
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
       font-size: 14px;
-      margin-bottom: 18px;
-      padding-bottom: 0.5rem;
-      line-height: 1.65;
+      letter-spacing: 0.06em;
+      color: rgba(245, 240, 232, 0.28);
     }
 
-    .digest-content .item:last-child { margin-bottom: 0; }
-
-    /* Items right after headings need no top margin */
-    .digest-content h2 + .item { margin-top: 0; }
-
-    /* Tier 2: article title */
-    .digest-content .item-title {
-      display: block;
-      font-size: 15px;
-      font-weight: 600;
-      color: #f0f0f0;
-      margin-bottom: 3px;
-    }
-    /* Remove the extra blank line between title and its description */
-    .digest-content .item-title + br { display: none; }
-
-    .digest-content strong { color: #f0f0f0; }
-
-    /* Tier 3: Read More link */
-    .digest-content a {
-      color: #C46849;
+    .byline a {
+      color: rgba(212, 176, 104, 0.6);
       text-decoration: none;
-      font-size: 13px;
-      transition: color 0.15s;
+      position: relative;
+      transition: color 0.3s ease;
     }
 
-    .digest-content a:hover { color: #e07a5a; text-decoration: underline; }
-
-    .digest-content code {
-      font-family: 'JetBrains Mono', monospace;
-      background: #1a1a1a;
-      padding: 2px 7px;
-      border-radius: 4px;
-      font-size: 13px;
-      color: #e0a88a;
+    .byline a::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--gold-hi);
+      transition: width 0.35s ease;
     }
 
-    .digest-content pre {
-      background: #1a1a1a;
-      border: 1px solid #333;
-      border-radius: 8px;
-      padding: 16px;
-      overflow-x: auto;
+    .byline a:hover { color: var(--gold-hi); }
+    .byline a:hover::after { width: 100%; }
+
+    .datestamp {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 300;
+      font-size: 14px;
+      color: rgba(245, 240, 232, 0.4);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── SECTION ── */
+    .section {
+      margin-bottom: 52px;
+      animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+    }
+
+    .section-heading {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 400;
+      font-size: 14px;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-heading::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(184, 147, 80, 0.18);
+    }
+
+    /* ── ITEM ── */
+    .item {
+      padding: 22px 0;
+      border-bottom: 1px solid rgba(245, 240, 232, 0.06);
+      position: relative;
+      transition: background 0.35s ease, padding-left 0.35s ease;
+    }
+
+    .item::before {
+      content: '';
+      position: absolute;
+      left: -24px;
+      top: 0;
+      width: 2px;
+      height: 0;
+      background: var(--gold);
+      transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .item:hover {
+      background: rgba(184, 147, 80, 0.04);
+      padding-left: 10px;
+    }
+
+    .item:hover::before { height: 100%; }
+    .item:first-child { padding-top: 0; }
+    .item:last-child { border-bottom: none; padding-bottom: 0; }
+
+    .item-title {
+      font-family: 'Fraunces', serif;
+      font-style: normal;
+      font-weight: 300;
+      font-size: 24px;
+      color: rgba(212, 176, 104, 0.9);
+      line-height: 1.25;
+      margin-bottom: 10px;
+      transition: color 0.25s ease;
+    }
+
+    .item:hover .item-title { color: var(--gold-hi); }
+
+    .item-desc {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 18px;
+      color: var(--muted);
+      line-height: 1.7;
       margin-bottom: 12px;
     }
 
-    .digest-content pre code {
-      background: none;
-      padding: 0;
-      font-size: 13px;
-      color: #ccc;
-    }
-
-    /* Tip of the Day */
-    .tip-card {
-      background: #2a1f1a;
-      border: 1px solid #333;
-      border-left: 4px solid #C46849;
-      border-radius: 12px;
-      padding: 19px 22px;
-      margin-bottom: 19px;
-      animation: fadeIn 0.6s ease-out 0.3s both;
-    }
-
-    .tip-card h2 {
+    .item-link {
+      font-family: 'Jost', sans-serif;
+      font-style: italic;
+      font-weight: 200;
       font-size: 14px;
-      font-weight: 600;
-      color: #C46849;
+      letter-spacing: 0.06em;
+      color: var(--gold);
+      text-decoration: none;
+      transition: color 0.2s ease;
+      position: relative;
+    }
+
+    .item-link::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--gold-hi);
+      transition: width 0.3s ease;
+    }
+
+    .item-link:hover { color: var(--gold-hi); }
+    .item-link:hover::after { width: 100%; }
+
+    /* ── TIP ── */
+    .tip-section {
+      margin-bottom: 52px;
+      animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+    }
+
+    .tip-heading {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 400;
+      font-size: 14px;
+      color: var(--gold);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 10px;
+      letter-spacing: 0.14em;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tip-heading::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(184, 147, 80, 0.18);
+    }
+
+    .tip-body {
+      padding: 20px 24px;
+      border-left: 2px solid rgba(184, 147, 80, 0.35);
+      background: rgba(184, 147, 80, 0.04);
     }
 
     .tip-command {
-      font-family: 'JetBrains Mono', monospace;
-      background: #1a1a1a;
-      padding: 3px 10px;
-      border-radius: 4px;
-      font-size: 14px;
-      font-weight: 600;
-      color: #C46849;
-    }
-
-    .tip-description {
-      color: #ccc;
-      margin-top: 4px;
-    }
-
-    /* Footer */
-    .footer-legal {
-      margin-top: 28px;
-      padding-top: 20px;
-      border-top: 1px solid #333;
-      font-size: 0.65rem;
-      color: #555;
-      line-height: 1.6;
-      text-align: center;
-    }
-    .footer-legal a {
-      color: #777;
-      text-decoration: none;
-    }
-    .footer-legal a:hover {
-      color: #C46849;
-    }
-
-    .footer {
-      text-align: center;
-      color: #555;
-      font-size: 13px;
-      padding-top: 12px;
-      animation: fadeIn 0.6s ease-out 0.45s both;
-    }
-
-    /* Loading skeleton */
-    .skeleton { animation: fadeIn 0.3s ease-out; }
-
-    .skeleton-line {
-      height: 14px;
-      background: #333;
-      border-radius: 4px;
-      margin-bottom: 12px;
-      animation: pulse 1.5s ease-in-out infinite;
-    }
-
-    .skeleton-line:nth-child(1) { width: 40%; height: 20px; margin-bottom: 20px; }
-    .skeleton-line:nth-child(2) { width: 90%; }
-    .skeleton-line:nth-child(3) { width: 75%; }
-    .skeleton-line:nth-child(4) { width: 85%; }
-    .skeleton-line:nth-child(5) { width: 60%; margin-top: 24px; height: 20px; }
-    .skeleton-line:nth-child(6) { width: 80%; }
-    .skeleton-line:nth-child(7) { width: 70%; }
-
-    /* Empty state */
-    .empty-state {
-      text-align: center;
-      padding: 48px 24px;
-      color: #666;
-    }
-
-    .empty-state .icon {
-      font-size: 40px;
-      margin-bottom: 16px;
-      opacity: 0.5;
-    }
-
-    .empty-state p {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 400;
       font-size: 16px;
-      color: #777;
+      color: var(--gold-hi);
+      display: block;
+      margin-bottom: 10px;
     }
 
-    /* Animations */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
+    .tip-desc {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 18px;
+      color: var(--muted);
+      line-height: 1.65;
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 0.4; }
-      50% { opacity: 0.7; }
+    /* ── FOOTER ── */
+    .footer {
+      padding-top: 32px;
+      border-top: 1px solid rgba(245, 240, 232, 0.08);
+      animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
     }
 
-    /* Responsive */
-    @media (max-width: 600px) {
-      .page { padding: 32px 16px 48px; }
-      .card, .tip-card { padding: 20px; }
-      .header h1 { font-size: 22px; }
+    .footer-updated {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 300;
+      font-size: 14px;
+      color: rgba(245, 240, 232, 0.45);
+      margin-bottom: 16px;
+    }
+
+    .footer-legal {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 300;
+      font-size: 14px;
+      color: rgba(245, 240, 232, 0.38);
+      line-height: 1.85;
+      margin-bottom: 24px;
+    }
+
+    .footer-legal a {
+      color: rgba(245, 240, 232, 0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-legal a:hover { color: var(--gold); }
+
+    .footer-fibonacci {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 300;
+      font-size: 12px;
+      color: rgba(184, 147, 80, 0.3);
+      letter-spacing: 0.1em;
+    }
+
+    /* ── ANIMATION ── */
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      .page { padding: 40px 24px 72px; }
+      .item::before { left: -12px; }
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <header class="header">
-      <div class="header-accent"></div>
-      <h1>Claude Code Daily Digest</h1>
-      <p class="byline">by Juan Pazmino B</p>
-      <div class="date" id="digest-date"></div>
-    </header>
+<div class="page">
 
-    <main id="content">
-      <!-- Loading skeleton -->
-      <div class="card skeleton" id="skeleton">
-        <div class="skeleton-line"></div>
-        <div class="skeleton-line"></div>
-        <div class="skeleton-line"></div>
-        <div class="skeleton-line"></div>
-        <div class="skeleton-line"></div>
-        <div class="skeleton-line"></div>
-        <div class="skeleton-line"></div>
-      </div>
-    </main>
-
-    <footer class="footer" id="footer"></footer>
-    <div class="footer-legal">
-      <p>© 2026 Juan Pazmino B. All rights reserved.</p>
-      <p>
-        Claude Code Daily Digest is an independent, unofficial aggregator of publicly
-        available information. It is not affiliated with, endorsed by, or sponsored by
-        Anthropic, PBC. "Claude" and "Claude Code" are trademarks of Anthropic, PBC.
-      </p>
-      <p>
-        Content is collected from public sources for informational purposes only.
-        No warranties are made regarding accuracy or completeness.
-        Use at your own discretion.
-      </p>
+  <header class="header">
+    <div class="header-top">
+      <h1 class="masthead-title">Claude Code<br>Daily Digest</h1>
+      <svg class="phi-mark" width="34" height="34" viewBox="0 0 34 34" fill="none">
+        <path d="M17 31C9.27 31 3 24.73 3 17C3 9.27 9.27 3 17 3C21.56 3 25.6 5.22 28.15 8.65" stroke="#B89350" stroke-width="1" fill="none" stroke-linecap="round"/>
+        <path d="M17 24.5C13.41 24.5 10.5 21.59 10.5 18C10.5 14.41 13.41 11.5 17 11.5" stroke="#B89350" stroke-width="1" fill="none" stroke-linecap="round"/>
+        <path d="M17 19.2C16.34 19.2 15.8 18.66 15.8 18C15.8 17.34 16.34 16.8 17 16.8" stroke="#B89350" stroke-width="1" fill="none" stroke-linecap="round"/>
+        <circle cx="17" cy="18" r="1.1" fill="#B89350"/>
+      </svg>
     </div>
-  </div>
+    <div class="header-meta">
+      <div class="byline">by <a href="https://www.linkedin.com/in/juanpazminob/" target="_blank" rel="noopener noreferrer">Juan Pazmino B</a></div>
+      <div class="datestamp" id="digest-date">—</div>
+    </div>
+  </header>
 
-  <script>
-    (async function() {
-      const contentEl = document.getElementById('content');
-      const dateEl = document.getElementById('digest-date');
-      const footerEl = document.getElementById('footer');
+  <main id="digest-content"></main>
 
-      try {
-        const resp = await fetch('./digest.json');
-        if (!resp.ok) throw new Error(resp.status);
-        const data = await resp.json();
+  <section id="tip-section" class="tip-section" style="display:none">
+    <h2 class="tip-heading">Tip of the Day</h2>
+    <div class="tip-body">
+      <span class="tip-command" id="tip-command"></span>
+      <span class="tip-desc" id="tip-desc"></span>
+    </div>
+  </section>
 
-        dateEl.textContent = data.date_display || '';
+  <footer class="footer">
+    <div class="footer-updated" id="footer-updated">—</div>
+    <div class="footer-legal">
+      &copy; 2026 Juan Pazmino B. All rights reserved.<br>
+      Claude Code Daily Digest is an independent, unofficial aggregator of publicly available information.<br>
+      Not affiliated with or endorsed by Anthropic, PBC. &ldquo;Claude&rdquo; and &ldquo;Claude Code&rdquo; are trademarks of Anthropic, PBC.
+    </div>
+    <div class="footer-fibonacci">1 &middot; 1 &middot; 2 &middot; 3 &middot; 5 &middot; 8 &middot; 13 &middot; 21</div>
+  </footer>
 
-        // Build digest card
-        let html = '';
-        if (data.summary_html) {
-          html += `<div class="card"><div class="digest-content">${data.summary_html}</div></div>`;
-        }
+</div>
+<script>
+(async function() {
+  const contentEl     = document.getElementById('digest-content');
+  const dateEl        = document.getElementById('digest-date');
+  const tipSection    = document.getElementById('tip-section');
+  const tipCommand    = document.getElementById('tip-command');
+  const tipDesc       = document.getElementById('tip-desc');
+  const footerUpdated = document.getElementById('footer-updated');
 
-        // Tip of the day
-        if (data.tip) {
-          html += `
-            <div class="tip-card">
-              <h2>Tip of the Day</h2>
-              <div>
-                <span class="tip-command">${data.tip.command}</span>
-                <span class="tip-description"> &mdash; ${data.tip.description}</span>
-              </div>
-            </div>`;
-        }
+  const empty = '<section class="section"><div class="item"><div class="item-desc">No updates available yet.</div></div></section>';
 
-        contentEl.innerHTML = html || renderEmpty();
+  try {
+    const resp = await fetch('./digest.json');
+    if (!resp.ok) throw new Error(resp.status);
+    const data = await resp.json();
 
-        if (data.generated_at) {
-          const ts = new Date(data.generated_at);
-          footerEl.textContent = `Last updated ${ts.toLocaleDateString()}`;
-        }
-      } catch (e) {
-        contentEl.innerHTML = renderEmpty();
-      }
+    if (data.date_display) dateEl.textContent = data.date_display;
 
-      function renderEmpty() {
-        return `
-          <div class="card">
-            <div class="empty-state">
-              <div class="icon">&gt;_</div>
-              <p>No updates available yet.</p>
-            </div>
-          </div>`;
-      }
-    })();
-  </script>
+    // summary_html is generated server-side by our Python pipeline (html.escape + URL validation)
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(data.summary_html || empty, 'text/html');
+    Array.from(doc.body.childNodes).forEach(function(node) {
+      contentEl.appendChild(node.cloneNode(true));
+    });
+
+    if (data.tip) {
+      tipCommand.textContent   = data.tip.command;
+      tipDesc.textContent      = data.tip.description;
+      tipSection.style.display = '';
+    }
+
+    if (data.generated_at) {
+      const ts = new Date(data.generated_at);
+      footerUpdated.textContent = 'Last updated ' + ts.toLocaleDateString('en-US', {
+        year: 'numeric', month: 'long', day: '2-digit'
+      });
+    }
+  } catch(e) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(empty, 'text/html');
+    Array.from(doc.body.childNodes).forEach(function(node) {
+      contentEl.appendChild(node.cloneNode(true));
+    });
+  }
+})();
+</script>
 </body>
 </html>
