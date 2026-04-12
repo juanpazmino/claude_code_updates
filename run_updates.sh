@@ -2,6 +2,8 @@
 # Claude Code Daily Digest - Runner Script
 # Schedule with: crontab -e → 0 8 * * * /path/to/Claude\ Code\ Updates/run_updates.sh
 
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/.npm-global/bin"
+
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 LOG_FILE="$SCRIPT_DIR/updates.log"
 VENV="$SCRIPT_DIR/.venv/bin/activate"

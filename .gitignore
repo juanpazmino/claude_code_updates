@@ -15,4 +15,4 @@ screenshots_playwright/
 .playwright-cli/
 .claude/
 .vscode/
-*.plist
+.superpowers/
