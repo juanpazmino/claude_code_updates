@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Claude Code Daily Digest</title>
+  <meta name="author" content="Juan Pazmino B">
   <meta name="description" content="Daily summary of the latest Claude Code updates, features, and news — curated automatically.">
   <meta property="og:title" content="Claude Code Daily Digest">
   <meta property="og:description" content="Daily summary of the latest Claude Code updates, features, and news — curated automatically.">
@@ -23,10 +24,11 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:      #060504;
-      --gold:    #B89350;
-      --gold-hi: #D4B068;
-      --cream:   rgba(245, 240, 232, 0.7);
+      --bg:      #0A0A0B;
+      --surface: rgba(13, 13, 15, 0.92);
+      --gold:    rgba(184, 147, 80, 0.90);
+      --gold-hi: rgba(212, 176, 104, 0.90);
+      --cream:   rgba(245, 240, 232, 0.70);
       --muted:   rgba(245, 240, 232, 0.55);
     }
 
@@ -59,8 +61,8 @@
       pointer-events: none;
       z-index: 9;
       background:
-        radial-gradient(ellipse 50% 80% at 0% 50%, rgba(4,3,2,0.22) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 80% at 100% 50%, rgba(4,3,2,0.22) 0%, transparent 70%);
+        radial-gradient(ellipse 50% 80% at 0% 50%, rgba(10,10,11,0.22) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 80% at 100% 50%, rgba(10,10,11,0.22) 0%, transparent 70%);
     }
 
     /* ── PAGE SHELL ── */
@@ -98,7 +100,7 @@
     .phi-mark {
       flex-shrink: 0;
       margin-top: 8px;
-      opacity: 0.22;
+      opacity: 0.9;
     }
 
     .header-meta {
@@ -118,7 +120,7 @@
     }
 
     .byline a {
-      color: rgba(212, 176, 104, 0.6);
+      color: var(--gold-hi);
       text-decoration: none;
       position: relative;
       transition: color 0.3s ease;
@@ -205,7 +207,7 @@
       font-style: normal;
       font-weight: 300;
       font-size: 24px;
-      color: rgba(212, 176, 104, 0.9);
+      color: var(--gold-hi);
       line-height: 1.25;
       margin-bottom: 10px;
       transition: color 0.25s ease;
@@ -348,6 +350,9 @@
     @media (max-width: 700px) {
       .page { padding: 40px 24px 72px; }
       .item::before { left: -12px; }
+      .header-meta { flex-direction: column; align-items: flex-start; gap: 4px; }
+      .byline { font-size: 16px; }
+      .datestamp { font-size: 12px; }
     }
   </style>
 </head>
@@ -357,15 +362,15 @@
   <header class="header">
     <div class="header-top">
       <h1 class="masthead-title">Claude Code<br>Daily Digest</h1>
-      <svg class="phi-mark" width="34" height="34" viewBox="0 0 34 34" fill="none">
-        <path d="M17 31C9.27 31 3 24.73 3 17C3 9.27 9.27 3 17 3C21.56 3 25.6 5.22 28.15 8.65" stroke="#B89350" stroke-width="1" fill="none" stroke-linecap="round"/>
-        <path d="M17 24.5C13.41 24.5 10.5 21.59 10.5 18C10.5 14.41 13.41 11.5 17 11.5" stroke="#B89350" stroke-width="1" fill="none" stroke-linecap="round"/>
-        <path d="M17 19.2C16.34 19.2 15.8 18.66 15.8 18C15.8 17.34 16.34 16.8 17 16.8" stroke="#B89350" stroke-width="1" fill="none" stroke-linecap="round"/>
-        <circle cx="17" cy="18" r="1.1" fill="#B89350"/>
+      <svg class="phi-mark" width="34" height="34" viewBox="0 0 34 34" fill="none" style="color: var(--gold-hi)">
+        <path d="M17 31C9.27 31 3 24.73 3 17C3 9.27 9.27 3 17 3C21.56 3 25.6 5.22 28.15 8.65" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round"/>
+        <path d="M17 24.5C13.41 24.5 10.5 21.59 10.5 18C10.5 14.41 13.41 11.5 17 11.5" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round"/>
+        <path d="M17 19.2C16.34 19.2 15.8 18.66 15.8 18C15.8 17.34 16.34 16.8 17 16.8" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round"/>
+        <circle cx="17" cy="18" r="1.1" fill="currentColor"/>
       </svg>
     </div>
     <div class="header-meta">
-      <div class="byline">by <a href="https://www.linkedin.com/in/juanpazminob/" target="_blank" rel="noopener noreferrer">Juan Pazmino B</a></div>
+      <div class="byline"><a href="https://www.juanpazminob.com" target="_blank" rel="noopener noreferrer">Built by Juan Pazmino B, AI Consultant</a></div>
       <div class="datestamp" id="digest-date">—</div>
     </div>
   </header>
