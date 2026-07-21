@@ -11,7 +11,7 @@
   // the chrome copy is bilingual-neutral; the assistant itself replies in
   // whatever language the visitor types in, per the system prompt.
   var T = {
-    opener: 'Hola — soy el asistente del Claude Code Daily Digest. Ask me about Claude Code features, guides, or news — pregunta en español o inglés.',
+    opener: "I'm the Claude Code Daily Digest assistant. Ask me about Claude Code features, guides, or news — también puedo responder en español si prefieres.",
     chips: ['¿Qué hay de nuevo en Claude Code?', 'How do Claude Code hooks work?', 'Muéstrame una guía reciente'],
     label: 'Asistente IA', name: 'Claude Code Digest',
     placeholder: 'Ask about Claude Code…', closed: 'Session complete',
