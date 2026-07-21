@@ -2,20 +2,9 @@
 <html lang="en">
 <head>
   <script defer src="/_vercel/insights/script.js"></script>
-  <script defer src="/_vercel/speed-insights/script.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0A0A0B">
-  <script>
-    try {
-      var t = localStorage.getItem('theme') || 'dark';
-      document.documentElement.dataset.theme = t;
-      var m = document.querySelector('meta[name="theme-color"]');
-      if (m) m.setAttribute('content', t === 'light' ? '#F5F0E8' : '#0A0A0B');
-    } catch (e) {}
-  </script>
   <title>Claude Code Daily Digest</title>
-  <meta name="author" content="Juan Pazmino B">
   <meta name="description" content="Daily summary of the latest Claude Code updates, features, and news — curated automatically.">
   <meta property="og:title" content="Claude Code Daily Digest">
   <meta property="og:description" content="Daily summary of the latest Claude Code updates, features, and news — curated automatically.">
@@ -30,30 +19,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,100;9..144,300;9..144,400&family=IBM+Plex+Mono:wght@300;400&family=Jost:ital,wght@0,200;0,300;0,400;1,200&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/chatbot.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:         #0A0A0B;
-      --gold-rgb:   184, 147, 80;
-      --text-rgb:   245, 240, 232;
-      --shadow-rgb: 10, 10, 11;
-
-      --surface: rgba(13, 13, 15, 0.92);
-      --gold:    rgba(var(--gold-rgb), 0.90);
-      --gold-hi: rgba(212, 176, 104, 0.90);
-      --cream:   rgba(var(--text-rgb), 0.70);
-      --muted:   rgba(var(--text-rgb), 0.55);
-    }
-
-    [data-theme="light"] {
-      --bg:         #F5F0E8;
-      --surface:    rgba(255, 252, 247, 0.95);
-      --gold-rgb:   140, 105, 40;
-      --text-rgb:   20, 18, 14;
-      --shadow-rgb: 244, 237, 225;
-      --gold-hi:    rgba(110, 82, 30, 0.80);
+      --bg:      #060504;
+      --gold:    #B89350;
+      --gold-hi: #D4B068;
+      --cream:   rgba(245, 240, 232, 0.7);
+      --muted:   rgba(245, 240, 232, 0.55);
     }
 
     html { background: var(--bg); min-height: 100%; }
@@ -85,8 +59,8 @@
       pointer-events: none;
       z-index: 9;
       background:
-        radial-gradient(ellipse 50% 80% at 0% 50%, rgba(var(--shadow-rgb), 0.22) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 80% at 100% 50%, rgba(var(--shadow-rgb), 0.22) 0%, transparent 70%);
+        radial-gradient(ellipse 50% 80% at 0% 50%, rgba(4,3,2,0.22) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 80% at 100% 50%, rgba(4,3,2,0.22) 0%, transparent 70%);
     }
 
     /* ── PAGE SHELL ── */
@@ -111,14 +85,6 @@
       margin-bottom: 18px;
     }
 
-    .header-controls {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-shrink: 0;
-      margin-top: 8px;
-    }
-
     .masthead-title {
       font-family: 'Fraunces', serif;
       font-style: normal;
@@ -131,7 +97,8 @@
 
     .phi-mark {
       flex-shrink: 0;
-      opacity: 0.9;
+      margin-top: 8px;
+      opacity: 0.22;
     }
 
     .header-meta {
@@ -139,7 +106,7 @@
       justify-content: space-between;
       align-items: center;
       padding-bottom: 24px;
-      border-bottom: 1px solid rgba(var(--text-rgb), 0.1);
+      border-bottom: 1px solid rgba(245, 240, 232, 0.1);
     }
 
     .byline {
@@ -147,11 +114,11 @@
       font-weight: 300;
       font-size: 18px;
       letter-spacing: 0.06em;
-      color: rgba(var(--text-rgb), 0.28);
+      color: rgba(245, 240, 232, 0.28);
     }
 
     .byline a {
-      color: var(--gold-hi);
+      color: rgba(212, 176, 104, 0.6);
       text-decoration: none;
       position: relative;
       transition: color 0.3s ease;
@@ -175,7 +142,7 @@
       font-family: 'IBM Plex Mono', monospace;
       font-weight: 300;
       font-size: 14px;
-      color: rgba(var(--text-rgb), 0.4);
+      color: rgba(245, 240, 232, 0.4);
       letter-spacing: 0.02em;
     }
 
@@ -202,13 +169,13 @@
       content: '';
       flex: 1;
       height: 1px;
-      background: rgba(var(--gold-rgb), 0.18);
+      background: rgba(184, 147, 80, 0.18);
     }
 
     /* ── ITEM ── */
     .item {
       padding: 22px 0;
-      border-bottom: 1px solid rgba(var(--text-rgb), 0.06);
+      border-bottom: 1px solid rgba(245, 240, 232, 0.06);
       position: relative;
       transition: background 0.35s ease, padding-left 0.35s ease;
     }
@@ -225,7 +192,7 @@
     }
 
     .item:hover {
-      background: rgba(var(--gold-rgb), 0.04);
+      background: rgba(184, 147, 80, 0.04);
       padding-left: 10px;
     }
 
@@ -238,7 +205,7 @@
       font-style: normal;
       font-weight: 300;
       font-size: 24px;
-      color: var(--gold-hi);
+      color: rgba(212, 176, 104, 0.9);
       line-height: 1.25;
       margin-bottom: 10px;
       transition: color 0.25s ease;
@@ -304,13 +271,13 @@
       content: '';
       flex: 1;
       height: 1px;
-      background: rgba(var(--gold-rgb), 0.18);
+      background: rgba(184, 147, 80, 0.18);
     }
 
     .tip-body {
       padding: 20px 24px;
-      border-left: 2px solid rgba(var(--gold-rgb), 0.35);
-      background: rgba(var(--gold-rgb), 0.04);
+      border-left: 2px solid rgba(184, 147, 80, 0.35);
+      background: rgba(184, 147, 80, 0.04);
     }
 
     .tip-command {
@@ -333,7 +300,7 @@
     /* ── FOOTER ── */
     .footer {
       padding-top: 32px;
-      border-top: 1px solid rgba(var(--text-rgb), 0.08);
+      border-top: 1px solid rgba(245, 240, 232, 0.08);
       animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
     }
 
@@ -341,7 +308,7 @@
       font-family: 'IBM Plex Mono', monospace;
       font-weight: 300;
       font-size: 14px;
-      color: rgba(var(--text-rgb), 0.45);
+      color: rgba(245, 240, 232, 0.45);
       margin-bottom: 16px;
     }
 
@@ -349,14 +316,14 @@
       font-family: 'IBM Plex Mono', monospace;
       font-weight: 300;
       font-size: 14px;
-      color: rgba(var(--text-rgb), 0.38);
+      color: rgba(245, 240, 232, 0.38);
       line-height: 1.85;
       margin-bottom: 24px;
       text-align: end;
     }
 
     .footer-legal a {
-      color: rgba(var(--text-rgb), 0.5);
+      color: rgba(245, 240, 232, 0.5);
       text-decoration: none;
       transition: color 0.2s;
     }
@@ -367,75 +334,9 @@
       font-family: 'IBM Plex Mono', monospace;
       font-weight: 300;
       font-size: 12px;
-      color: rgba(var(--gold-rgb), 0.3);
+      color: rgba(184, 147, 80, 0.3);
       letter-spacing: 0.1em;
     }
-
-    /* ── THEME TOGGLE ── */
-    .theme-toggle {
-      position: relative;
-      width: 50px;
-      height: 26px;
-      padding: 0;
-      border-radius: 13px;
-      border: 1px solid rgba(var(--gold-rgb), 0.45);
-      background: rgba(var(--gold-rgb), 0.10);
-      cursor: pointer;
-      flex-shrink: 0;
-      transition: background 0.3s ease, border-color 0.3s ease;
-    }
-
-    .theme-toggle:hover {
-      border-color: rgba(var(--gold-rgb), 0.75);
-      background: rgba(var(--gold-rgb), 0.18);
-    }
-
-    .theme-toggle::after {
-      content: '';
-      position: absolute;
-      top: 3px;
-      left: 3px;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: var(--cream);
-      box-shadow: 0 1px 3px rgba(var(--shadow-rgb), 0.30);
-      transition: left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      pointer-events: none;
-    }
-
-    [data-theme="light"] .theme-toggle {
-      background: rgba(var(--gold-rgb), 0.88);
-      border-color: rgba(var(--gold-rgb), 0.95);
-    }
-    [data-theme="light"] .theme-toggle:hover {
-      background: var(--gold);
-      border-color: var(--gold);
-    }
-    [data-theme="light"] .theme-toggle::after {
-      left: 27px;
-      background: #FFFFFF;
-    }
-
-    .theme-toggle svg {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 12px;
-      height: 12px;
-      fill: none;
-      stroke-width: 1.6;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      pointer-events: none;
-      transition: opacity 0.25s ease;
-    }
-
-    .theme-toggle .icon-sun  { left: 7px;  stroke: rgba(var(--gold-rgb), 0.9); opacity: 0; }
-    .theme-toggle .icon-moon { right: 7px; stroke: rgba(var(--gold-rgb), 0.9); opacity: 1; }
-
-    [data-theme="light"] .theme-toggle .icon-sun  { left: 7px;  stroke: #FFFFFF; opacity: 1; }
-    [data-theme="light"] .theme-toggle .icon-moon { right: 7px; stroke: #FFFFFF; opacity: 0; }
 
     /* ── ANIMATION ── */
     @keyframes reveal {
@@ -447,9 +348,6 @@
     @media (max-width: 700px) {
       .page { padding: 40px 24px 72px; }
       .item::before { left: -12px; }
-      .header-meta { flex-direction: column; align-items: flex-start; gap: 4px; }
-      .byline { font-size: 16px; }
-      .datestamp { font-size: 12px; }
     }
   </style>
 </head>
@@ -459,33 +357,15 @@
   <header class="header">
     <div class="header-top">
       <h1 class="masthead-title">Claude Code<br>Daily Digest</h1>
-      <div class="header-controls">
-        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light mode">
-          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="12" r="4"/>
-            <line x1="12" y1="2"       x2="12"    y2="4"/>
-            <line x1="12" y1="20"      x2="12"    y2="22"/>
-            <line x1="4.93" y1="4.93"  x2="6.34"  y2="6.34"/>
-            <line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/>
-            <line x1="2"  y1="12"     x2="4"     y2="12"/>
-            <line x1="20" y1="12"     x2="22"    y2="12"/>
-            <line x1="4.93" y1="19.07" x2="6.34"  y2="17.66"/>
-            <line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/>
-          </svg>
-          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-          </svg>
-        </button>
-        <svg class="phi-mark" width="34" height="34" viewBox="0 0 34 34" fill="none" style="color: var(--gold-hi)">
-          <path d="M17 31C9.27 31 3 24.73 3 17C3 9.27 9.27 3 17 3C21.56 3 25.6 5.22 28.15 8.65" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round"/>
-          <path d="M17 24.5C13.41 24.5 10.5 21.59 10.5 18C10.5 14.41 13.41 11.5 17 11.5" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round"/>
-          <path d="M17 19.2C16.34 19.2 15.8 18.66 15.8 18C15.8 17.34 16.34 16.8 17 16.8" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round"/>
-          <circle cx="17" cy="18" r="1.1" fill="currentColor"/>
-        </svg>
-      </div>
+      <svg class="phi-mark" width="34" height="34" viewBox="0 0 34 34" fill="none">
+        <path d="M17 31C9.27 31 3 24.73 3 17C3 9.27 9.27 3 17 3C21.56 3 25.6 5.22 28.15 8.65" stroke="#B89350" stroke-width="1" fill="none" stroke-linecap="round"/>
+        <path d="M17 24.5C13.41 24.5 10.5 21.59 10.5 18C10.5 14.41 13.41 11.5 17 11.5" stroke="#B89350" stroke-width="1" fill="none" stroke-linecap="round"/>
+        <path d="M17 19.2C16.34 19.2 15.8 18.66 15.8 18C15.8 17.34 16.34 16.8 17 16.8" stroke="#B89350" stroke-width="1" fill="none" stroke-linecap="round"/>
+        <circle cx="17" cy="18" r="1.1" fill="#B89350"/>
+      </svg>
     </div>
     <div class="header-meta">
-      <div class="byline"><a href="https://www.juanpazminob.com" target="_blank" rel="noopener noreferrer">Built by Juan Pazmino B, AI Consultant</a></div>
+      <div class="byline">by <a href="https://www.linkedin.com/in/juanpazminob/" target="_blank" rel="noopener noreferrer">Juan Pazmino B</a></div>
       <div class="datestamp" id="digest-date">—</div>
     </div>
   </header>
@@ -556,29 +436,6 @@
     });
   }
 })();
-
-(function () {
-  const toggle = document.getElementById('theme-toggle');
-  if (!toggle) return;
-
-  function applyAriaLabel(theme) {
-    toggle.setAttribute('aria-label',
-      theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode');
-  }
-
-  applyAriaLabel(document.documentElement.dataset.theme || 'dark');
-
-  const metaTheme = document.querySelector('meta[name="theme-color"]');
-
-  toggle.addEventListener('click', () => {
-    const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
-    document.documentElement.dataset.theme = next;
-    try { localStorage.setItem('theme', next); } catch (e) {}
-    applyAriaLabel(next);
-    if (metaTheme) metaTheme.setAttribute('content', next === 'light' ? '#F5F0E8' : '#0A0A0B');
-  });
-})();
 </script>
-<script src="/chatbot.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,6 @@
+{
+  "name": "claude-code-digest-api",
+  "private": true,
+  "type": "module",
+  "dependencies": { "@anthropic-ai/sdk": "latest" }
+}

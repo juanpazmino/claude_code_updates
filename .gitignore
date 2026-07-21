@@ -6,6 +6,7 @@ __pycache__/
 public/digest.json
 seen_urls.json
 .vercel/
+!.vercel/project.json
 node_modules/
 package-lock.json
 screenshots_playwright/

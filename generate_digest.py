@@ -31,6 +31,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public")
 OUTPUT_PATH = os.path.join(OUTPUT_DIR, "digest.json")
 SEEN_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "seen_urls.json")
 SEEN_TTL_DAYS = 30
+KNOWLEDGE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "knowledge.json")
 
 
 def _load_seen_urls():
@@ -57,6 +58,56 @@ def _save_seen_urls(seen, new_urls):
             json.dump(seen, f, indent=2)
     except Exception as e:
         logger.warning(f"Could not save seen_urls: {e}")
+
+
+def _load_knowledge():
+    """Load the permanent knowledge archive (list of published items, never expires).
+
+    Returns None (rather than []) when the file exists but is corrupt, so callers
+    can skip the append instead of silently overwriting the archive with an empty list.
+    """
+    if not os.path.exists(KNOWLEDGE_PATH):
+        return []
+    try:
+        with open(KNOWLEDGE_PATH) as f:
+            return json.load(f)
+    except Exception as e:
+        logger.error(f"knowledge.json is corrupt, skipping append: {e}")
+        return None
+
+
+def _save_knowledge(items, today):
+    """Append newly published items to the permanent knowledge.json archive, deduped by URL.
+
+    Unlike seen_urls.json (30-day TTL, used for freshness filtering), this file is
+    append-only and committed to git — it never expires and is never pruned.
+    """
+    knowledge = _load_knowledge()
+    if knowledge is None:
+        return  # corrupt file — leave it untouched rather than risk destroying the archive
+
+    existing_urls = {entry["url"] for entry in knowledge}
+    for item in items:
+        url = item.get("url", "")
+        if not url or url in existing_urls:
+            continue
+        content = (item.get("content") or "").strip()
+        # Fall back to a truncated content snippet when no richer description exists
+        description = (content[:150] + "…") if len(content) > 150 else content
+        knowledge.append({
+            "url": url,
+            "title": item.get("title", ""),
+            "description": description or item.get("title", ""),
+            "source": item.get("source", ""),
+            "date": today,
+        })
+        existing_urls.add(url)
+
+    try:
+        with open(KNOWLEDGE_PATH, "w") as f:
+            json.dump(knowledge, f, indent=2)
+    except Exception as e:
+        logger.warning(f"Could not save knowledge.json: {e}")
 
 
 def _safe_link(match):
@@ -264,6 +315,9 @@ def main():
     # Step 7: Save seen URLs so next run prefers fresh content (features + top news shown to LLM)
     shown_news = pinned_news + optional_news[:5]
     _save_seen_urls(seen_urls, [i["url"] for i in selected + shown_news])
+
+    # Step 8: Archive published items to the permanent knowledge base
+    _save_knowledge(selected + shown_news, now.strftime("%Y-%m-%d"))
 
 
 if __name__ == "__main__":

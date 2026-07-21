@@ -25,4 +25,4 @@ KEYWORDS = ["claude code", "claude-code", "claudecode", "cli"]
 LOOKBACK_HOURS = 24
 
 # Anthropic Model
-ANTHROPIC_MODEL = "claude-haiku-4-5"
+ANTHROPIC_MODEL = "claude-sonnet-5"

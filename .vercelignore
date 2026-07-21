@@ -6,5 +6,5 @@ __pycache__/
 requirements.txt
 .git/
 node_modules/
-package.json
-package-lock.json
+/package.json
+/package-lock.json

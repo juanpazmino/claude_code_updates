@@ -25,12 +25,24 @@
 - [x] OG meta tags for social sharing
 - [x] Improved Reddit scoring and tips parsing
 
-## Phase 3: Distribution — NEXT
-- [ ] Generate RSS feed (feed.xml) alongside digest.json on each pipeline run
-- [ ] Add RSS feed link to site header/footer
-- [ ] Explore email digest option (Buttondown or similar, low-friction)
+## Phase 3: Analytics & Insights — DONE
+Goal: understand who visits, where they come from, what they read, and how the site grows.
 
-## Phase 4: Quality & Depth
+**Stack:** Vercel Web Analytics + Vercel Speed Insights (both native to Vercel dashboard)
+
+- [x] Enable Vercel Web Analytics in the Vercel dashboard (project → Analytics tab)
+- [x] Add `@vercel/analytics` script tag to `public/index.html`
+- [x] Add Vercel Speed Insights script tag to `public/index.html`
+
+## Phase 4: Newsletter
+Goal: let readers subscribe and receive the daily digest by email automatically.
+
+- [ ] Set up Buttondown account and create newsletter
+- [ ] Add subscribe form to `public/index.html` (email input + button)
+- [ ] Integrate Buttondown API into pipeline — after digest is generated, send it to subscribers via `run_updates.sh`
+- [ ] Style the email template to match site branding
+
+## Phase 5: Quality & Depth
 - [ ] Pull full article text for Anthropic Engineering posts (richer LLM summaries)
 - [ ] Score and rank engineering posts by recency (no dates exposed — investigate JSON-LD or meta tags)
 - [ ] Tune summarizer prompt: reduce flat/generic descriptions

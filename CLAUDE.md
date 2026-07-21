@@ -17,7 +17,7 @@ Claude Code Daily Digest — a self-updating web page that collects, summarizes,
 ## Tech Stack
 
 - **Backend:** Python 3.10+ (requests, beautifulsoup4, anthropic, python-dotenv)
-- **LLM:** Anthropic Haiku (`claude-haiku-4-5`) via API — requires `ANTHROPIC_API_KEY` in `.env`
+- **LLM:** Anthropic Sonnet 5 (`claude-sonnet-5`) via API — requires `ANTHROPIC_API_KEY` in `.env`
 - **Frontend:** Vanilla HTML/CSS/JS, single `index.html` file
 - **Hosting:** Vercel static site (no serverless functions)
 - **Deploy tool:** Vercel CLI installed locally via npm (`npx vercel`)
@@ -25,17 +25,17 @@ Claude Code Daily Digest — a self-updating web page that collects, summarizes,
 ## Pipeline
 
 ```
-collect (10 sources) → seen-items filter → select features + news → summarize (Haiku) → append New Versions (Python) → write digest.json → deploy (Vercel)
+collect (10 sources) → seen-items filter → select features + news → summarize (Sonnet 5) → append New Versions (Python) → write digest.json → deploy (Vercel)
 ```
 
 1. `collectors.py` scrapes: GitHub Releases, Anthropic Blog (direct scrape), Anthropic Engineering Blog, Claude Release Notes, Docs Changelog, Chase AI Blog, Chase AI YouTube, Tyler Germain Gists, Hacker News, Reddit r/ClaudeAI
 2. `generate_digest.py` loads `seen_urls.json`, prefers unseen items, selects: 2 Chase AI + up to 3 from GitHub Releases/Gists for New Features; Anthropic Blog + Anthropic Engineering + Claude Release Notes + Docs Changelog + Hacker News + Reddit for General News
 3. **2 most recent** Claude Release Notes items are **pinned** — always appear first in General News regardless of LLM selection
-4. `summarizer_v2.py` sends numbered items to Anthropic Haiku, outputs markdown with **New Features** and **General News** only
+4. `summarizer_v2.py` sends numbered items to Anthropic Sonnet 5, outputs markdown with **New Features** and **General News** only
 5. `generate_digest.py` appends **New Versions** deterministically via `collectors.get_latest_github_release()` — never LLM-generated
 6. `generate_digest.py` converts markdown → HTML, adds tip-of-the-day, writes `public/digest.json`
 7. `generate_digest.py` saves selected feature URLs + top 5 shown news URLs to `seen_urls.json` (30-day TTL) so next run prefers fresh items
-8. `run_updates.sh` runs the pipeline + `npx vercel deploy --prod --yes`
+8. `run_updates.sh` runs the pipeline + `npx vercel deploy --prod --yes --scope juan-pazmino-bs-projects`
 
 ### Section definitions
 
@@ -52,7 +52,7 @@ source .venv/bin/activate
 python generate_digest.py              # Generate digest
 python generate_digest.py --collect    # Only collect, print raw items
 python generate_digest.py --dry-run    # Collect + summarize, don't write
-npx vercel deploy --prod --yes         # Deploy to Vercel
+npx vercel deploy --prod --yes --scope juan-pazmino-bs-projects  # Deploy to Vercel
 ./run_updates.sh                       # Full pipeline + deploy
 # generate_digest.command              # macOS double-click launcher (runs full pipeline)
 ```
@@ -63,20 +63,21 @@ npx vercel deploy --prod --yes         # Deploy to Vercel
 - Collectors return standardized items: `{title, date, content, source, url}`
 - Error handling: try/except with `logging.warning`, graceful degradation
 - Logging: module-based `logging.getLogger(__name__)` pattern
-- Frontend: dark theme (#060504 bg, #B89350 gold accent), Fraunces + IBM Plex Mono + Jost fonts
+- Frontend: dual-theme (dark `#0A0A0B` / light `#F5F0E8`), Fraunces + IBM Plex Mono + Jost fonts; theme toggled via pill button in header, persisted in `localStorage`, applied as `data-theme` on `<html>`; CSS uses RGB tuple system (`--gold-rgb`, `--text-rgb`, `--shadow-rgb`) so all alpha variants update automatically; FOUC prevention script runs in `<head>` before CSS
 - Byline "Built by Juan Pazmino B, AI Consultant" shown beneath the main title in the header; entire phrase links to `https://www.juanpazminob.com`
 - Footer has dynamic "Last updated" timestamp + static legal/copyright block (14px IBM Plex Mono 300)
 - Vercel CLI is local (use `npx vercel`, not `vercel`)
 - `public/digest.json` is gitignored — generated artifact, not source
 - `seen_urls.json` is gitignored — tracks shown item URLs with 30-day TTL; deleted manually to reset freshness
 - `tips.py` — `get_tip_of_the_day()` uses sequential day-number rotation (epoch 2025-01-01); tries `fetch_dynamic_tips()` from Anthropic docs first, falls back to static `TIPS` list; `fetch_dynamic_tips()` uses `separator=" "` + `re.sub` punctuation cleanup to fix space-before-period artifacts from BeautifulSoup parsing
-- `summarizer_v2.py` — active summarizer; uses Anthropic Haiku via `anthropic` SDK; `PLATFORM_MAP` maps source names to display labels (e.g. "Chase AI Blog" → "Chase AI", "Reddit r/ClaudeAI" → "Reddit", "Hacker News" → "Hacker News", "Anthropic Engineering" → "Anthropic Engineering"); feature items are numbered 1–5; `summarize()` accepts `pinned_news_items` for mandatory General News entries; loads `ANTHROPIC_API_KEY` from `.env` via `python-dotenv`
+- `summarizer_v2.py` — active summarizer; uses Anthropic Sonnet 5 via `anthropic` SDK; `PLATFORM_MAP` maps source names to display labels (e.g. "Chase AI Blog" → "Chase AI", "Reddit r/ClaudeAI" → "Reddit", "Hacker News" → "Hacker News", "Anthropic Engineering" → "Anthropic Engineering"); feature items are numbered 1–5; `summarize()` accepts `pinned_news_items` for mandatory General News entries; loads `ANTHROPIC_API_KEY` from `.env` via `python-dotenv`
 - `summarizer.py` — legacy Ollama summarizer; kept for reference but no longer used by the pipeline
 - `summarizer_v3.py` — another legacy Ollama summarizer; kept for reference but not used by the pipeline
 - `generate_digest.py` — `_ensure_complete_descriptions(md)` post-processes LLM output before HTML conversion; `_load_seen_urls()` / `_save_seen_urls()` manage the freshness filter; `_prefer_unseen()` sorts item pools so unseen items come first; `markdown_to_html()` splits markdown on `## ` headings into `<section class="section">` blocks and calls `_parse_section_items()` for each; `_parse_section_items()` converts bullet items into `div.item-title` + `div.item-desc` + `a.item-link` structure — New Versions section is handled separately (plain text + inline link, no bullet format); `feature_excluded` set blocks Anthropic Blog, Anthropic Engineering, Docs Changelog, HN, and Reddit from Features; `news_sources` set includes Anthropic Blog, Anthropic Engineering, Docs Changelog, HN, and Reddit for General News; `official_sources` includes Anthropic Blog, Anthropic Engineering, Docs Changelog, Claude Release Notes — these get a baseline score of 50 in the two-tier sort; `_prefer_unseen()` is applied after score sort so unseen items still surface first within each tier
 - `public/old/` — archived frontend snapshots (`index_v1.html`, `index_v2.html`); kept for reference, not served
 - `updates.log` — generated by `run_updates.sh` (pipeline stdout), gitignored; useful for debugging scheduled runs
 - `run_updates.sh` — exports `PATH` explicitly at the top (includes `/usr/local/bin` and `~/.npm-global/bin`); required because Automator apps launch with a minimal PATH that doesn't include `node`/`npx`
+- Analytics: Vercel Web Analytics (`/_vercel/insights/script.js`) and Speed Insights (`/_vercel/speed-insights/script.js`) are loaded in `<head>` of `index.html`; both require activation in the Vercel dashboard (Analytics tab + Speed Insights tab) before data is collected; the `/_vercel/` paths are proxied by Vercel as same-origin so no CSP changes are needed
 
 ### Collector details
 
@@ -102,36 +103,37 @@ npx vercel deploy --prod --yes         # Deploy to Vercel
 ```
 
 - Title: 3–6 words describing content, never the source/platform name
-- Link text: "Read on Platform" (e.g. Read on GitHub, Watch on YouTube, Read on Anthropic)
+- Link text: "Watch on Platform" for YouTube, "Read on Platform" for everything else (e.g. Watch on YouTube, Read on GitHub, Read on Anthropic)
 
-### Frontend visual hierarchy
+### Frontend visual hierarchy (dark mode defaults — light mode inverts via `[data-theme="light"]`)
 
 | Tier | Element | Size | Color | Font |
 |---|---|---|---|---|
-| Section heading | `h2.section-heading` | 14px | #B89350 gold | IBM Plex Mono 400 uppercase |
-| Article title | `.item-title` | 24px | rgba(212,176,104,0.9) | Fraunces 300 |
-| Description | `.item-desc` | 18px | rgba(245,240,232,0.55) | Jost 300 |
-| Read link | `.item-link` | 14px | #B89350 gold | Jost italic 200 |
+| Section heading | `h2.section-heading` | 14px | `var(--gold)` (#B89350) | IBM Plex Mono 400 uppercase |
+| Article title | `.item-title` | 24px | `var(--gold-hi)` | Fraunces 300 |
+| Description | `.item-desc` | 18px | `var(--muted)` | Jost 300 |
+| Read link | `.item-link` | 14px | `var(--gold)` | Jost italic 200 |
 
 ## Rules
 
 - **Never add `Co-Authored-By` lines to git commits.** Vercel Hobby plan rejects pushes that contain co-author trailers, which breaks the deployment pipeline.
 - All Playwright screenshots must be saved to the `screenshots_playwright/` folder, not the project root.
-- `vercel.json` sets `"deploymentEnabled": false` — this disables Vercel's GitHub auto-deploy, which would overwrite the generated `digest.json` with an empty/stale version on every push. Deploy manually via `npx vercel deploy --prod --yes` or `./run_updates.sh`.
+- `vercel.json` sets `"deploymentEnabled": false` — this disables Vercel's GitHub auto-deploy, which would overwrite the generated `digest.json` with an empty/stale version on every push. Deploy manually via `npx vercel deploy --prod --yes --scope juan-pazmino-bs-projects` or `./run_updates.sh`.
 
 ## Gotchas
 
-- **CSP blocks external images** — `vercel.json` sets `img-src 'self'`; any `<img>` pointing to an external URL in `index.html` silently fails. Update the CSP header before adding external thumbnails or avatars.
+- **CSP blocks external images and scripts** — `vercel.json` sets `img-src 'self'` and `script-src 'self' 'unsafe-inline'`; any `<img>` or `<script src>` pointing to an external domain silently fails. Exception: `/_vercel/` paths (analytics, speed insights) are proxied same-origin by Vercel and work without CSP changes. Update headers in `vercel.json` before adding any other external resources.
 - **Summarizer failure is graceful but silent** — if the Anthropic API call fails, `summarizer_v2.py` returns a raw feature dump with a ⚠️ prefix; the pipeline still writes and deploys a degraded digest without erroring out.
 - **Only top 5 optional news items reach the LLM** — `optional_parts = news_pool[:5]` in `summarizer_v2.py`; items ranked 6+ are never summarized regardless of score, making the two-tier sort in `generate_digest.py` load-bearing.
 - **`LOOKBACK_HOURS` is asymmetric** — GitHub Releases uses exactly `LOOKBACK_HOURS` (24h); HN and Reddit use `LOOKBACK_HOURS * 2` (48h). Changing the value in `config.py` does not affect all sources equally.
+- **Vercel CLI requires `--scope` in non-interactive mode** — always include `--scope juan-pazmino-bs-projects`; omitting it causes a new project to be created instead of deploying to `claude-code-digest`. `.vercel/project.json` is committed (whitelisted in `.gitignore`) so the correct project link is always present.
 
 ## Important Notes
 
 - `ANTHROPIC_API_KEY` must be set in `.env` — see `.env.example`; the pipeline will fail without it
 - Scheduled via macOS **Automator app + Calendar** — `ClaudeDigest.app` (saved in `~/Documents/`) wraps `run_updates.sh`; a daily repeating Calendar event at 12:00 PM triggers it via "Open file" alarm. The old LaunchAgent (`com.juanpazmino.claudedigest.plist`) is unloaded and no longer used — it failed silently due to macOS Sequoia TCC restrictions on `~/Desktop`.
 - The summarizer prompt explicitly separates features vs news — if categorization is wrong, adjust the prompt in `summarizer_v2.py`
-- GitHub Releases body content (up to 2000 chars) is passed to the LLM; the prompt instructs Haiku to name the most notable feature/fix, never the version number
+- GitHub Releases body content (up to 2000 chars) is passed to the LLM; the prompt instructs the LLM to name the most notable feature/fix, never the version number
 - General News deduplication is enforced in `generate_digest.py` by `selected_urls` set — items in Features never appear in News
 - If the site shows stale content, delete `seen_urls.json` to reset the freshness filter — the next run will re-evaluate all items
 - `anthropic.com/news` scraper uses semantic elements (`<time>`, heading, last `<span>`) to avoid fragile hashed CSS class names — but may need updating if Anthropic restructures the page

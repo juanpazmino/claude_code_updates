@@ -1,0 +1,1332 @@
+[
+  {
+    "url": "https://www.chaseai.io/blog/top-10-claude-code-skills-plugins-clis-april-2026",
+    "title": "Top Claude Code Skills Plugins",
+    "description": "Explores the ten most valuable plugins and CLI tools for enhancing Claude Code capabilities.",
+    "source": "Chase AI Blog",
+    "date": "2026-06-20"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/35-claude-code-concepts-explained-non-coders",
+    "title": "Claude Code Concepts Explained Simply",
+    "description": "Breaks down thirty-five core concepts related to Claude Code in beginner-friendly terms.",
+    "source": "Chase AI Blog",
+    "date": "2026-06-20"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-advisor-mode-better-results-cheaper",
+    "title": "Advisor Mode Better Results",
+    "description": "Details how to use Advisor Mode to achieve improved outcomes at lower costs.",
+    "source": "Chase AI Blog",
+    "date": "2026-06-20"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-code-ultra-plan-mode-2-review",
+    "title": "Claude Code Ultra Plan Review",
+    "description": "Reviews the features and benefits of the Ultra Plan Mode 2 tier.",
+    "source": "Chase AI Blog",
+    "date": "2026-06-20"
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=aTPTUYC44ds",
+    "title": "Open Source Solves Claude Problem",
+    "description": "Presents an open-source solution addressing a major limitation in Claude Code functionality.",
+    "source": "Chase AI YouTube",
+    "date": "2026-06-20"
+  },
+  {
+    "url": "https://arstechnica.com/ai/2026/06/anthropic-pauses-token-based-billing-for-its-claude-agent-sdk/",
+    "title": "Token Billing Pause Announcement",
+    "description": "Reports that Anthropic has temporarily suspended token-based billing for its agent SDK.",
+    "source": "arstechnica.com",
+    "date": "2026-06-20"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=48597861",
+    "title": "Non-US User Account Suspensions",
+    "description": "Discussion about account suspension risks for non-US Claude users using Fable.",
+    "source": "Hacker News",
+    "date": "2026-06-20"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-design-masterclass-features-worth-usage",
+    "title": "Design Masterclass Features Usage",
+    "description": "Teaches design principles and features in Claude that justify their computational cost.",
+    "source": "Chase AI Blog",
+    "date": "2026-06-21"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/caveman-claude-code-new-meta-science",
+    "title": "Caveman Claude Code Discovery",
+    "description": "Introduces a new meta-science approach to using Claude Code effectively.",
+    "source": "Chase AI Blog",
+    "date": "2026-06-21"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.185",
+    "title": "Release Version 2.1.185 Notes",
+    "description": "Announces the release of version 2.1.185 with associated updates and fixes.",
+    "source": "GitHub Releases",
+    "date": "2026-06-21"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/karpathy-obsidian-rag-claude-code",
+    "title": "Karpathy Obsidian RAG Integration",
+    "description": "Demonstrates building a retrieval-augmented generation system using Obsidian and Claude Code.",
+    "source": "Chase AI Blog",
+    "date": "2026-06-21"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-code-rag-anything-multimodal",
+    "title": "RAG Anything Multimodal System",
+    "description": "Explores creating retrieval-augmented generation systems supporting multiple data types.",
+    "source": "Chase AI Blog",
+    "date": "2026-06-21"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-185",
+    "title": "Changelog Version 2.1.185 Details",
+    "description": "Documents the specific changes and improvements included in version 2.1.185.",
+    "source": "Docs Changelog",
+    "date": "2026-06-21"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-code-lightrag-graph-rag",
+    "title": "LightRAG Graph RAG Implementation",
+    "description": "Shows how to implement graph-based retrieval-augmented generation with Claude Code.",
+    "source": "Chase AI Blog",
+    "date": "2026-06-22"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-code-content-automation-system",
+    "title": "Content Automation System Build",
+    "description": "Guides creating an automated content generation and management system.",
+    "source": "Chase AI Blog",
+    "date": "2026-06-22"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-code-codex-plugin",
+    "title": "Claude Code Codex Plugin",
+    "description": "Introduces a plugin that provides code reference and automation capabilities.",
+    "source": "Chase AI Blog",
+    "date": "2026-06-22"
+  },
+  {
+    "url": "https://www.youtube.com/shorts/xww96j6eoig",
+    "title": "Claude Code Research Enhancement Skill",
+    "description": "Demonstrates a technique that transforms Claude Code into an advanced research tool with superior capabilities.",
+    "source": "Chase AI YouTube",
+    "date": "2026-06-22"
+  },
+  {
+    "url": "https://www.youtube.com/shorts/a9VUj87g_hI",
+    "title": "Claude Code Becomes JARVIS",
+    "description": "Shows how to build a fully local voice-controlled AI assistant using Claude Code without external dependencies.",
+    "source": "Chase AI YouTube",
+    "date": "2026-06-22"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=48624168",
+    "title": "Server Overload Issues Discussion",
+    "description": "Community discussion about experiencing 529 overload errors from Anthropic services.",
+    "source": "Hacker News",
+    "date": "2026-06-22"
+  },
+  {
+    "url": "https://web.archive.org/web/20260415064244/https://support.claude.com/en/articles/14328960-identity-verification-on-claude",
+    "title": "Identity Verification Support Guide",
+    "description": "Explains the identity verification process required on the platform.",
+    "source": "web.archive.org",
+    "date": "2026-06-22"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-code-firecrawl-unlimited-web-scraping",
+    "title": "Firecrawl Unlimited Web Scraping",
+    "description": "Demonstrates unlimited web scraping capabilities using Firecrawl integration.",
+    "source": "Chase AI Blog",
+    "date": "2026-06-23"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/5-open-source-repos-claude-code-unstoppable-march-2026",
+    "title": "Five Open Source Repos March",
+    "description": "Highlights five open-source repositories compatible with Claude Code.",
+    "source": "Chase AI Blog",
+    "date": "2026-06-23"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.186",
+    "title": "Release Version 2.1.186 Notes",
+    "description": "Announces the release of version 2.1.186 with associated updates and fixes.",
+    "source": "GitHub Releases",
+    "date": "2026-06-23"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/7-levels-building-elite-websites-claude-code",
+    "title": "Seven Levels Building Websites",
+    "description": "Outlines a seven-level framework for building sophisticated websites with Claude Code.",
+    "source": "Chase AI Blog",
+    "date": "2026-06-23"
+  },
+  {
+    "url": "https://www.youtube.com/shorts/bb57QRplDZM",
+    "title": "Five Essential Claude Code Plugins",
+    "description": "Presents five critical plugins that significantly boost productivity and functionality in Claude Code projects.",
+    "source": "Chase AI YouTube",
+    "date": "2026-06-23"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=48641160",
+    "title": "Claude Code Account Ban Discussion",
+    "description": "User seeking help after being banned from using Claude Code without clear explanation.",
+    "source": "Hacker News",
+    "date": "2026-06-23"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-186",
+    "title": "Changelog Version 2.1.186 Details",
+    "description": "Documents the specific changes and improvements included in version 2.1.186.",
+    "source": "Docs Changelog",
+    "date": "2026-06-23"
+  },
+  {
+    "url": "https://www.youtube.com/shorts/YWEOTmlck6Y",
+    "title": "Obsidian Claude Code Setup Optimization",
+    "description": "Provides methods to enhance and streamline the integration between Obsidian and Claude Code for better workflows.",
+    "source": "Chase AI YouTube",
+    "date": "2026-06-24"
+  },
+  {
+    "url": "https://www.youtube.com/shorts/-l-s2WdnNFk",
+    "title": "Frontend Design Repository Shortcuts",
+    "description": "Reveals three powerful repository resources containing front-end design shortcuts and solutions for Claude Code.",
+    "source": "Chase AI YouTube",
+    "date": "2026-06-24"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.187",
+    "title": "Release Version 2.1.187 Notes",
+    "description": "Announces the release of version 2.1.187 with associated updates and fixes.",
+    "source": "GitHub Releases",
+    "date": "2026-06-24"
+  },
+  {
+    "url": "https://www.youtube.com/shorts/AS8evR1_1Qk",
+    "title": "Fable Agentic Operating System",
+    "description": "Explains why the Fable 5 Agentic OS is an essential component for Claude Code users.",
+    "source": "Chase AI YouTube",
+    "date": "2026-06-24"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-187",
+    "title": "Changelog Version 2.1.187 Details",
+    "description": "Documents the specific changes and improvements included in version 2.1.187.",
+    "source": "Docs Changelog",
+    "date": "2026-06-24"
+  },
+  {
+    "url": "https://www.anthropic.com/news/introducing-claude-tag",
+    "title": "Claude Tag Feature Introduction",
+    "description": "Introduces a new tagging feature for organizing and managing Claude interactions.",
+    "source": "Anthropic Blog",
+    "date": "2026-06-24"
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=HRw-vP0j8OM",
+    "title": "Optimizing Agentic OS Setup",
+    "description": "Guide to configuring an operating system setup that maximizes Claude Code performance and capabilities.",
+    "source": "Chase AI YouTube",
+    "date": "2026-06-25"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.191",
+    "title": "Release Version 2.1.191 Notes",
+    "description": "Announces the release of version 2.1.191 with associated updates and fixes.",
+    "source": "GitHub Releases",
+    "date": "2026-06-25"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.190",
+    "title": "Release Version 2.1.190 Notes",
+    "description": "Announces the release of version 2.1.190 with associated updates and fixes.",
+    "source": "GitHub Releases",
+    "date": "2026-06-25"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-191",
+    "title": "Changelog Version 2.1.191 Details",
+    "description": "Documents the specific changes and improvements included in version 2.1.191.",
+    "source": "Docs Changelog",
+    "date": "2026-06-25"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-190",
+    "title": "Changelog Version 2.1.190 Details",
+    "description": "Documents the specific changes and improvements included in version 2.1.190.",
+    "source": "Docs Changelog",
+    "date": "2026-06-25"
+  },
+  {
+    "url": "https://www.reuters.com/world/china/anthropic-says-alibaba-illicitly-extracted-claude-ai-model-capabilities-2026-06-24/",
+    "title": "Alibaba Model Extraction Dispute",
+    "description": "Reports allegations that Alibaba improperly extracted Claude model capabilities.",
+    "source": "reuters.com",
+    "date": "2026-06-25"
+  },
+  {
+    "url": "https://www.lesswrong.com/posts/zhRe3tdBpsZbGCdDK/world-modeling-the-us-vs-anthropic-standoff-on-claude-fable",
+    "title": "World Modeling US Standoff",
+    "description": "Analyzes geopolitical tensions surrounding AI model development and regulation.",
+    "source": "lesswrong.com",
+    "date": "2026-06-25"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/clone-100k-website-15-minutes-claude-code",
+    "title": "Clone Website In Minutes",
+    "description": "Demonstrates how to duplicate a hundred-thousand-page website in fifteen minutes.",
+    "source": "Chase AI Blog",
+    "date": "2026-06-26"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/9-claude-code-hacks-better-than-90-percent",
+    "title": "Nine Claude Code Hacks",
+    "description": "Shares nine advanced techniques that outperform ninety percent of standard usage.",
+    "source": "Chase AI Blog",
+    "date": "2026-06-26"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.193",
+    "title": "Release Version 2.1.193 Notes",
+    "description": "Announces the release of version 2.1.193 with associated updates and fixes.",
+    "source": "GitHub Releases",
+    "date": "2026-06-26"
+  },
+  {
+    "url": "https://www.anthropic.com/engineering/april-23-postmortem",
+    "title": "April Postmortem Analysis Report",
+    "description": "Details findings and lessons learned from an April incident investigation.",
+    "source": "Anthropic Engineering",
+    "date": "2026-06-26"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-193",
+    "title": "Changelog Version 2.1.193 Details",
+    "description": "Documents the specific changes and improvements included in version 2.1.193.",
+    "source": "Docs Changelog",
+    "date": "2026-06-26"
+  },
+  {
+    "url": "https://www.youtube.com/shorts/0k8rJseHQTA",
+    "title": "GitHub Repository Tracking Tool",
+    "description": "Introduces a tracking tool that helps users stay current with relevant Claude GitHub repositories.",
+    "source": "Chase AI YouTube",
+    "date": "2026-06-27"
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=V2RIVnGCy74",
+    "title": "Essential Claude Plugins Guide",
+    "description": "Overview of 17 recommended plugins that significantly enhance productivity and capabilities.",
+    "source": "Chase AI YouTube",
+    "date": "2026-06-27"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.195",
+    "title": "Release Version 2.1.195 Notes",
+    "description": "Announces the release of version 2.1.195 with associated updates and fixes.",
+    "source": "GitHub Releases",
+    "date": "2026-06-27"
+  },
+  {
+    "url": "https://www.anthropic.com/engineering/how-we-contain-claude",
+    "title": "Containment Strategy Engineering Details",
+    "description": "Explains the technical methods used to contain and control system behavior.",
+    "source": "Anthropic Engineering",
+    "date": "2026-06-27"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-195",
+    "title": "Changelog Version 2.1.195 Details",
+    "description": "Documents the specific changes and improvements included in version 2.1.195.",
+    "source": "Docs Changelog",
+    "date": "2026-06-27"
+  },
+  {
+    "url": "https://github.com/workweave/router",
+    "title": "Router Project Repository Source",
+    "description": "Hosts a routing library or framework for managing requests and traffic.",
+    "source": "github.com",
+    "date": "2026-06-27"
+  },
+  {
+    "url": "https://www.youtube.com/shorts/0CH2ml-NZFw",
+    "title": "Obsidian Integration Simplification Guide",
+    "description": "Offers the simplest approach to improving and optimizing your Obsidian and Claude Code setup together.",
+    "source": "Chase AI YouTube",
+    "date": "2026-06-30"
+  },
+  {
+    "url": "https://www.youtube.com/shorts/t6laGaEMlsU",
+    "title": "Trending GitHub Repository Discovery",
+    "description": "Highlights the top trending GitHub repository for fixing web design issues in Claude Code projects.",
+    "source": "Chase AI YouTube",
+    "date": "2026-06-30"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.196",
+    "title": "Release Version 2.1.196 Notes",
+    "description": "Announces the release of version 2.1.196 with associated updates and fixes.",
+    "source": "GitHub Releases",
+    "date": "2026-06-30"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-196",
+    "title": "Changelog Version 2.1.196 Details",
+    "description": "Documents the specific changes and improvements included in version 2.1.196.",
+    "source": "Docs Changelog",
+    "date": "2026-06-30"
+  },
+  {
+    "url": "https://old.reddit.com/r/ClaudeAI/comments/1ujila1/anthropic_embedded_spyware_in_claude_code_and/",
+    "title": "Anthropic Spyware Allegations Discussion",
+    "description": "Community discussion about claims that embedded spyware was found in a software product.",
+    "source": "Reddit r/ClaudeAI",
+    "date": "2026-06-30"
+  },
+  {
+    "url": "https://www.axios.com/2026/06/27/anthropic-fable-5-return-soon",
+    "title": "Fable 5 Model Return Announcement",
+    "description": "Report on the scheduled return of the Fable 5 AI model.",
+    "source": "axios.com",
+    "date": "2026-06-30"
+  },
+  {
+    "url": "https://www.gov.ca.gov/2026/06/29/governor-newsom-announces-a-first-of-its-kind-partnership-providing-anthropic-tools-to-state-agencies-and-improving-services-for-californians/",
+    "title": "California Partnership AI Tools Deployment",
+    "description": "State government announces agreement to implement AI tools across agencies for improved services.",
+    "source": "gov.ca.gov",
+    "date": "2026-06-30"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.197",
+    "title": "Claude Code v2.1.197 Release",
+    "description": "GitHub release notes for software version 2.1.197 of the Claude Code tool.",
+    "source": "GitHub Releases",
+    "date": "2026-07-01"
+  },
+  {
+    "url": "https://twitter.com/AnthropicAI/status/2072106151890809341",
+    "title": "Export Controls Lifted Update",
+    "description": "Announcement that Department of Commerce has removed export restrictions on specific models.",
+    "source": "twitter.com",
+    "date": "2026-07-01"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-197",
+    "title": "Claude Code Changelog 2.1.197",
+    "description": "Documentation listing changes and improvements in version 2.1.197.",
+    "source": "Docs Changelog",
+    "date": "2026-07-01"
+  },
+  {
+    "url": "https://twitter.com/anthropicai/status/2072163884430229756",
+    "title": "Global Redeployment with Safeguards",
+    "description": "Statement about restoring worldwide access with new security classifiers for blocking harmful tasks.",
+    "source": "twitter.com",
+    "date": "2026-07-01"
+  },
+  {
+    "url": "https://www.anthropic.com/news/claude-sonnet-5",
+    "title": "Claude Sonnet 5 Model Launch",
+    "description": "Announcement of the release of the Claude Sonnet 5 AI model.",
+    "source": "Anthropic Blog",
+    "date": "2026-07-01"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/7-levels-claude-code-marketing",
+    "title": "Seven-Level Claude Code Marketing",
+    "description": "Guide exploring seven marketing strategies for using coding automation tools.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-02"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/higgsfield-mcp-claude-code-content-machine",
+    "title": "Higgsfield MCP Content Machine",
+    "description": "Blog post about using MCP integration with Claude Code for content creation.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-02"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.198",
+    "title": "Claude Code v2.1.198 Release",
+    "description": "GitHub release notes for software version 2.1.198 of the Claude Code tool.",
+    "source": "GitHub Releases",
+    "date": "2026-07-02"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-code-impeccable-skill-frontend-design",
+    "title": "Claude Code Frontend Design Skills",
+    "description": "Article on using AI coding tools to improve front-end design capabilities.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-02"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/huashu-design-claude-design-clone-skill",
+    "title": "Huashu Design Claude Clone",
+    "description": "Tutorial on creating design cloning functionality with AI coding assistance.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-02"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-198",
+    "title": "Claude Code Changelog 2.1.198",
+    "description": "Documentation listing changes and improvements in version 2.1.198.",
+    "source": "Docs Changelog",
+    "date": "2026-07-02"
+  },
+  {
+    "url": "https://twitter.com/IntCyberDigest/status/2071971609183678544",
+    "title": "Spyware Allegations Against Code",
+    "description": "Claim alleging hidden tracking code embedded in the system targeting specific geographic regions.",
+    "source": "twitter.com",
+    "date": "2026-07-02"
+  },
+  {
+    "url": "https://www.anthropic.com/news/redeploying-fable-5",
+    "title": "Fable 5 Model Redeployment",
+    "description": "Announcement about bringing back and redeploying the Fable 5 model.",
+    "source": "Anthropic Blog",
+    "date": "2026-07-02"
+  },
+  {
+    "url": "https://www.anthropic.com/news/claude-science-ai-workbench",
+    "title": "Claude Science AI Workbench",
+    "description": "Launch announcement for a scientific research platform powered by AI.",
+    "source": "Anthropic Blog",
+    "date": "2026-07-02"
+  },
+  {
+    "url": "https://anthropic.com/claude-sonnet-5-system-card",
+    "title": "Claude Sonnet 5 System Card",
+    "description": "Technical documentation detailing capabilities and limitations of the Sonnet 5 model.",
+    "source": "anthropic.com",
+    "date": "2026-07-02"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-code-agentic-os-framework",
+    "title": "Claude Code Agentic OS Framework",
+    "description": "Overview of building operating system-like frameworks with AI coding tools.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-03"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-design-seedance-animated-websites",
+    "title": "Claude Design Animated Websites",
+    "description": "Guide to creating animated website designs using AI design capabilities.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-03"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.199",
+    "title": "Claude Code v2.1.199 Release",
+    "description": "GitHub release notes for software version 2.1.199 of the Claude Code tool.",
+    "source": "GitHub Releases",
+    "date": "2026-07-03"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-md-is-ruining-claude-code",
+    "title": "Claude Markdown Coding Integration Issues",
+    "description": "Article discussing problems with Markdown integration in AI coding tools.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-03"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-code-dream-feature-upgrades-memory",
+    "title": "Claude Code Memory Feature Upgrades",
+    "description": "Announcement of memory capacity improvements and feature additions to the tool.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-03"
+  },
+  {
+    "url": "https://support.claude.com/en/articles/12138966-release-notes",
+    "title": "Claude Release Notes Support",
+    "description": "Support documentation page containing release notes and version information.",
+    "source": "Claude Release Notes",
+    "date": "2026-07-03"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-199",
+    "title": "Claude Code Changelog 2.1.199",
+    "description": "Documentation listing changes and improvements in version 2.1.199.",
+    "source": "Docs Changelog",
+    "date": "2026-07-03"
+  },
+  {
+    "url": "https://www.anthropic.com/news/fable-safeguards-jailbreak-framework",
+    "title": "Fable Safeguards Jailbreak Framework",
+    "description": "Technical documentation about security measures preventing unauthorized model manipulation.",
+    "source": "Anthropic Blog",
+    "date": "2026-07-03"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/open-design-claude-design-alternative",
+    "title": "Open Design Tool Alternatives",
+    "description": "Comparison and review of open-source alternatives to design automation tools.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-04"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/learn-90-percent-of-claude-code-in-31-minutes",
+    "title": "Claude Code Ninety-Minute Masterclass",
+    "description": "Comprehensive training covering ninety percent of essential coding tool features.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-04"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.201",
+    "title": "Claude Code v2.1.201 Release",
+    "description": "GitHub release notes for software version 2.1.201 of the Claude Code tool.",
+    "source": "GitHub Releases",
+    "date": "2026-07-04"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.200",
+    "title": "Claude Code v2.1.200 Release",
+    "description": "GitHub release notes for software version 2.1.200 of the Claude Code tool.",
+    "source": "GitHub Releases",
+    "date": "2026-07-04"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/10-cli-tools-that-make-claude-code-unstoppable",
+    "title": "CLI Tools Claude Code Integration",
+    "description": "Article describing ten command-line tools that enhance AI coding capabilities.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-04"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-201",
+    "title": "Claude Code Changelog 2.1.201",
+    "description": "Documentation listing changes and improvements in version 2.1.201.",
+    "source": "Docs Changelog",
+    "date": "2026-07-04"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-200",
+    "title": "Claude Code Changelog 2.1.200",
+    "description": "Documentation listing changes and improvements in version 2.1.200.",
+    "source": "Docs Changelog",
+    "date": "2026-07-04"
+  },
+  {
+    "url": "https://www.scmp.com/tech/big-tech/article/3359375/alibaba-bans-staff-using-claude-code-over-anthropic-spyware-concerns",
+    "title": "Alibaba Bans Staff Tool Usage",
+    "description": "Report of major tech company prohibiting employees from using a coding tool over security concerns.",
+    "source": "scmp.com",
+    "date": "2026-07-04"
+  },
+  {
+    "url": "https://www.ft.com/content/ad033063-60f9-4c0c-8d8a-9193a83e6f60",
+    "title": "Financial Times AI Tool Analysis",
+    "description": "In-depth financial newspaper article analyzing an AI coding platform.",
+    "source": "ft.com",
+    "date": "2026-07-04"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-code-web-design-stitch-2",
+    "title": "Claude Code Web Design Tool",
+    "description": "Tutorial on using AI coding assistance for web design project development.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-06"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/gsd2-vs-claude-code-which-ai-coding-tool-wins",
+    "title": "GSD2 Versus Claude Code Comparison",
+    "description": "Comparative analysis of two AI-powered coding and design tools.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-06"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-code-skills-masterclass",
+    "title": "Claude Code Skills Advanced Training",
+    "description": "Comprehensive masterclass teaching advanced techniques for using AI coding tools.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-06"
+  },
+  {
+    "url": "https://www.youtube.com/shorts/nU4LZ_LWRxY",
+    "title": "Cost Reduction for Claude Fable",
+    "description": "Demonstrates a method to reduce Claude Fable 5 costs by eighty percent.",
+    "source": "Chase AI YouTube",
+    "date": "2026-07-06"
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=lplVBFr0Ndc",
+    "title": "Urgent Use Cases for Fable",
+    "description": "Presentation of time-sensitive applications that can generate significant financial opportunities.",
+    "source": "Chase AI YouTube",
+    "date": "2026-07-06"
+  },
+  {
+    "url": "https://old.reddit.com/r/LLMDevs/comments/1udpw9h/just_got_this_response_from_claude_what_is_going/",
+    "title": "Claude Response Behavior Discussion",
+    "description": "Community post discussing unusual or unexpected responses from an AI system.",
+    "source": "Reddit r/ClaudeAI",
+    "date": "2026-07-06"
+  },
+  {
+    "url": "https://www.theverge.com/ai-artificial-intelligence/961311/anthropic-claude-science-ai-drug-development",
+    "title": "Claude Science Drug Development",
+    "description": "Article about AI applications in pharmaceutical research and drug development.",
+    "source": "theverge.com",
+    "date": "2026-07-06"
+  },
+  {
+    "url": "https://arstechnica.com/tech-policy/2026/07/anthropic-outed-for-claude-tracker-that-secretly-monitored-chinese-users/",
+    "title": "Claude Tracker User Monitoring",
+    "description": "Report exposing secret user tracking mechanisms in a widely-used AI tool.",
+    "source": "arstechnica.com",
+    "date": "2026-07-06"
+  },
+  {
+    "url": "https://www.anthropic.com/news/alberta-government-claude-cybersecurity",
+    "title": "Alberta Government Cybersecurity Partnership",
+    "description": "Announcement of government adoption of AI tools for cybersecurity operations.",
+    "source": "Anthropic Blog",
+    "date": "2026-07-06"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/build-claude-code-agentic-os-3-steps",
+    "title": "Building Agentic OS Framework Steps",
+    "description": "Three-step tutorial for constructing an agentic operating system with AI tools.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-07"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/10-new-open-source-claude-code-tools",
+    "title": "Ten New Open Source Claude Tools",
+    "description": "This article highlights ten newly released open-source tools designed to extend Claude's capabilities.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-07"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.202",
+    "title": "Claude Code v2.1.202 Release",
+    "description": "This GitHub release notes the features and improvements included in version 2.1.202 of the Claude Code product.",
+    "source": "GitHub Releases",
+    "date": "2026-07-07"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-1m-context-window-context-rot",
+    "title": "Claude Million Token Context Rot",
+    "description": "This article examines how context degradation affects Claude's performance with its one-million-token context window.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-07"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/cli-anything-claude-code-agent-native-tools",
+    "title": "CLI Tool Claude Code Agent",
+    "description": "This article explores using Claude Code as a native agent for command-line interface automation and tool integration.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-07"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-202",
+    "title": "Changelog v2.1.202 Updates",
+    "description": "This changelog documents the specific updates and changes made in version 2.1.202.",
+    "source": "Docs Changelog",
+    "date": "2026-07-07"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-fable-5-use-cases-projects",
+    "title": "Claude Fable 5 Use Cases",
+    "description": "This article presents five practical use cases and project examples for Claude Fable.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-08"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/best-claude-code-plugins-skills-clis",
+    "title": "Best Claude Code Plugins Skills",
+    "description": "This guide reviews the most effective plugins, skills, and CLI tools available for Claude Code.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-08"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.204",
+    "title": "Claude Code v2.1.204 Release",
+    "description": "This GitHub release notes the features and improvements included in version 2.1.204.",
+    "source": "GitHub Releases",
+    "date": "2026-07-08"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.203",
+    "title": "Claude Code v2.1.203 Release",
+    "description": "This GitHub release notes the features and improvements included in version 2.1.203.",
+    "source": "GitHub Releases",
+    "date": "2026-07-08"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/build-your-own-agentic-os-claude-code",
+    "title": "Build Agentic OS With Claude",
+    "description": "This article provides instructions for creating a custom agentic operating system using Claude Code.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-08"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-204",
+    "title": "Changelog v2.1.204 Updates",
+    "description": "This changelog documents the specific updates and changes made in version 2.1.204.",
+    "source": "Docs Changelog",
+    "date": "2026-07-08"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-203",
+    "title": "Changelog v2.1.203 Updates",
+    "description": "This changelog documents the specific updates and changes made in version 2.1.203.",
+    "source": "Docs Changelog",
+    "date": "2026-07-08"
+  },
+  {
+    "url": "https://twitter.com/AnthropicAI/status/2074185358678364414",
+    "title": "Hidden Reasoning Space Visualization",
+    "description": "Technical explanation of observing internal reasoning processes through J-space monitoring.",
+    "source": "twitter.com",
+    "date": "2026-07-08"
+  },
+  {
+    "url": "https://www.anthropic.com/features/making-of-claude-code",
+    "title": "Making Claude Code Behind Scenes",
+    "description": "This article provides an insider's look at the design and development process behind Claude Code.",
+    "source": "anthropic.com",
+    "date": "2026-07-08"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/combine-fable-5-and-soul-5-6-skill",
+    "title": "Combining Fable Soul Skills",
+    "description": "This article explains how to integrate Fable 5 and Soul 5-6 skills for enhanced functionality.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-09"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/ponytail-skill-claude-code-cheaper-faster",
+    "title": "Ponytail Skill Cheaper Faster",
+    "description": "This article introduces the Ponytail skill for Claude Code that optimizes performance and reduces costs.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-09"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.205",
+    "title": "Claude Code v2.1.205 Release",
+    "description": "This GitHub release notes the features and improvements included in version 2.1.205.",
+    "source": "GitHub Releases",
+    "date": "2026-07-09"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/voice-driven-agentic-os-claude-code",
+    "title": "Voice Driven Agentic OS",
+    "description": "This article demonstrates how to build a voice-controlled agentic operating system with Claude Code.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-09"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-fable-5-mythos-5-explained",
+    "title": "Claude Fable Mythos Explained",
+    "description": "This article explains the concepts and applications of Fable 5 and Mythos 5.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-09"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-205",
+    "title": "Changelog v2.1.205 Updates",
+    "description": "This changelog documents the specific updates and changes made in version 2.1.205.",
+    "source": "Docs Changelog",
+    "date": "2026-07-09"
+  },
+  {
+    "url": "https://www.theverge.com/ai-artificial-intelligence/961978/anthropic-claude-cowork-mobile-web",
+    "title": "Claude Code Mobile Web Work",
+    "description": "This article covers how Claude Code can be used across mobile and web platforms for collaborative development.",
+    "source": "theverge.com",
+    "date": "2026-07-09"
+  },
+  {
+    "url": "https://abralo.com/",
+    "title": "Multiple Coding Agents Interface",
+    "description": "Platform that consolidates several coding agents into a unified user interface.",
+    "source": "abralo.com",
+    "date": "2026-07-09"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/open-source-repos-fix-claude-code",
+    "title": "Open Source Repos Fix Claude",
+    "description": "This article highlights open-source repositories that provide fixes and improvements for Claude Code.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-10"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/graphify-obsidian-claude-code-second-brain",
+    "title": "Graphify Obsidian Second Brain",
+    "description": "This article shows how to integrate Graphify with Obsidian using Claude Code for enhanced knowledge management.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-10"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.206",
+    "title": "Claude Code v2.1.206 Release",
+    "description": "This GitHub release notes the features and improvements included in version 2.1.206.",
+    "source": "GitHub Releases",
+    "date": "2026-07-10"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/googles-new-cli-fully-unlocked-claude-code",
+    "title": "Google CLI Fully Unlocked",
+    "description": "This article explores Google's new CLI tool that fully integrates with and extends Claude Code capabilities.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-10"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/best-claude-code-plugins",
+    "title": "Best Claude Code Plugins",
+    "description": "This guide reviews the most effective and popular plugins available for extending Claude Code.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-10"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-206",
+    "title": "Changelog v2.1.206 Updates",
+    "description": "This changelog documents the specific updates and changes made in version 2.1.206.",
+    "source": "Docs Changelog",
+    "date": "2026-07-10"
+  },
+  {
+    "url": "https://www.anthropic.com/news/hard-questions",
+    "title": "Hard Questions Podcast Series",
+    "description": "This podcast series features discussions on challenging topics and complex questions about AI.",
+    "source": "Anthropic Blog",
+    "date": "2026-07-10"
+  },
+  {
+    "url": "https://www.anthropic.com/news/ust-claude",
+    "title": "UST Claude Announcement",
+    "description": "This article announces or discusses the UST Claude initiative or feature.",
+    "source": "Anthropic Blog",
+    "date": "2026-07-10"
+  },
+  {
+    "url": "https://www.anthropic.com/news/ben-bernanke",
+    "title": "Ben Bernanke Interview Discussion",
+    "description": "This article covers news or insights related to Ben Bernanke and his involvement with the organization.",
+    "source": "Anthropic Blog",
+    "date": "2026-07-10"
+  },
+  {
+    "url": "https://www.anthropic.com/news/reflect-with-claude",
+    "title": "Reflect With Claude Mindfulness",
+    "description": "This article introduces a reflective practice or feature for thoughtful engagement with Claude.",
+    "source": "Anthropic Blog",
+    "date": "2026-07-10"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/codex-goals-autonomous-coding-loop",
+    "title": "Codex Goals Autonomous Loop",
+    "description": "This article explains how to set up goals and autonomous coding loops using Codex.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-11"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-code-and-codex-together",
+    "title": "Claude Code Codex Together",
+    "description": "This article demonstrates how to combine Claude Code and Codex for enhanced development workflows.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-11"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.207",
+    "title": "Claude Code v2.1.207 Release",
+    "description": "This GitHub release notes the features and improvements included in version 2.1.207.",
+    "source": "GitHub Releases",
+    "date": "2026-07-11"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/6-levels-of-claude-code",
+    "title": "Six Levels Claude Code",
+    "description": "This article outlines a progressive framework of six complexity levels for using Claude Code.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-11"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-code-agent-loops-what-they-actually-do",
+    "title": "Claude Code Agent Loops",
+    "description": "This article explains what agent loops do and how they function within Claude Code.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-11"
+  },
+  {
+    "url": "https://www.anthropic.com/engineering/managed-agents",
+    "title": "Managed Agents Engineering",
+    "description": "This article discusses the engineering practices for building and managing autonomous agents.",
+    "source": "Anthropic Engineering",
+    "date": "2026-07-11"
+  },
+  {
+    "url": "https://www.anthropic.com/engineering/claude-code-auto-mode",
+    "title": "Claude Code Auto Mode",
+    "description": "This article explains the automatic mode feature of Claude Code and how to leverage it.",
+    "source": "Anthropic Engineering",
+    "date": "2026-07-11"
+  },
+  {
+    "url": "https://www.anthropic.com/engineering/harness-design-long-running-apps",
+    "title": "Harness Design Long Running",
+    "description": "This article covers design patterns and strategies for building long-running applications with Claude.",
+    "source": "Anthropic Engineering",
+    "date": "2026-07-11"
+  },
+  {
+    "url": "https://www.anthropic.com/engineering/infrastructure-noise",
+    "title": "Infrastructure Noise Reduction",
+    "description": "This article addresses techniques for reducing noise and improving reliability in AI infrastructure.",
+    "source": "Anthropic Engineering",
+    "date": "2026-07-11"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-207",
+    "title": "Changelog v2.1.207 Updates",
+    "description": "This changelog documents the specific updates and changes made in version 2.1.207.",
+    "source": "Docs Changelog",
+    "date": "2026-07-11"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-code-playwright-cli-browser-automation",
+    "title": "Browser Automation with Playwright",
+    "description": "This guide demonstrates how to use Claude Code with Playwright CLI to automate browser interactions and testing.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-12"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-code-notebooklm-obsidian-research-workflow",
+    "title": "Research Workflow with NotebookLM",
+    "description": "This tutorial shows how to integrate Claude Code with NotebookLM and Obsidian for enhanced research organization.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-12"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-code-skill-creator-evals-benchmarks",
+    "title": "Building Skill Creator Evals",
+    "description": "This article covers how to create and benchmark evaluation frameworks for assessing AI coding capabilities.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-12"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-code-obsidian-persistent-memory",
+    "title": "Persistent Memory in Obsidian",
+    "description": "This guide explains how to implement persistent memory features using Claude Code with Obsidian integration.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-12"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-code-notebooklm-free-research-workflow",
+    "title": "Free Research Workflow Setup",
+    "description": "This tutorial demonstrates how to create a cost-effective research workflow combining Claude Code with NotebookLM.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-12"
+  },
+  {
+    "url": "https://www.theregister.com/ai-and-ml/2026/07/01/anthropic-is-removing-its-covert-code-for-catching-chinese-competitors/5265366",
+    "title": "Anthropic Removes Covert Code",
+    "description": "This article reports on Anthropic removing code designed to catch Chinese competitors' activities.",
+    "source": "theregister.com",
+    "date": "2026-07-12"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-210",
+    "title": "Version 2.1.210 Release",
+    "description": "This changelog documents the features and improvements included in release version 2.1.210.",
+    "source": "Docs Changelog",
+    "date": "2026-07-15"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-209",
+    "title": "Version 2.1.209 Release",
+    "description": "This changelog documents the features and improvements included in release version 2.1.209.",
+    "source": "Docs Changelog",
+    "date": "2026-07-15"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-208",
+    "title": "Version 2.1.208 Release",
+    "description": "This changelog documents the features and improvements included in release version 2.1.208.",
+    "source": "Docs Changelog",
+    "date": "2026-07-15"
+  },
+  {
+    "url": "https://www.anthropic.com/news/claude-for-teachers",
+    "title": "Claude for Teachers Guide",
+    "description": "This resource provides educators with information on how to use Claude effectively in classroom settings.",
+    "source": "Anthropic Blog",
+    "date": "2026-07-15"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=48903047",
+    "title": "Account Ban Appeal Discussion",
+    "description": "Discusses the experience of having multiple accounts banned and explores potential next steps and solutions.",
+    "source": "Hacker News",
+    "date": "2026-07-15"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/turn-claude-into-personal-assistant",
+    "title": "Creating Personal Assistant",
+    "description": "This guide shows how to configure and customize Claude as a personal productivity assistant.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-15"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-code-tips-beginner-to-pro",
+    "title": "Beginner to Pro Tips",
+    "description": "This tutorial provides progressive techniques for mastering Claude Code from basic to advanced usage.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-15"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.210",
+    "title": "Version 2.1.210 Release",
+    "description": "This GitHub release page documents updates and changes for version 2.1.210.",
+    "source": "GitHub Releases",
+    "date": "2026-07-15"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-code-nano-banana-2-3d-scroll-websites",
+    "title": "3D Scroll Websites with Nano",
+    "description": "This guide demonstrates building interactive 3D scrolling websites using Claude Code and Banana hosting.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-15"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/convert-n8n-workflows-to-python-claude-code",
+    "title": "Converting N8N Workflows",
+    "description": "This tutorial explains how to migrate automation workflows from N8N to Python using Claude Code.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-15"
+  },
+  {
+    "url": "https://www.anthropic.com/news/canadian-ai-research",
+    "title": "Canadian AI Research Initiative",
+    "description": "This announcement highlights Anthropic's commitment and contributions to AI research in Canada.",
+    "source": "Anthropic Blog",
+    "date": "2026-07-15"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/herdr-terminal-multiplexer-ai-coding-agents",
+    "title": "HERDR Terminal Multiplexer",
+    "description": "This guide covers using HERDR terminal multiplexer to manage AI coding agents more efficiently.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-17"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-code-agent-teams-guide",
+    "title": "Agent Teams Collaboration Guide",
+    "description": "This tutorial explains how to orchestrate and coordinate multiple AI agents as a team.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-17"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.212",
+    "title": "Version 2.1.212 Release",
+    "description": "This GitHub release page documents updates and changes for version 2.1.212.",
+    "source": "GitHub Releases",
+    "date": "2026-07-17"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/how-to-turn-n8n-workflows-into-saas-apps",
+    "title": "N8N Workflows to SaaS",
+    "description": "This guide demonstrates converting N8N automation workflows into production-ready SaaS applications.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-17"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claudebot-moltbot-guide-installation-review",
+    "title": "ClaudeBot and MoltBot Guide",
+    "description": "This tutorial covers installing and reviewing bot implementations for messaging platform integration.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-17"
+  },
+  {
+    "url": "https://www.anthropic.com/engineering/eval-awareness-browsecomp",
+    "title": "Eval Awareness and BrowseComp",
+    "description": "This technical article explores evaluation methods and browser comprehension capabilities in AI systems.",
+    "source": "Anthropic Engineering",
+    "date": "2026-07-17"
+  },
+  {
+    "url": "https://www.anthropic.com/engineering/building-c-compiler",
+    "title": "Building C Compiler",
+    "description": "This engineering article details the process of developing a C programming language compiler.",
+    "source": "Anthropic Engineering",
+    "date": "2026-07-17"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-212",
+    "title": "Version 2.1.212 Release",
+    "description": "This changelog documents the features and improvements included in release version 2.1.212.",
+    "source": "Docs Changelog",
+    "date": "2026-07-17"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-211",
+    "title": "Version 2.1.211 Release",
+    "description": "This changelog documents the features and improvements included in release version 2.1.211.",
+    "source": "Docs Changelog",
+    "date": "2026-07-17"
+  },
+  {
+    "url": "https://www.anthropic.com/research/claude-values-models-languages",
+    "title": "Claude Values Across Languages",
+    "description": "This research article explores how Claude's values and behavior translate across different programming languages.",
+    "source": "anthropic.com",
+    "date": "2026-07-17"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-opus-4-7-benchmarks",
+    "title": "Claude Opus 4.7 Benchmarks",
+    "description": "This article provides performance benchmarks and comparisons for the Claude Opus 4.7 model.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-18"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-code-frontend-design-skills",
+    "title": "Frontend Design Skills",
+    "description": "This tutorial teaches web design and styling techniques using Claude Code for building interfaces.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-18"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.214",
+    "title": "Version 2.1.214 Release",
+    "description": "This GitHub release page documents updates and changes for version 2.1.214.",
+    "source": "GitHub Releases",
+    "date": "2026-07-18"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/seven-levels-claude-code-rag",
+    "title": "Seven Levels RAG Architecture",
+    "description": "This guide explores implementing Retrieval-Augmented Generation at different sophistication levels.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-18"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/how-to-create-videos-claude-code-remotion",
+    "title": "Creating Videos with Remotion",
+    "description": "This tutorial shows how to generate and create video content programmatically using Claude Code and Remotion.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-18"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-214",
+    "title": "Version 2.1.214 Release",
+    "description": "This changelog documents the features and improvements included in release version 2.1.214.",
+    "source": "Docs Changelog",
+    "date": "2026-07-18"
+  },
+  {
+    "url": "https://www.theverge.com/tech/966442/1password-anthropic-claude-browser-integration",
+    "title": "1Password Browser Integration",
+    "description": "This article announces the integration of Claude with 1Password for enhanced password management capabilities.",
+    "source": "theverge.com",
+    "date": "2026-07-18"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/kimi-k3-vs-claude-fable-5-gpt-5-6-real-cost",
+    "title": "Model Comparison Real Costs",
+    "description": "This analysis compares pricing and performance across Kimi K3, Claude, Fable 5, and GPT 5-6.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-19"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-design-anthropic-first-look",
+    "title": "Claude Design First Look",
+    "description": "This article provides an introduction and overview of Anthropic's new design interface.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-19"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.215",
+    "title": "Version 2.1.215 Release",
+    "description": "This GitHub release page documents updates and changes for version 2.1.215.",
+    "source": "GitHub Releases",
+    "date": "2026-07-19"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-code-routines-scheduled-tasks",
+    "title": "Routines and Scheduled Tasks",
+    "description": "This guide explains how to create automated routines and schedule recurring tasks using Claude Code.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-19"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/gsd-vs-superpowers-vs-claude-code",
+    "title": "GSD vs Superpowers Comparison",
+    "description": "This article compares the GSD and Superpowers tools as alternatives to Claude Code functionality.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-19"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-215",
+    "title": "Version 2.1.215 Release",
+    "description": "This changelog documents the features and improvements included in release version 2.1.215.",
+    "source": "Docs Changelog",
+    "date": "2026-07-19"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=48964237",
+    "title": "Claude Usability Pain Points",
+    "description": "Addresses ongoing challenges and frustrations users experience when working with Claude.",
+    "source": "Hacker News",
+    "date": "2026-07-19"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/gsd-claude-code-solo-developer",
+    "title": "GSD for Solo Developer",
+    "description": "This guide explores using GSD tool as an alternative for individual developers building projects.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-20"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/how-to-build-saas-claude-code-n8n",
+    "title": "Building SaaS with Claude Code",
+    "description": "Guide to constructing SaaS applications using Claude Code and n8n workflows.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-20"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/build-n8n-workflows-claude-code",
+    "title": "Building n8n Workflows with Claude",
+    "description": "Tutorial on creating n8n automation workflows powered by Claude Code.",
+    "source": "Chase AI Blog",
+    "date": "2026-07-20"
+  },
+  {
+    "url": "https://www.youtube.com/shorts/BY3N8hYOCr4",
+    "title": "Essential Repository Installation Guide",
+    "description": "Recommends a critical repository that all Claude and Codex users should install immediately.",
+    "source": "Chase AI YouTube",
+    "date": "2026-07-20"
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=neK8ydl0Vlk",
+    "title": "Repository Solves Integration Problem",
+    "description": "Introduction to a repository that resolves a major pain point in coding workflow integration.",
+    "source": "Chase AI YouTube",
+    "date": "2026-07-20"
+  },
+  {
+    "url": "https://claude.com/blog/ai-code-migration",
+    "title": "AI Code Migration Strategies",
+    "description": "Explores best practices for migrating code using artificial intelligence tools.",
+    "source": "claude.com",
+    "date": "2026-07-20"
+  },
+  {
+    "url": "https://twitter.com/ClaudeDevs/status/2078511173759324328",
+    "title": "Increased Weekly Usage Limits",
+    "description": "Announcement of 50% higher usage limits for Pro, Max, Team, and Enterprise subscribers.",
+    "source": "twitter.com",
+    "date": "2026-07-20"
+  }
+]

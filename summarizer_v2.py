@@ -22,7 +22,7 @@ For each item use EXACTLY this format:
 Rules:
 - Title: MUST be wrapped in **double asterisks** — e.g. **Short Descriptive Title** — 3–6 words describing the content, never the source/platform name, version numbers, or release names
 - Description: exactly one sentence, no source name, no copying raw content
-- Link: [Read on Platform](url) using the platform label provided
+- Link: use "Watch on Platform" for YouTube, "Read on Platform" for everything else
 - Blank line between items. Use ## for category headings only."""
 
 PLATFORM_MAP = {
@@ -90,6 +90,9 @@ def summarize(items, feature_items=None, news_items=None, pinned_news_items=None
         response = client.messages.create(
             model=config.ANTHROPIC_MODEL,
             max_tokens=2048,
+            # Sonnet 5 runs adaptive thinking by default; disable it so the
+            # full token budget goes to the summary and content[0] stays text
+            thinking={"type": "disabled"},
             system=SYSTEM_PROMPT,
             messages=[{"role": "user", "content": user_content}],
         )

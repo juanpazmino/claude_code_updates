@@ -2,6 +2,9 @@
   "outputDirectory": "public",
   "framework": null,
   "git": { "deploymentEnabled": false },
+  "functions": {
+    "api/chat.js": { "includeFiles": "knowledge.json" }
+  },
   "headers": [
     {
       "source": "/(.*)",
