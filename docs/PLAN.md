@@ -37,10 +37,33 @@ Goal: understand who visits, where they come from, what they read, and how the s
 ## Phase 4: Newsletter
 Goal: let readers subscribe and receive the daily digest by email automatically.
 
-- [ ] Set up Buttondown account and create newsletter
-- [ ] Add subscribe form to `public/index.html` (email input + button)
-- [ ] Integrate Buttondown API into pipeline — after digest is generated, send it to subscribers via `run_updates.sh`
-- [ ] Style the email template to match site branding
+**Service:** Buttondown (account live, newsletter `pazmino`, free tier ≤100 subscribers).
+Confirmation flow (double opt-in) is ON by default → GDPR/LOPDGDD covered. Public page: https://buttondown.com/pazmino
+
+**Design decision — no serverless proxy.** The subscribe endpoint (`https://buttondown.com/api/emails/embed-subscribe/pazmino`) is public, so there is no API key to hide. Use Buttondown's native `<form>` POST, styled 100% in brand — no `/api/subscribe` function. (The `ANTHROPIC_API_KEY`-style secrecy that justifies the chat's `api/chat.js` does not apply here.)
+
+**Two distinct surfaces, different brand fidelity:**
+- Subscribe form (lives on the site) → ~100% brand, our own styled HTML
+- Email body (lands in the inbox) → ~60-80% brand — email-safe HTML: inline styles, tables, serif fallback for Fraunces, no CSS variables / grain / `data-theme`
+
+### 4a — Subscribe form (small)
+- [ ] Add styled native `<form>` to `public/index.html` posting to the Buttondown embed endpoint; brand the input/button/success + error states
+- [ ] Optional: submit via `fetch()` to stay on-page instead of redirecting to Buttondown
+- [ ] Add `buttondown.com` to `form-action`/`connect-src` in `vercel.json` CSP
+
+### 4b — Email body template (the real work)
+- [ ] Build an email-safe HTML template from the same structured items the digest already produces (not from `public/digest.json`, which targets browser HTML)
+- [ ] Serif fallback for Fraunces; gold accents; clean single-column layout
+- [ ] Test rendering in Gmail + Apple Mail + Outlook before first send
+
+### 4c — Send integration (in `run_updates.sh`, from the Mac, after deploy)
+- [ ] Send via `POST https://api.buttondown.com/v1/emails` (Token auth, key in `.env` local only)
+- [ ] Guard 1 — do not send if the digest came back degraded (the ⚠️ silent-summarizer-failure case)
+- [ ] Guard 2 — do not double-send on a manual re-run (create as draft, or a "sent today" marker)
+
+### 4d — Compliance
+- [ ] Privacy note linked from the form (reuse the personal-site `privacy.html` shape)
+- [ ] Confirm "Powered by Buttondown" free-tier footer is acceptable, or plan the paid tier to remove it
 
 ## Phase 5: Quality & Depth
 - [ ] Pull full article text for Anthropic Engineering posts (richer LLM summaries)
