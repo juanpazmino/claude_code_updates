@@ -5,6 +5,8 @@ __pycache__/
 .env
 public/digest.json
 seen_urls.json
+.email_sent.json
+email_sample.html
 .vercel/
 !.vercel/project.json
 node_modules/

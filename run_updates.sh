@@ -17,5 +17,8 @@ python generate_digest.py 2>&1 | tee -a "$LOG_FILE"
 echo "$(date): Deploying to Vercel" >> "$LOG_FILE"
 npx vercel deploy --prod --yes --scope juan-pazmino-bs-projects 2>&1 | tee -a "$LOG_FILE"
 
+echo "$(date): Sending email to Buttondown subscribers" >> "$LOG_FILE"
+python send_email.py 2>&1 | tee -a "$LOG_FILE"
+
 echo "$(date): Finished" >> "$LOG_FILE"
 echo "---" >> "$LOG_FILE"

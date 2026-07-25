@@ -330,6 +330,130 @@
       line-height: 1.65;
     }
 
+    /* ── SUBSCRIBE ── */
+    .subscribe-section {
+      margin-bottom: 52px;
+      animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+    }
+
+    .subscribe-heading {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 400;
+      font-size: 14px;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .subscribe-heading::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(var(--gold-rgb), 0.18);
+    }
+
+    .subscribe-body {
+      padding: 32px;
+      border-left: 2px solid rgba(var(--gold-rgb), 0.35);
+      background: rgba(var(--gold-rgb), 0.04);
+    }
+
+    .subscribe-headline {
+      font-family: 'Fraunces', serif;
+      font-style: normal;
+      font-weight: 300;
+      font-size: 26px;
+      color: var(--cream);
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+
+    .subscribe-subtext {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 18px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .subscribe-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .subscribe-input {
+      flex: 1;
+      min-width: 0;
+      padding: 14px 18px;
+      font-family: 'Fraunces', serif;
+      font-weight: 300;
+      font-size: 16px;
+      color: var(--cream);
+      background: rgba(var(--text-rgb), 0.04);
+      border: 1px solid rgba(var(--gold-rgb), 0.25);
+      border-radius: 8px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .subscribe-input::placeholder { color: var(--muted); }
+
+    .subscribe-input:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(var(--gold-rgb), 0.15);
+    }
+
+    .subscribe-btn {
+      flex-shrink: 0;
+      padding: 14px 32px;
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      font-size: 12px;
+      color: var(--gold);
+      background: transparent;
+      border: 1px solid rgba(var(--gold-rgb), 0.30);
+      border-radius: 50px;
+      cursor: pointer;
+      transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease, font-weight 0.3s ease;
+    }
+
+    .subscribe-btn:hover {
+      background: var(--gold);
+      color: var(--bg);
+      font-weight: 400;
+    }
+
+    .subscribe-btn:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 2px;
+    }
+
+    .subscribe-consent {
+      margin-top: 16px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 300;
+      font-size: 12px;
+      color: rgba(var(--text-rgb), 0.4);
+      line-height: 1.6;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
     /* ── FOOTER ── */
     .footer {
       padding-top: 32px;
@@ -450,6 +574,10 @@
       .header-meta { flex-direction: column; align-items: flex-start; gap: 4px; }
       .byline { font-size: 16px; }
       .datestamp { font-size: 12px; }
+      .subscribe-body { padding: 24px; }
+      .subscribe-headline { font-size: 22px; }
+      .subscribe-row { flex-direction: column; }
+      .subscribe-btn { width: 100%; }
     }
   </style>
 </head>
@@ -497,6 +625,22 @@
     <div class="tip-body">
       <span class="tip-command" id="tip-command"></span>
       <span class="tip-desc" id="tip-desc"></span>
+    </div>
+  </section>
+
+  <section class="subscribe-section">
+    <h2 class="subscribe-heading">Get the Digest</h2>
+    <div class="subscribe-body">
+      <p class="subscribe-headline">One email. Same digest. No feed to check.</p>
+      <p class="subscribe-subtext">The daily Claude Code digest, delivered to your inbox every morning.</p>
+      <form class="subscribe-form" action="https://buttondown.com/api/emails/embed-subscribe/pazmino" method="post">
+        <label for="subscribe-email" class="sr-only">Email address</label>
+        <div class="subscribe-row">
+          <input type="email" name="email" id="subscribe-email" class="subscribe-input" placeholder="you@example.com" required>
+          <button type="submit" class="subscribe-btn">Subscribe</button>
+        </div>
+        <p class="subscribe-consent">You're subscribing to the daily Claude Code digest. Unsubscribe anytime — every email includes a link.</p>
+      </form>
     </div>
   </section>
 
