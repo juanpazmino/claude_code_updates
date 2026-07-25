@@ -410,7 +410,8 @@ def collect_hacker_news():
             # Require minimum engagement to filter out noise
             if (hit.get("points") or 0) < 5:
                 continue
-            url = hit.get("url") or f"https://news.ycombinator.com/item?id={hit.get('objectID', '')}"
+            hn_permalink = f"https://news.ycombinator.com/item?id={hit.get('objectID', '')}"
+            url = hit.get("url") or hn_permalink
             # Skip raw GitHub issue URLs — those are bug reports, not news
             if "github.com" in url and "/issues/" in url:
                 continue
@@ -420,6 +421,10 @@ def collect_hacker_news():
                 "content": title[:2000],
                 "source": "Hacker News",
                 "url": url,
+                # Discussion permalink: the chat bot archives this instead of the
+                # submitter-supplied external URL, so a link post can't put an
+                # attacker's domain into the bot's set of linkable URLs.
+                "permalink": hn_permalink,
                 "score": hit.get("points") or 0,
             })
 
@@ -483,6 +488,10 @@ def collect_reddit_claudeai():
                 "content": title[:2000],
                 "source": "Reddit r/ClaudeAI",
                 "url": url,
+                # Discussion permalink: the chat bot archives this instead of the
+                # submitter-supplied external URL, so a link post can't put an
+                # attacker's domain into the bot's set of linkable URLs.
+                "permalink": permalink,
                 "score": pd.get("score", 0),
             })
 

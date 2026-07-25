@@ -88,7 +88,11 @@ def _save_knowledge(items, today):
 
     existing_urls = {entry["url"] for entry in knowledge}
     for item in items:
-        url = item.get("url", "")
+        # Prefer the discussion permalink (Reddit/HN carry one) over the
+        # submitter-supplied external URL, so the chat bot never archives an
+        # attacker-controlled domain into its set of linkable URLs. The digest
+        # page keeps using item["url"] and is unaffected.
+        url = item.get("permalink") or item.get("url", "")
         if not url or url in existing_urls:
             continue
         content = (item.get("content") or "").strip()
