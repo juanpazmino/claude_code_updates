@@ -442,6 +442,18 @@
       line-height: 1.6;
     }
 
+    .subscribe-consent a {
+      color: var(--gold);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(var(--gold-rgb), 0.35);
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .subscribe-consent a:hover {
+      color: var(--gold-hi);
+      border-bottom-color: var(--gold-hi);
+    }
+
     .sr-only {
       position: absolute;
       width: 1px;
@@ -639,7 +651,7 @@
           <input type="email" name="email" id="subscribe-email" class="subscribe-input" placeholder="you@example.com" required>
           <button type="submit" class="subscribe-btn">Subscribe</button>
         </div>
-        <p class="subscribe-consent">You're subscribing to the daily Claude Code digest. Unsubscribe anytime — every email includes a link.</p>
+        <p class="subscribe-consent">You're subscribing to the daily Claude Code digest. Unsubscribe anytime — every email includes a link. See our <a href="/privacy.html">Privacy Policy</a>.</p>
       </form>
     </div>
   </section>

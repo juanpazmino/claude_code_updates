@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0A0A0B">
+  <script>
+    try {
+      var t = localStorage.getItem('theme') || 'dark';
+      document.documentElement.dataset.theme = t;
+      var m = document.querySelector('meta[name="theme-color"]');
+      if (m) m.setAttribute('content', t === 'light' ? '#F5F0E8' : '#0A0A0B');
+    } catch (e) {}
+  </script>
+  <title>Privacy Policy · Claude Code Daily Digest</title>
+  <meta name="author" content="Juan Pazmino B">
+  <meta name="description" content="How the Claude Code Daily Digest handles your data: newsletter, analytics, and chat assistant.">
+  <meta name="robots" content="all">
+  <link rel="icon" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,100;9..144,300;9..144,400&family=IBM+Plex+Mono:wght@300;400&family=Jost:ital,wght@0,200;0,300;0,400;1,200&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #0A0A0B;
+      --gold-rgb:   184, 147, 80;
+      --text-rgb:   245, 240, 232;
+      --shadow-rgb: 10, 10, 11;
+
+      --surface: rgba(13, 13, 15, 0.92);
+      --gold:    rgba(var(--gold-rgb), 0.90);
+      --gold-hi: rgba(212, 176, 104, 0.90);
+      --cream:   rgba(var(--text-rgb), 0.70);
+      --muted:   rgba(var(--text-rgb), 0.55);
+    }
+
+    [data-theme="light"] {
+      --bg:         #F5F0E8;
+      --surface:    rgba(255, 252, 247, 0.95);
+      --gold-rgb:   140, 105, 40;
+      --text-rgb:   20, 18, 14;
+      --shadow-rgb: 244, 237, 225;
+      --gold-hi:    rgba(110, 82, 30, 0.80);
+    }
+
+    html { background: var(--bg); min-height: 100%; }
+
+    body {
+      color: var(--cream);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* ── GRAIN ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10;
+      opacity: 0.042;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E");
+      background-size: 300px 300px;
+    }
+
+    /* ── VIGNETTE — subtle edges only ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9;
+      background:
+        radial-gradient(ellipse 50% 80% at 0% 50%, rgba(var(--shadow-rgb), 0.22) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 80% at 100% 50%, rgba(var(--shadow-rgb), 0.22) 0%, transparent 70%);
+    }
+
+    /* ── PAGE SHELL ── */
+    .page {
+      position: relative;
+      z-index: 20;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 56px 40px 96px;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      margin-bottom: 44px;
+      animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 36px;
+    }
+
+    .back-link {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold-hi);
+      text-decoration: none;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .back-link::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--gold-hi);
+      transition: width 0.35s ease;
+    }
+
+    .back-link:hover::after { width: 100%; }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .phi-mark { flex-shrink: 0; opacity: 0.9; }
+
+    .page-title {
+      font-family: 'Fraunces', serif;
+      font-style: normal;
+      font-weight: 300;
+      font-size: clamp(34px, 5vw, 48px);
+      color: var(--cream);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+    }
+
+    .last-updated {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 300;
+      font-size: 13px;
+      color: rgba(var(--text-rgb), 0.4);
+      letter-spacing: 0.02em;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(var(--text-rgb), 0.1);
+    }
+
+    /* ── PROSE ── */
+    .prose { animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both; }
+
+    .prose .lead {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 19px;
+      color: var(--cream);
+      line-height: 1.7;
+      margin: 32px 0 8px;
+    }
+
+    .prose h2 {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 400;
+      font-size: 14px;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin: 44px 0 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .prose h2::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(var(--gold-rgb), 0.18);
+    }
+
+    .prose p {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 17px;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+
+    .prose ul { list-style: none; margin: 0 0 16px; }
+
+    .prose li {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 17px;
+      color: var(--muted);
+      line-height: 1.7;
+      padding-left: 20px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .prose li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 12px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(var(--gold-rgb), 0.55);
+    }
+
+    .prose strong {
+      color: var(--cream);
+      font-weight: 400;
+    }
+
+    .prose a {
+      color: var(--gold);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(var(--gold-rgb), 0.35);
+      transition: color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .prose a:hover {
+      color: var(--gold-hi);
+      border-bottom-color: var(--gold-hi);
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      margin-top: 64px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(var(--text-rgb), 0.08);
+      animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+    }
+
+    .footer-legal {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 300;
+      font-size: 13px;
+      color: rgba(var(--text-rgb), 0.38);
+      line-height: 1.85;
+      margin-bottom: 24px;
+    }
+
+    .footer-fibonacci {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 300;
+      font-size: 12px;
+      color: rgba(var(--gold-rgb), 0.3);
+      letter-spacing: 0.1em;
+    }
+
+    /* ── THEME TOGGLE ── */
+    .theme-toggle {
+      position: relative;
+      width: 50px;
+      height: 26px;
+      padding: 0;
+      border-radius: 13px;
+      border: 1px solid rgba(var(--gold-rgb), 0.45);
+      background: rgba(var(--gold-rgb), 0.10);
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    .theme-toggle:hover {
+      border-color: rgba(var(--gold-rgb), 0.75);
+      background: rgba(var(--gold-rgb), 0.18);
+    }
+
+    .theme-toggle::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--cream);
+      box-shadow: 0 1px 3px rgba(var(--shadow-rgb), 0.30);
+      transition: left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+
+    [data-theme="light"] .theme-toggle {
+      background: rgba(var(--gold-rgb), 0.88);
+      border-color: rgba(var(--gold-rgb), 0.95);
+    }
+    [data-theme="light"] .theme-toggle:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+    }
+    [data-theme="light"] .theme-toggle::after {
+      left: 27px;
+      background: #FFFFFF;
+    }
+
+    .theme-toggle svg {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 12px;
+      fill: none;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .theme-toggle .icon-sun  { left: 7px;  stroke: rgba(var(--gold-rgb), 0.9); opacity: 0; }
+    .theme-toggle .icon-moon { right: 7px; stroke: rgba(var(--gold-rgb), 0.9); opacity: 1; }
+
+    [data-theme="light"] .theme-toggle .icon-sun  { left: 7px;  stroke: #FFFFFF; opacity: 1; }
+    [data-theme="light"] .theme-toggle .icon-moon { right: 7px; stroke: #FFFFFF; opacity: 0; }
+
+    /* ── ANIMATION ── */
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      .page { padding: 40px 24px 72px; }
+      .prose .lead { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <div class="header-top">
+      <a class="back-link" href="/">&larr; Back to the digest</a>
+      <div class="header-controls">
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light mode">
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <line x1="12" y1="2"       x2="12"    y2="4"/>
+            <line x1="12" y1="20"      x2="12"    y2="22"/>
+            <line x1="4.93" y1="4.93"  x2="6.34"  y2="6.34"/>
+            <line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/>
+            <line x1="2"  y1="12"     x2="4"     y2="12"/>
+            <line x1="20" y1="12"     x2="22"    y2="12"/>
+            <line x1="4.93" y1="19.07" x2="6.34"  y2="17.66"/>
+            <line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+        <svg class="phi-mark" width="30" height="30" viewBox="0 0 34 34" fill="none" style="color: var(--gold-hi)">
+          <path d="M17 31C9.27 31 3 24.73 3 17C3 9.27 9.27 3 17 3C21.56 3 25.6 5.22 28.15 8.65" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round"/>
+          <path d="M17 24.5C13.41 24.5 10.5 21.59 10.5 18C10.5 14.41 13.41 11.5 17 11.5" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round"/>
+          <path d="M17 19.2C16.34 19.2 15.8 18.66 15.8 18C15.8 17.34 16.34 16.8 17 16.8" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round"/>
+          <circle cx="17" cy="18" r="1.1" fill="currentColor"/>
+        </svg>
+      </div>
+    </div>
+    <h1 class="page-title">Privacy Policy</h1>
+    <div class="last-updated">Last updated: July 25, 2026</div>
+  </header>
+
+  <main class="prose">
+    <p class="lead">This page explains what data the Claude Code Daily Digest collects, why, and what you can do about it. In short: to send you the newsletter we need your email address and nothing else.</p>
+
+    <h2>Who is responsible</h2>
+    <p>The data controller is <strong>Juan Pazmino B</strong>, AI Consultant, based in Spain (EU). For any privacy question or to exercise your rights, reach out at <a href="mailto:info@juanpazminob.com">info@juanpazminob.com</a>.</p>
+
+    <h2>What we collect and why</h2>
+    <ul>
+      <li><strong>Newsletter.</strong> When you subscribe, we collect your <strong>email address</strong> and use it for one purpose only: sending you the daily digest. The legal basis is your <strong>consent</strong>, confirmed through double opt-in (you click a link in a confirmation email before anything is sent).</li>
+      <li><strong>Email metadata.</strong> Our email provider may record whether messages are delivered, opened, or clicked, so the list stays healthy. We do not use this to build personal profiles.</li>
+      <li><strong>Site analytics.</strong> The website uses Vercel Web Analytics and Speed Insights — aggregate, privacy-friendly, and cookieless. They do not identify you.</li>
+      <li><strong>Chat assistant.</strong> If you use the &ldquo;Asistente IA&rdquo; chat, your messages are sent to Anthropic to generate a reply. Please don&rsquo;t type sensitive personal information into it.</li>
+    </ul>
+
+    <h2>Who processes your data</h2>
+    <p>We rely on a few providers that act on our behalf. We never sell your data or share it for advertising.</p>
+    <ul>
+      <li><strong>Buttondown</strong> — newsletter delivery (USA). Handles your email address so we can send the digest. See <a href="https://buttondown.com/legal/privacy" target="_blank" rel="noopener noreferrer">Buttondown&rsquo;s privacy policy</a>.</li>
+      <li><strong>Vercel</strong> — hosting and site analytics.</li>
+      <li><strong>Anthropic</strong> — powers the chat assistant&rsquo;s replies.</li>
+    </ul>
+
+    <h2>International transfers</h2>
+    <p>Some of these providers are based in the United States. Where your data leaves the EU, the transfer relies on appropriate safeguards such as the providers&rsquo; Standard Contractual Clauses.</p>
+
+    <h2>How long we keep it</h2>
+    <p>Your email stays on the list until you unsubscribe — every email includes an unsubscribe link. After you opt out, our provider may keep a minimal suppression record so we don&rsquo;t accidentally email you again.</p>
+
+    <h2>Your rights</h2>
+    <p>Under the GDPR and Spain&rsquo;s LOPDGDD, you can access, correct, delete, restrict, object to, or port your data, and withdraw consent at any time (just unsubscribe). To exercise any of these, contact us at <a href="mailto:info@juanpazminob.com">info@juanpazminob.com</a>. You also have the right to complain to the Spanish Data Protection Agency (<a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer">AEPD</a>).</p>
+
+    <h2>Cookies</h2>
+    <p>The site does not use tracking cookies. Your light/dark theme preference is stored locally in your own browser and never sent to us.</p>
+
+    <h2>Changes</h2>
+    <p>If this policy changes, we&rsquo;ll update the date at the top of this page.</p>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-legal">
+      &copy; 2026 Juan Pazmino B. All rights reserved.<br>
+      Claude Code Daily Digest is an independent, unofficial aggregator of publicly available information.<br>
+      Not affiliated with or endorsed by Anthropic, PBC. &ldquo;Claude&rdquo; and &ldquo;Claude Code&rdquo; are trademarks of Anthropic, PBC.
+    </div>
+    <div class="footer-fibonacci">1 &middot; 1 &middot; 2 &middot; 3 &middot; 5 &middot; 8 &middot; 13 &middot; 21</div>
+  </footer>
+
+</div>
+<script>
+(function () {
+  const toggle = document.getElementById('theme-toggle');
+  if (!toggle) return;
+
+  function applyAriaLabel(theme) {
+    toggle.setAttribute('aria-label',
+      theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode');
+  }
+
+  applyAriaLabel(document.documentElement.dataset.theme || 'dark');
+
+  const metaTheme = document.querySelector('meta[name="theme-color"]');
+
+  toggle.addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    applyAriaLabel(next);
+    if (metaTheme) metaTheme.setAttribute('content', next === 'light' ? '#F5F0E8' : '#0A0A0B');
+  });
+})();
+</script>
+</body>
+</html>
