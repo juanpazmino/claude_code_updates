@@ -10,7 +10,7 @@ Do not derive them from this file or from memory.
 
 ## Project Overview
 
-Claude Code Daily Digest — a self-updating web page that collects, summarizes, and publishes daily Claude Code updates, plus a chat assistant ("Asistente IA") that answers Claude Code questions from the accumulated archive. Runs locally with Python + Anthropic API, deploys to Vercel as a static site with one serverless function (`/api/chat`).
+Claude Code Daily Digest — a self-updating web page that collects, summarizes, and publishes daily Claude Code updates, plus a chat assistant ("Asistente IA") that answers Claude Code questions from the accumulated archive, plus a daily email newsletter (Buttondown) that broadcasts the digest to subscribers. Runs locally with Python + Anthropic API, deploys to Vercel as a static site with one serverless function (`/api/chat`).
 
 **Live site:** https://www.claudecodedigest.com
 
@@ -21,11 +21,12 @@ Claude Code Daily Digest — a self-updating web page that collects, summarizes,
 - **Frontend:** Vanilla HTML/CSS/JS — `index.html` + chat widget (`chatbot.js`/`chatbot.css`)
 - **Hosting:** Vercel static site + one Vercel Function (`api/chat.js`, Node ESM)
 - **Deploy tool:** Vercel CLI installed locally via npm (`npx vercel`)
+- **Newsletter:** Buttondown — native embed subscribe form (no proxy); `email_template.py` renders the email, `send_email.py` broadcasts it; `BUTTONDOWN_API_KEY` lives in the local `.env` only (send runs from the Mac, not Vercel)
 
 ## Pipeline
 
 ```
-collect (10 sources) → seen-items filter → select features + news → summarize (Sonnet 5) → append New Versions (Python) → write digest.json → deploy (Vercel)
+collect (10 sources) → seen-items filter → select features + news → summarize (Sonnet 5) → append New Versions (Python) → write digest.json → deploy (Vercel) → send email (Buttondown)
 ```
 
 1. `collectors.py` scrapes: GitHub Releases, Anthropic Blog (direct scrape), Anthropic Engineering Blog, Claude Release Notes, Docs Changelog, Chase AI Blog, Chase AI YouTube, Tyler Germain Gists, Hacker News, Reddit r/ClaudeAI
@@ -37,6 +38,7 @@ collect (10 sources) → seen-items filter → select features + news → summar
 7. `generate_digest.py` saves selected feature URLs + top 5 shown news URLs to `seen_urls.json` (30-day TTL) so next run prefers fresh items
 8. `generate_digest.py` appends published items to `knowledge.json` (permanent archive, deduped by URL — feeds the chat assistant)
 9. `run_updates.sh` runs the pipeline + `npx vercel deploy --prod --yes --scope juan-pazmino-bs-projects`
+10. `run_updates.sh` then runs `send_email.py` — renders `public/digest.json` into an email-safe template and broadcasts it to Buttondown subscribers, **after** the deploy so the "read more" link points at a live site
 
 ### Section definitions
 
@@ -58,6 +60,8 @@ npx vercel deploy --prod --yes --scope juan-pazmino-bs-projects  # Deploy to Ver
 # generate_digest.command              # macOS double-click launcher (runs full pipeline)
 node dev/server.mjs                    # Local chat dev server (emulates the Vercel Function, serves public/, needs .env)
 python backfill_knowledge.py           # One-off: rebuild knowledge.json from seen_urls.json (already run 2026-07-22)
+python send_email.py                    # Render digest.json → email + broadcast to Buttondown (guards: degraded / double-send)
+python email_template.py                # Render email_sample.html for review only (does not send)
 ```
 
 ## Conventions
@@ -89,6 +93,15 @@ python backfill_knowledge.py           # One-off: rebuild knowledge.json from se
 - **URL belt**: deterministic server-side filter — any URL the model emits that is not in `knowledge.json`'s allow-list is cut from the stream before reaching the client and replaced with a canonical "not in my knowledge" line (language-matched)
 - `public/chatbot.js` / `chatbot.css` — floating widget cloned from the juanpazminob.com chatbot (same φ-spiral icon, same architecture: zero innerHTML, model text via `textContent` only, iOS visualViewport handling); `cb-` class prefix; visible "Asistente IA" label (EU AI Act Art. 50); reads the page's theme vars so both themes stay in sync
 - `dev/server.mjs` — local harness emulating the Vercel Function; `KNOWLEDGE_PATH` env var can point it at a fixture
+
+### Newsletter (Buttondown)
+
+- `email_template.py` — renders email-safe HTML from a `public/digest.json`-shaped dict: `render_email_html(digest)` + `get_subject_line(date_display)`. Table-based layout, inline styles, flattened **opaque light-mode** brand colors (email clients ignore CSS vars and `prefers-color-scheme`); Georgia stands in for Fraunces, Arial for Jost, Courier for IBM Plex Mono. The email is deliberately shorter than the site: **New Features** + **General News** are merged into one **News & Features** section (first 2 of each, 4 total) and **New Versions** is dropped. The "News & Features" label + date live in the email header, so the merged section is rendered with `show_heading=False`. `python email_template.py` writes `email_sample.html` for visual review (gitignored, never committed).
+- `send_email.py` — run by `run_updates.sh` after the deploy. `POST https://api.buttondown.com/v1/emails` (Token auth), `status: "about_to_send"` to broadcast, **plus header `X-Buttondown-Live-Dangerously: true`** (required the first time a key sends under Buttondown API version `2026-04-01`, which made `draft` the default — see Gotchas). Two guards: (1) skip if the digest is degraded (⚠️ marker in `summary_html`); (2) skip if today's `date_display` is already recorded in `.email_sent.json` (gitignored double-send marker). Loads `BUTTONDOWN_API_KEY` from `.env`, never logs it; all failures log a warning and return without raising, so a Buttondown error never kills the pipeline.
+- Subscribe form (`public/index.html`, `.subscribe-section`) — native `<form>` POST to `https://buttondown.com/api/emails/embed-subscribe/pazmino`; **no serverless proxy** (the embed endpoint is public, so there is no key to hide). `form-action 'self' https://buttondown.com` is added to the CSP in `vercel.json`. Double opt-in is ON in Buttondown (GDPR consent). The consent line links to `/privacy.html`.
+- `public/privacy.html` — static GDPR/LOPDGDD privacy page reusing `index.html`'s design system (dual-theme, Fraunces/IBM Plex Mono/Jost, grain + vignette, theme toggle, footer + Fibonacci). Covers newsletter (email + consent), analytics, chat assistant, processors (Buttondown/Vercel/Anthropic), international transfers, retention, rights + AEPD. Contact: `info@juanpazminob.com`. Linked from the subscribe form's consent line.
+- Buttondown email template = **Classic** (single title, content **left-aligned**), chosen over **Modern** (centered but renders the subject twice — its header prints newsletter-name + date as an eyebrow that duplicates our "name · date" subject). Toggle in Buttondown dashboard → Settings → Email. Accent color set to `#897246`.
+- Free tier accepted — the "Powered by Buttondown" footer stays; ≤100 subscribers.
 
 ### Collector details
 
@@ -142,6 +155,10 @@ python backfill_knowledge.py           # One-off: rebuild knowledge.json from se
 - **`.vercelignore` patterns are anchored to root** (`/package.json`, `/package-lock.json`) — anchoring is required so `api/package.json` still deploys; un-anchoring them silently breaks the function's dependency install.
 - **Widget z-index must stay above 20** — `.page` in `index.html` has `z-index: 20`; the chat bubble/panel use 30/31. Cloning z-values from the juanpazminob.com widget (18/19) puts the page on top of the chat.
 - **Preview deployments are behind Vercel Authentication** — anonymous curls to a preview URL get 401; test the chat function on the production domain instead.
+- **`run_updates.sh` deploys the whole working tree** — `npx vercel deploy` publishes `public/` + `api/` from disk, including *uncommitted* changes, and then `send_email.py` broadcasts whatever template is on disk. A scheduled run mid-edit can push work-in-progress live and email a half-finished template. Git can lag behind production; commit before (or right after) a run.
+- **Newsletter first send needs `X-Buttondown-Live-Dangerously: true`** — Buttondown API version `2026-04-01` made `draft` the default; without the header a first `about_to_send` returns `400 sending_requires_confirmation` and `send_email.py`'s try/except silently skips (no email goes out). The header is harmless on later sends, so it is always included.
+- **Newsletter double-send marker keys on `date_display`** — `send_email.py` won't resend if `.email_sent.json` already holds today's `date_display`. To force a resend (e.g. testing a template change on the same day), delete `.email_sent.json` — or bypass the guards with a one-off script that calls `render_email_html` + posts directly.
+- **Buttondown wraps our HTML** — the email body is embedded inside Buttondown's own template, whose outer container controls alignment (Classic = left, Modern = centered). Our table-level `align="center"` cannot override it. The subject H1 and the "Powered by Buttondown" footer are Buttondown chrome, not in `email_template.py`.
 
 ## Important Notes
 
