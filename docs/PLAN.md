@@ -34,7 +34,20 @@ Goal: understand who visits, where they come from, what they read, and how the s
 - [x] Add `@vercel/analytics` script tag to `public/index.html`
 - [x] Add Vercel Speed Insights script tag to `public/index.html`
 
-## Phase 4: Newsletter
+## Phase 3.5: Chat Assistant (Asistente IA) — DONE
+Goal: answer Claude Code questions from the archive the digest already accumulates.
+Built 2026-07-22, hardened 2026-07-24. Not planned in advance — added here retroactively so the plan matches reality.
+
+- [x] `knowledge.json` permanent append-only archive, fed by each pipeline run
+- [x] `backfill_knowledge.py` one-off seed from `seen_urls.json` (190 items, run 2026-07-22)
+- [x] `api/chat.js` Vercel Function — Haiku 4.5, full knowledge inlined with prompt caching, sole holder of the API key
+- [x] Floating widget (`chatbot.js` / `chatbot.css`) cloned from the juanpazminob.com bot, "Asistente IA" label for EU AI Act Art. 50
+- [x] In-memory rate limit (20 req / 10 min per IP) + request validation
+- [x] `dev/server.mjs` local harness emulating the Function
+- [x] Security hardening (commit `8878505`): scraped-content injection fence + deterministic URL allow-list belt
+- [ ] Prompt occasionally returns 3 links instead of the 2-link cap — open fine-tuning
+
+## Phase 4: Newsletter — LIVE since 2026-07-24 · 2 open items
 Goal: let readers subscribe and receive the daily digest by email automatically.
 
 **Service:** Buttondown (account live, newsletter `pazmino`, free tier ≤100 subscribers).
@@ -47,25 +60,29 @@ Confirmation flow (double opt-in) is ON by default → GDPR/LOPDGDD covered. Pub
 - Email body (lands in the inbox) → ~60-80% brand — email-safe HTML: inline styles, tables, serif fallback for Fraunces, no CSS variables / grain / `data-theme`
 
 ### 4a — Subscribe form (small)
-- [ ] Add styled native `<form>` to `public/index.html` posting to the Buttondown embed endpoint; brand the input/button/success + error states
-- [ ] Optional: submit via `fetch()` to stay on-page instead of redirecting to Buttondown
-- [ ] Add `buttondown.com` to `form-action`/`connect-src` in `vercel.json` CSP
+- [x] Add styled native `<form>` to `public/index.html` posting to the Buttondown embed endpoint; brand the input/button/success + error states
+- [~] Optional: submit via `fetch()` to stay on-page instead of redirecting to Buttondown — **dropped.** The native form POST works and needs no `connect-src` widening; the redirect to Buttondown's confirmation page is acceptable.
+- [x] Add `buttondown.com` to `form-action` in `vercel.json` CSP (`connect-src` not needed — no `fetch()`)
 
 ### 4b — Email body template (the real work)
-- [ ] Build an email-safe HTML template from the same structured items the digest already produces (not from `public/digest.json`, which targets browser HTML)
-- [ ] Serif fallback for Fraunces; gold accents; clean single-column layout
-- [ ] Test rendering in Gmail + Apple Mail + Outlook before first send
+- [x] Build an email-safe HTML template (`email_template.py`) — table layout, inline styles, flattened opaque light-mode brand colors
+- [x] Serif fallback for Fraunces (Georgia); gold accents; clean single-column layout
+- [x] Merge **New Features** + **General News** into one 4-item **News & Features** block; drop **New Versions** — the email is deliberately shorter than the site
+- [x] Reparto changed 2+2 → **3 features + 1 news** (2026-08-02), verified by content against a real digest
+- [ ] Test rendering in Apple Mail + Outlook — **Gmail verified live** (2026-08-02); the other two clients never checked
 
 ### 4c — Send integration (in `run_updates.sh`, from the Mac, after deploy)
-- [ ] Send via `POST https://api.buttondown.com/v1/emails` (Token auth, key in `.env` local only)
-- [ ] Guard 1 — do not send if the digest came back degraded (the ⚠️ silent-summarizer-failure case)
-- [ ] Guard 2 — do not double-send on a manual re-run (create as draft, or a "sent today" marker)
+- [x] Send via `POST https://api.buttondown.com/v1/emails` (Token auth, key local only) — `send_email.py`
+- [x] Guard 1 — do not send if the digest came back degraded (the ⚠️ silent-summarizer-failure case)
+- [x] Guard 2 — do not double-send on a manual re-run (`.email_sent.json` "sent today" marker)
+- [x] `X-Buttondown-Live-Dangerously: true` header — required since API version 2026-04-01 made `draft` the default
 
 ### 4d — Compliance
-- [ ] Privacy note linked from the form (reuse the personal-site `privacy.html` shape)
-- [ ] Confirm "Powered by Buttondown" free-tier footer is acceptable, or plan the paid tier to remove it
+- [x] Privacy note linked from the form (`public/privacy.html`, commit `19a1849`)
+- [ ] Confirm "Powered by Buttondown" free-tier footer is acceptable, or plan the paid tier to remove it — **needs Juan's call**
 
-## Phase 5: Quality & Depth
+## Phase 5: Quality & Depth — NEXT
+- [ ] Generate an RSS feed (`public/feed.xml`) alongside `digest.json` on each pipeline run — carried over from the April 2026 distribution analysis, never built; it was PROGRESS.md's stale "next action" for four months
 - [ ] Pull full article text for Anthropic Engineering posts (richer LLM summaries)
 - [ ] Score and rank engineering posts by recency (no dates exposed — investigate JSON-LD or meta tags)
 - [ ] Tune summarizer prompt: reduce flat/generic descriptions

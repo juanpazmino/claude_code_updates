@@ -219,10 +219,10 @@ def render_email_html(digest):
     gracefully (empty sections/tip are simply omitted).
 
     The email is intentionally shorter than the site: "New Features" and
-    "General News" are merged into one "News & Features" section (first 2
-    items from each, 4 total) with a section-level CTA back to the site for
-    anyone who wants the rest. "New Versions" is dropped entirely — version
-    bumps read as noise in an inbox digest.
+    "General News" are merged into one "News & Features" section (first 3
+    features + first news item, 4 total) with a section-level CTA back to the
+    site for anyone who wants the rest. "New Versions" is dropped entirely —
+    version bumps read as noise in an inbox digest.
     """
     date_display = digest.get("date_display", "")
     sections = _parse_sections(digest.get("summary_html", ""))
@@ -230,7 +230,7 @@ def render_email_html(digest):
 
     features = next((s for s in sections if s["heading"] == "New Features"), None) or {"items": []}
     news = next((s for s in sections if s["heading"] == "General News"), None) or {"items": []}
-    merged_items = features["items"][:2] + news["items"][:2]
+    merged_items = features["items"][:3] + news["items"][:1]
 
     sections_html = ""
     if merged_items:
