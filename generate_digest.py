@@ -88,7 +88,7 @@ def _save_knowledge(items, today):
 
     existing_urls = {entry["url"] for entry in knowledge}
     for item in items:
-        # Prefer the discussion permalink (Reddit/HN carry one) over the
+        # Prefer the discussion permalink (HN carries one) over the
         # submitter-supplied external URL, so the chat bot never archives an
         # attacker-controlled domain into its set of linkable URLs. The digest
         # page keeps using item["url"] and is unaffected.
@@ -236,7 +236,7 @@ def main():
                [i for i in pool if i["url"] in seen_urls]
 
     chase_sources = {"Chase AI Blog", "Chase AI YouTube"}
-    feature_excluded = chase_sources | {"Anthropic Blog", "Anthropic Engineering", "Claude Release Notes", "Docs Changelog", "Hacker News", "Reddit r/ClaudeAI"}
+    feature_excluded = chase_sources | {"Anthropic Blog", "Anthropic Engineering", "Claude Release Notes", "Docs Changelog", "Hacker News"}
     chase_items = _prefer_unseen([i for i in items if i["source"] in chase_sources])
     other_items = _prefer_unseen([i for i in items if i["source"] not in feature_excluded])
     n_chase = min(2, len(chase_items))
@@ -251,7 +251,7 @@ def main():
     logger.info(f"Selected {len(selected)} feature items: {n_chase} Chase AI, {n_other} other")
 
     # Step 2b: Build General News items — only Anthropic Blog + Docs Changelog, never repeat features
-    news_sources = {"Anthropic Blog", "Anthropic Engineering", "Docs Changelog", "Claude Release Notes", "Hacker News", "Reddit r/ClaudeAI"}
+    news_sources = {"Anthropic Blog", "Anthropic Engineering", "Docs Changelog", "Claude Release Notes", "Hacker News"}
     selected_urls = {i["url"] for i in selected}
     news_items = [i for i in items if i["source"] in news_sources and i["url"] not in selected_urls]
 

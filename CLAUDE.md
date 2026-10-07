@@ -26,11 +26,11 @@ Claude Code Daily Digest — a self-updating web page that collects, summarizes,
 ## Pipeline
 
 ```
-collect (10 sources) → seen-items filter → select features + news → summarize (Sonnet 5) → append New Versions (Python) → write digest.json → deploy (Vercel) → send email (Buttondown)
+collect (9 sources) → seen-items filter → select features + news → summarize (Sonnet 5) → append New Versions (Python) → write digest.json → deploy (Vercel) → send email (Buttondown)
 ```
 
-1. `collectors.py` scrapes: GitHub Releases, Anthropic Blog (direct scrape), Anthropic Engineering Blog, Claude Release Notes, Docs Changelog, Chase AI Blog, Chase AI YouTube, Tyler Germain Gists, Hacker News, Reddit r/ClaudeAI
-2. `generate_digest.py` loads `seen_urls.json`, prefers unseen items, selects: 2 Chase AI + up to 3 from GitHub Releases/Gists for New Features; Anthropic Blog + Anthropic Engineering + Claude Release Notes + Docs Changelog + Hacker News + Reddit for General News
+1. `collectors.py` scrapes: GitHub Releases, Anthropic Blog (direct scrape), Anthropic Engineering Blog, Claude Release Notes, Docs Changelog, Chase AI Blog, Chase AI YouTube, Tyler Germain Gists, Hacker News (Reddit r/ClaudeAI removed 2026-10-07 — its JSON API had returned 403 to unauthenticated scripts since 2026-05-13, and the RSS feed rate-limits after one request and carries no vote score)
+2. `generate_digest.py` loads `seen_urls.json`, prefers unseen items, selects: 2 Chase AI + up to 3 from GitHub Releases/Gists for New Features; Anthropic Blog + Anthropic Engineering + Claude Release Notes + Docs Changelog + Hacker News for General News
 3. **2 most recent** Claude Release Notes items are **pinned** — always appear first in General News regardless of LLM selection
 4. `summarizer_v2.py` sends numbered items to Anthropic Sonnet 5, outputs markdown with **New Features** and **General News** only
 5. `generate_digest.py` appends **New Versions** deterministically via `collectors.get_latest_github_release()` — never LLM-generated
@@ -45,7 +45,7 @@ collect (10 sources) → seen-items filter → select features + news → summar
 | Section | What goes in it | Sources |
 |---|---|---|
 | `## New Features` | Claude Code CLI capabilities, version updates, plugin/tool guides | Chase AI Blog (2) + GitHub Releases + Gists (fills to 5) |
-| `## General News` | Anthropic/Claude company-level news: product launches, funding, partnerships | Claude Release Notes (2 pinned) + Anthropic Blog + Anthropic Engineering + Docs Changelog + Hacker News + Reddit r/ClaudeAI |
+| `## General News` | Anthropic/Claude company-level news: product launches, funding, partnerships | Claude Release Notes (2 pinned) + Anthropic Blog + Anthropic Engineering + Docs Changelog + Hacker News |
 | `## New Versions` | Latest Claude Code GitHub release — deterministic Python, never LLM | GitHub Releases API |
 
 ## Key Commands
@@ -66,7 +66,7 @@ python email_template.py                # Render email_sample.html for review on
 
 ## Conventions
 
-- Config in `config.py` (UPPERCASE constants, no personal data) — includes `HN_SEARCH_URL`, `REDDIT_CLAUDEAI_URL`, `CHASE_AI_YOUTUBE_CHANNEL_ID`, and all source URLs
+- Config in `config.py` (UPPERCASE constants, no personal data) — includes `HN_SEARCH_URL`, `CHASE_AI_YOUTUBE_CHANNEL_ID`, and all source URLs
 - Collectors return standardized items: `{title, date, content, source, url}`
 - Error handling: try/except with `logging.warning`, graceful degradation
 - Logging: module-based `logging.getLogger(__name__)` pattern
@@ -78,10 +78,10 @@ python email_template.py                # Render email_sample.html for review on
 - `seen_urls.json` is gitignored — tracks shown item URLs with 30-day TTL; deleted manually to reset freshness
 - `knowledge.json` is **committed to git** (not gitignored, unlike digest/seen files) — permanent append-only archive of every published item (`{url, title, description, source, date}`); it is the chat assistant's entire knowledge and cannot be regenerated if lost; seeded 2026-07-22 by `backfill_knowledge.py` (190 items)
 - `tips.py` — `get_tip_of_the_day()` uses sequential day-number rotation (epoch 2025-01-01); tries `fetch_dynamic_tips()` from Anthropic docs first, falls back to static `TIPS` list; `fetch_dynamic_tips()` uses `separator=" "` + `re.sub` punctuation cleanup to fix space-before-period artifacts from BeautifulSoup parsing
-- `summarizer_v2.py` — active summarizer; uses Anthropic Sonnet 5 via `anthropic` SDK; `PLATFORM_MAP` maps source names to display labels (e.g. "Chase AI Blog" → "Chase AI", "Reddit r/ClaudeAI" → "Reddit", "Hacker News" → "Hacker News", "Anthropic Engineering" → "Anthropic Engineering"); feature items are numbered 1–5; `summarize()` accepts `pinned_news_items` for mandatory General News entries; loads `ANTHROPIC_API_KEY` from `.env` via `python-dotenv`
+- `summarizer_v2.py` — active summarizer; uses Anthropic Sonnet 5 via `anthropic` SDK; `PLATFORM_MAP` maps source names to display labels (e.g. "Chase AI Blog" → "Chase AI", "Hacker News" → "Hacker News", "Anthropic Engineering" → "Anthropic Engineering"); feature items are numbered 1–5; `summarize()` accepts `pinned_news_items` for mandatory General News entries; loads `ANTHROPIC_API_KEY` from `.env` via `python-dotenv`
 - `summarizer.py` — legacy Ollama summarizer; kept for reference but no longer used by the pipeline
 - `summarizer_v3.py` — another legacy Ollama summarizer; kept for reference but not used by the pipeline
-- `generate_digest.py` — `_ensure_complete_descriptions(md)` post-processes LLM output before HTML conversion; `_load_seen_urls()` / `_save_seen_urls()` manage the freshness filter; `_prefer_unseen()` sorts item pools so unseen items come first; `markdown_to_html()` splits markdown on `## ` headings into `<section class="section">` blocks and calls `_parse_section_items()` for each; `_parse_section_items()` converts bullet items into `div.item-title` + `div.item-desc` + `a.item-link` structure — New Versions section is handled separately (plain text + inline link, no bullet format); `feature_excluded` set blocks Anthropic Blog, Anthropic Engineering, Docs Changelog, HN, and Reddit from Features; `news_sources` set includes Anthropic Blog, Anthropic Engineering, Docs Changelog, HN, and Reddit for General News; `official_sources` includes Anthropic Blog, Anthropic Engineering, Docs Changelog, Claude Release Notes — these get a baseline score of 50 in the two-tier sort; `_prefer_unseen()` is applied after score sort so unseen items still surface first within each tier
+- `generate_digest.py` — `_ensure_complete_descriptions(md)` post-processes LLM output before HTML conversion; `_load_seen_urls()` / `_save_seen_urls()` manage the freshness filter; `_prefer_unseen()` sorts item pools so unseen items come first; `markdown_to_html()` splits markdown on `## ` headings into `<section class="section">` blocks and calls `_parse_section_items()` for each; `_parse_section_items()` converts bullet items into `div.item-title` + `div.item-desc` + `a.item-link` structure — New Versions section is handled separately (plain text + inline link, no bullet format); `feature_excluded` set blocks Anthropic Blog, Anthropic Engineering, Docs Changelog, and HN from Features; `news_sources` set includes Anthropic Blog, Anthropic Engineering, Docs Changelog, and HN for General News; `official_sources` includes Anthropic Blog, Anthropic Engineering, Docs Changelog, Claude Release Notes — these get a baseline score of 50 in the two-tier sort; `_prefer_unseen()` is applied after score sort so unseen items still surface first within each tier
 - `public/old/` — archived frontend snapshots (`index_v1.html`, `index_v2.html`); kept for reference, not served
 - `updates.log` — generated by `run_updates.sh` (pipeline stdout), gitignored; useful for debugging scheduled runs
 - `run_updates.sh` — exports `PATH` explicitly at the top (includes `/usr/local/bin` and `~/.npm-global/bin`); required because Automator apps launch with a minimal PATH that doesn't include `node`/`npx`
@@ -116,7 +116,6 @@ python email_template.py                # Render email_sample.html for review on
 | `collect_github_releases()` | GitHub API | Date-filtered by `LOOKBACK_HOURS`; release body (up to 2000 chars) passed as `content` to LLM for New Features; also used for New Versions (deterministic) |
 | `collect_tylergermain_gists()` | `gist.github.com/tylergermain` | Keyword-filtered |
 | `collect_hacker_news()` | Algolia HN search API (`hn.algolia.com`) | `LOOKBACK_HOURS * 2` cutoff; min 5 points; skips raw GitHub issue URLs; General News only |
-| `collect_reddit_claudeai()` | `reddit.com/r/ClaudeAI/new.json` + `/hot.json` | `LOOKBACK_HOURS * 2` cutoff; min score 2; deduped by post ID; uses external URL for non-native links; General News only |
 
 ### Item format (LLM output, all sections except New Versions)
 
@@ -149,7 +148,7 @@ python email_template.py                # Render email_sample.html for review on
 - **CSP blocks external images and scripts** — `vercel.json` sets `img-src 'self'` and `script-src 'self' 'unsafe-inline'`; any `<img>` or `<script src>` pointing to an external domain silently fails. Exception: `/_vercel/` paths (analytics, speed insights) are proxied same-origin by Vercel and work without CSP changes. Update headers in `vercel.json` before adding any other external resources.
 - **Summarizer failure is graceful but silent** — if the Anthropic API call fails, `summarizer_v2.py` returns a raw feature dump with a ⚠️ prefix; the pipeline still writes and deploys a degraded digest without erroring out.
 - **Only top 5 optional news items reach the LLM** — `optional_parts = news_pool[:5]` in `summarizer_v2.py`; items ranked 6+ are never summarized regardless of score, making the two-tier sort in `generate_digest.py` load-bearing.
-- **`LOOKBACK_HOURS` is asymmetric** — GitHub Releases uses exactly `LOOKBACK_HOURS` (24h); HN and Reddit use `LOOKBACK_HOURS * 2` (48h). Changing the value in `config.py` does not affect all sources equally.
+- **`LOOKBACK_HOURS` is asymmetric** — GitHub Releases uses exactly `LOOKBACK_HOURS` (24h); HN uses `LOOKBACK_HOURS * 2` (48h). Changing the value in `config.py` does not affect all sources equally.
 - **Vercel CLI requires `--scope` in non-interactive mode** — always include `--scope juan-pazmino-bs-projects`; omitting it causes a new project to be created instead of deploying to `claude-code-digest`. `.vercel/project.json` is committed (whitelisted in `.gitignore`) so the correct project link is always present.
 - **Chat knowledge is frozen at deploy time** — `vercel.json` `functions.includeFiles` bundles `knowledge.json` into `api/chat.js`; the URL allow-list loads at cold start, so new knowledge only reaches the chat after the next deploy (the daily `run_updates.sh` deploy covers this).
 - **`.vercelignore` patterns are anchored to root** (`/package.json`, `/package-lock.json`) — anchoring is required so `api/package.json` still deploys; un-anchoring them silently breaks the function's dependency install.

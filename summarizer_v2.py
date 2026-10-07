@@ -35,7 +35,6 @@ PLATFORM_MAP = {
     "Claude Release Notes": "Anthropic",
     "Tyler Germain Gists": "GitHub",
     "Hacker News": "Hacker News",
-    "Reddit r/ClaudeAI": "Reddit",
 }
 
 
