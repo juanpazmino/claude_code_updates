@@ -93,8 +93,11 @@ def fetch_dynamic_tips():
             cells = row.find_all("td")
             if len(cells) >= 2:
                 import re as _re
-                command = cells[0].get_text(separator=" ", strip=True)
-                description = _re.sub(r'\s+([.,;:/])', r'\1', cells[1].get_text(separator=" ", strip=True))
+                # separator=" " leaves stray spaces around punctuation between
+                # inline tags ("--bg , --background", "-p / --print"); tidy both cells
+                tidy = lambda t: _re.sub(r'\s*/\s*', '/', _re.sub(r'\s+([.,;:])', r'\1', t))
+                command = tidy(cells[0].get_text(separator=" ", strip=True))
+                description = tidy(cells[1].get_text(separator=" ", strip=True))
                 if command and len(description) > 10:
                     tips.append({"command": command, "description": description})
 

@@ -9,7 +9,23 @@
    non-italic. The source widget (juanpazminob.com) sets message text in
    italic Fraunces 200 — those weights/styles aren't loaded here, so this
    version uses Fraunces 300 upright instead of adding a new font-weight
-   axis to the shared Google Fonts import. */
+   axis to the shared Google Fonts import.
+   BRAND v2 (2026-10-18): bubble and panel follow the theme with the same
+   raised surface as the juanpazminob.com widget, so an open panel reads as a
+   window instead of melting into the page; weights 200 → 300. */
+
+:root {
+  --cb-surface: #2A251F;                    /* opaque, one plane above --bg */
+  --cb-head:    rgba(204, 168, 102, 0.07);  /* header band */
+  --cb-border:  rgba(204, 168, 102, 0.30);
+  --cb-shadow:  rgba(0, 0, 0, 0.60);
+}
+[data-theme="light"] {
+  --cb-surface: #FCF8EF;
+  --cb-head:    rgba(122, 88, 24, 0.07);
+  --cb-border:  rgba(122, 88, 24, 0.35);
+  --cb-shadow:  rgba(60, 50, 30, 0.30);
+}
 
 .cb-bubble {
   position: fixed;
@@ -18,8 +34,9 @@
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: #0A0A0B; /* brand mark stays dark in both themes, like the favicon */
-  border: 1px solid rgba(184, 147, 80, 0.30);
+  background: var(--cb-surface);
+  border: 1px solid var(--cb-border);
+  box-shadow: 0 6px 18px var(--cb-shadow);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -33,7 +50,8 @@
               border-color 0.4s ease;
 }
 .cb-bubble.cb-in { opacity: 1; transform: translateY(0); }
-.cb-bubble:hover { border-color: rgba(212, 176, 104, 0.75); }
+.cb-bubble:hover { border-color: var(--gold-hi); }
+.cb-bubble svg path { stroke: var(--gold-hi); }  /* JS sets a fixed dark-theme gold */
 .cb-bubble:focus-visible { outline: 1px solid var(--gold); outline-offset: 3px; }
 .cb-bubble svg { width: 32px; height: 32px; display: block; }
 .cb-bubble.cb-hidden { display: none; }
@@ -45,12 +63,10 @@
   bottom: 24px;
   width: 360px;
   height: min(560px, calc(100vh - 48px));
-  /* Near-opaque surface like the juanpazminob.com widget (--cb-surface 0.97/0.98):
-     the page's --surface (0.92) lets underlying text bleed through a floating panel */
-  background: rgba(13, 13, 15, 0.97);
-  border: 1px solid rgba(var(--gold-rgb), 0.16);
+  background: var(--cb-surface);
+  border: 1px solid var(--cb-border);
   border-radius: 14px;
-  box-shadow: 0 24px 64px rgba(var(--shadow-rgb), 0.55);
+  box-shadow: 0 24px 64px var(--cb-shadow), 0 0 48px rgba(var(--gold-rgb), 0.08);
   display: none;
   flex-direction: column;
   overflow: hidden;
@@ -62,7 +78,6 @@
 }
 .cb-panel.cb-open { display: flex; }
 .cb-panel.cb-in { opacity: 1; transform: translateY(0); }
-[data-theme="light"] .cb-panel { background: rgba(255, 252, 247, 0.98); }
 
 /* ── Header (Art. 50 label + name) ──────────────────────── */
 .cb-header {
@@ -70,7 +85,8 @@
   align-items: flex-start;
   justify-content: space-between;
   padding: 16px 18px 12px 20px;
-  border-bottom: 1px solid rgba(var(--gold-rgb), 0.16);
+  background: var(--cb-head);
+  border-bottom: 1px solid var(--cb-border);
   flex-shrink: 0; /* never compresses when the keyboard shrinks the panel */
 }
 .cb-chips, .cb-inputrow, .cb-footer { flex-shrink: 0; }
@@ -81,7 +97,7 @@
   font-weight: 400;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(var(--gold-rgb), 0.45);
+  color: var(--gold);
 }
 .cb-name {
   display: block;
@@ -97,7 +113,7 @@
   color: var(--muted);
   font-family: 'Jost', sans-serif;
   font-size: 22px;
-  font-weight: 200;
+  font-weight: 300;
   line-height: 1;
   cursor: pointer;
   padding: 2px 6px;
@@ -173,7 +189,7 @@
   color: var(--gold);
   font-family: 'Jost', sans-serif;
   font-size: 12px;
-  font-weight: 200;
+  font-weight: 300;
   letter-spacing: 0.04em;
   padding: 8px 14px;
   cursor: pointer;
@@ -210,7 +226,7 @@
   color: var(--gold);
   font-family: 'Jost', sans-serif;
   font-size: 20px;
-  font-weight: 200;
+  font-weight: 300;
   line-height: 1;
   cursor: pointer;
   padding: 4px 8px;
@@ -227,7 +243,7 @@
   font-size: 10px;
   font-weight: 300;
   letter-spacing: 0.08em;
-  color: rgba(var(--gold-rgb), 0.45);
+  color: rgba(var(--gold-rgb), 0.75);
 }
 
 /* ── Mobile: full-screen panel ──────────────────────────── */

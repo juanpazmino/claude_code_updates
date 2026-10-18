@@ -2,6 +2,7 @@
 
 import logging
 import os
+import re
 
 import anthropic
 from dotenv import load_dotenv
@@ -43,6 +44,22 @@ def _format_item(item):
     content = item.get("content", "").strip()
     content_hint = f" | content: {content[:300]}" if content else ""
     return f"- {item['title'][:120]} | {item['url']} | platform: {platform}{content_hint}"
+
+
+def _name_link_sources(summary, items):
+    """Replace the model's generic "Read/Watch on Platform" with the real source.
+
+    The prompt's format example says "Platform" and the model copies it
+    literally, so the source name is filled in here, deterministically, from
+    each link's URL. Links whose URL is not among the inputs are left as is.
+    """
+    platform_by_url = {i["url"]: PLATFORM_MAP.get(i["source"], i["source"]) for i in items}
+
+    def _swap(m):
+        platform = platform_by_url.get(m.group(2))
+        return f"[{m.group(1)} on {platform}]({m.group(2)})" if platform else m.group(0)
+
+    return re.sub(r"\[(Read|Watch) on [^\]]*\]\(([^)\s]+)\)", _swap, summary)
 
 
 def summarize(items, feature_items=None, news_items=None, pinned_news_items=None):
@@ -95,7 +112,8 @@ def summarize(items, feature_items=None, news_items=None, pinned_news_items=None
             system=SYSTEM_PROMPT,
             messages=[{"role": "user", "content": user_content}],
         )
-        summary = response.content[0].text
+        all_items = list(items or []) + list(feature_items or []) + list(news_items or []) + list(pinned_news_items or [])
+        summary = _name_link_sources(response.content[0].text, all_items)
         logger.info(f"Anthropic summarization complete ({len(summary)} chars)")
         return summary
     except Exception as e:

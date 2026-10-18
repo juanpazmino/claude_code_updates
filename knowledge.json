@@ -3071,5 +3071,327 @@
     "description": "Anthropic invests $100 million to train 10,000 engineers and tackle the enterprise AI talent gap",
     "source": "Anthropic Blog",
     "date": "2026-10-07"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.294",
+    "title": "v2.1.294",
+    "description": "## What's changed\n\n- Fixed `prompt` and `agent` hooks written as instructions (such as \"Block commands that...\") allowing what they should block\n- Imp\u2026",
+    "source": "GitHub Releases",
+    "date": "2026-10-08"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.293",
+    "title": "v2.1.293",
+    "description": "## What's changed\n\n- Added Claude Haiku 5.5 (`claude-haiku-5-5`), now the default Haiku model on the Anthropic API \u2014 1M context, $0.10/$0.50 per Mtok \u2026",
+    "source": "GitHub Releases",
+    "date": "2026-10-08"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-294",
+    "title": "Claude Code 2.1.294",
+    "description": "- Fixed `prompt` and `agent` hooks written as instructions (such as \"Block commands that...\") allowing what they should block\n- Improved how `prompt` \u2026",
+    "source": "Docs Changelog",
+    "date": "2026-10-08"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-293",
+    "title": "Claude Code 2.1.293",
+    "description": "- Added Claude Haiku 5.5 (`claude-haiku-5-5`), now the default Haiku model on the Anthropic API \u2014 1M context, $0.10/$0.50 per Mtok ($0.50/$2.50 for pr\u2026",
+    "source": "Docs Changelog",
+    "date": "2026-10-08"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=49996437",
+    "title": "Claude Haiku 5.5",
+    "description": "Claude Haiku 5.5",
+    "source": "Hacker News",
+    "date": "2026-10-08"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.295",
+    "title": "v2.1.295",
+    "description": "## What's changed\n\n- Added `onFailure: \"block\"` for command and HTTP hooks: a hook that can't start, times out, or exits with an unexpected code block\u2026",
+    "source": "GitHub Releases",
+    "date": "2026-10-09"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-295",
+    "title": "Claude Code 2.1.295",
+    "description": "- Added `onFailure: \"block\"` for command and HTTP hooks: a hook that can't start, times out, or exits with an unexpected code blocks the action instea\u2026",
+    "source": "Docs Changelog",
+    "date": "2026-10-09"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50014446",
+    "title": "Anthropic may start banning people for bullying Claude",
+    "description": "Anthropic may start banning people for bullying Claude",
+    "source": "Hacker News",
+    "date": "2026-10-09"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50017324",
+    "title": "Anthropic bans users from abusive or cruel behavior towards Claude",
+    "description": "Anthropic bans users from abusive or cruel behavior towards Claude",
+    "source": "Hacker News",
+    "date": "2026-10-09"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50008565",
+    "title": "Anthropic bans 'abusive or cruel behavior' towards Claude",
+    "description": "Anthropic bans 'abusive or cruel behavior' towards Claude",
+    "source": "Hacker News",
+    "date": "2026-10-09"
+  },
+  {
+    "url": "https://www.anthropic.com/news/2026-usage-policy-update",
+    "title": "2026 Usage Policy update",
+    "description": "2026 Usage Policy update",
+    "source": "Anthropic Blog",
+    "date": "2026-10-09"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.296",
+    "title": "v2.1.296",
+    "description": "## What's changed\n\n- Added a `code` key to the Claude apps gateway's `managed.policies[]`: the same settings as `cli`, also applied in Claude Desktop'\u2026",
+    "source": "GitHub Releases",
+    "date": "2026-10-10"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-296",
+    "title": "Claude Code 2.1.296",
+    "description": "- Added a `code` key to the Claude apps gateway's `managed.policies[]`: the same settings as `cli`, also applied in Claude Desktop's Code tab; beside \u2026",
+    "source": "Docs Changelog",
+    "date": "2026-10-10"
+  },
+  {
+    "url": "https://www.anthropic.com/news/genesis-mission-commitment",
+    "title": "Building on our commitment to American scientific discovery",
+    "description": "Building on our commitment to American scientific discovery",
+    "source": "Anthropic Blog",
+    "date": "2026-10-10"
+  },
+  {
+    "url": "https://www.anthropic.com/news/anthropic-cyber-mission",
+    "title": "Introducing the Anthropic Cyber Mission",
+    "description": "Introducing the Anthropic Cyber Mission",
+    "source": "Anthropic Blog",
+    "date": "2026-10-10"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50020061",
+    "title": "Anthropic Usage Policy to prohibit \"abusive or cruel behavior\" toward Claude",
+    "description": "Anthropic Usage Policy to prohibit \"abusive or cruel behavior\" toward Claude",
+    "source": "Hacker News",
+    "date": "2026-10-10"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50038383",
+    "title": "Anthropic Bans Cruelty to Claude, Still Won't Say What It Protects",
+    "description": "Anthropic Bans Cruelty to Claude, Still Won't Say What It Protects",
+    "source": "Hacker News",
+    "date": "2026-10-11"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50038865",
+    "title": "Anthropic asks users to stop being mean to Claude",
+    "description": "Anthropic asks users to stop being mean to Claude",
+    "source": "Hacker News",
+    "date": "2026-10-11"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50032330",
+    "title": "Microsoft and Anthropic play invoice tennis with startup's $17,600 Claude bill",
+    "description": "Microsoft and Anthropic play invoice tennis with startup's $17,600 Claude bill",
+    "source": "Hacker News",
+    "date": "2026-10-11"
+  },
+  {
+    "url": "https://www.youtube.com/shorts/WVfAFTSS1lk",
+    "title": "This Claude OS combines Jev, Opus, Obsidian, + a local voice system",
+    "description": "This Claude OS combines Jev, Opus, Obsidian, + a local voice system",
+    "source": "Chase AI YouTube",
+    "date": "2026-10-12"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50046117",
+    "title": "Anthropic is out with new nonsense about Claude",
+    "description": "Anthropic is out with new nonsense about Claude",
+    "source": "Hacker News",
+    "date": "2026-10-12"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50047538",
+    "title": "Anthropic's Claude submits false tip on a Philadelphia unsolved homicide case",
+    "description": "Anthropic's Claude submits false tip on a Philadelphia unsolved homicide case",
+    "source": "Hacker News",
+    "date": "2026-10-12"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50043904",
+    "title": "Does Claude Have Rights?",
+    "description": "Does Claude Have Rights?",
+    "source": "Hacker News",
+    "date": "2026-10-12"
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=omNMcR6WWzQ",
+    "title": "Claude Haiku 5.5 Is LIVE (RIP OpenAI)",
+    "description": "Claude Haiku 5.5 Is LIVE (RIP OpenAI)",
+    "source": "Chase AI YouTube",
+    "date": "2026-10-13"
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=rscb1DgJtNg",
+    "title": "Claude Now Does Video (FOR FREE) Thanks To JavaScript",
+    "description": "Claude Now Does Video (FOR FREE) Thanks To JavaScript",
+    "source": "Chase AI YouTube",
+    "date": "2026-10-13"
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=Rn4nmFRPe0s",
+    "title": "Claude Mods Is The Biggest Claude Code Upgrade Since Skills",
+    "description": "Claude Mods Is The Biggest Claude Code Upgrade Since Skills",
+    "source": "Chase AI YouTube",
+    "date": "2026-10-13"
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=1M-z8O29ML8",
+    "title": "You're Using Jev + Claude Wrong",
+    "description": "You're Using Jev + Claude Wrong",
+    "source": "Chase AI YouTube",
+    "date": "2026-10-13"
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=o8LjTSvza0E",
+    "title": "This Viral Open Source Repo Lets Claude Clone ANYTHING",
+    "description": "This Viral Open Source Repo Lets Claude Clone ANYTHING",
+    "source": "Chase AI YouTube",
+    "date": "2026-10-14"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.299",
+    "title": "v2.1.299",
+    "description": "## What's changed\n\n- Added `CLAUDE_CODE_DISABLE_FILE_MENTIONS` environment variable: Claude gets the paths of `@` file mentions to read with its file \u2026",
+    "source": "GitHub Releases",
+    "date": "2026-10-14"
+  },
+  {
+    "url": "https://www.anthropic.com/news/singapore-office-opening",
+    "title": "Anthropic opens Singapore office and signs MOU with the Government of Singapore",
+    "description": "Anthropic opens Singapore office and signs MOU with the Government of Singapore",
+    "source": "Anthropic Blog",
+    "date": "2026-10-14"
+  },
+  {
+    "url": "https://www.anthropic.com/engineering/redesigning-source-control",
+    "title": "Redesigning source control at Anthropic",
+    "description": "Redesigning source control at Anthropic",
+    "source": "Anthropic Engineering",
+    "date": "2026-10-14"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.300",
+    "title": "v2.1.300",
+    "description": "## What's changed\n\n- Added `virtualText` to a mod's prompt decorations: text drawn in the prompt box that never enters the draft or the submitted prom\u2026",
+    "source": "GitHub Releases",
+    "date": "2026-10-15"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-300",
+    "title": "Claude Code 2.1.300",
+    "description": "- Added `virtualText` to a mod's prompt decorations: text drawn in the prompt box that never enters the draft or the submitted prompt\n- Added `cache_c\u2026",
+    "source": "Docs Changelog",
+    "date": "2026-10-15"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-299",
+    "title": "Claude Code 2.1.299",
+    "description": "- Added `CLAUDE_CODE_DISABLE_FILE_MENTIONS` environment variable: Claude gets the paths of `@` file mentions to read with its file tools, not the file\u2026",
+    "source": "Docs Changelog",
+    "date": "2026-10-15"
+  },
+  {
+    "url": "https://www.anthropic.com/news/2026-us-midterms",
+    "title": "Preparing for the 2026 US midterms",
+    "description": "Preparing for the 2026 US midterms",
+    "source": "Anthropic Blog",
+    "date": "2026-10-15"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.301",
+    "title": "v2.1.301",
+    "description": "## What's changed\n\n- Added `CLAUDE_CODE_RETRY_WATCHDOG_MAX_USAGE_LIMIT_WAIT_MS` so unattended retry mode (`CLAUDE_CODE_RETRY_WATCHDOG`) ends a request\u2026",
+    "source": "GitHub Releases",
+    "date": "2026-10-16"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-301",
+    "title": "Claude Code 2.1.301",
+    "description": "- Added `CLAUDE_CODE_RETRY_WATCHDOG_MAX_USAGE_LIMIT_WAIT_MS` so unattended retry mode (`CLAUDE_CODE_RETRY_WATCHDOG`) ends a request at a usage limit t\u2026",
+    "source": "Docs Changelog",
+    "date": "2026-10-16"
+  },
+  {
+    "url": "https://www.anthropic.com/news/an-update-on-independent-evaluators",
+    "title": "An update on independent evaluators",
+    "description": "An update on independent evaluators",
+    "source": "Anthropic Blog",
+    "date": "2026-10-16"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.302",
+    "title": "v2.1.302",
+    "description": "## What's changed\n\n- Added `CLAUDE_CODE_AUTO_MODE_MODEL` to choose the model the client-side auto mode classifier uses; it does not change the model f\u2026",
+    "source": "GitHub Releases",
+    "date": "2026-10-17"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-302",
+    "title": "Claude Code 2.1.302",
+    "description": "- Added `CLAUDE_CODE_AUTO_MODE_MODEL` to choose the model the client-side auto mode classifier uses; it does not change the model for server-side auto\u2026",
+    "source": "Docs Changelog",
+    "date": "2026-10-17"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50122800",
+    "title": "Claude reveals ECDSA curve origins",
+    "description": "Claude reveals ECDSA curve origins",
+    "source": "Hacker News",
+    "date": "2026-10-17"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50122951",
+    "title": "How the Claude Code team does code review",
+    "description": "How the Claude Code team does code review",
+    "source": "Hacker News",
+    "date": "2026-10-17"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50121939",
+    "title": "Designing more efficient quantum circuits with Claude",
+    "description": "Designing more efficient quantum circuits with Claude",
+    "source": "Hacker News",
+    "date": "2026-10-17"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50121562",
+    "title": "Anthropic Console overcharged my card 100x due to internationalization input bug",
+    "description": "Anthropic Console overcharged my card 100x due to internationalization input bug",
+    "source": "Hacker News",
+    "date": "2026-10-17"
+  },
+  {
+    "url": "https://www.youtube.com/shorts/iLYXboxulcg",
+    "title": "This Prompt From Claude's Lead Engineer Is Brilliant",
+    "description": "This Prompt From Claude's Lead Engineer Is Brilliant",
+    "source": "Chase AI YouTube",
+    "date": "2026-10-18"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50124600",
+    "title": "Tell HN: Anthropic found 36 bugs (6 CVEs) in Pion, OpenAI missed them",
+    "description": "Tell HN: Anthropic found 36 bugs (6 CVEs) in Pion, OpenAI missed them",
+    "source": "Hacker News",
+    "date": "2026-10-18"
   }
 ]

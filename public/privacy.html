@@ -3,46 +3,60 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0A0A0B">
+  <meta name="theme-color" content="#1A1714">
   <script>
     try {
       var t = localStorage.getItem('theme') || 'dark';
       document.documentElement.dataset.theme = t;
       var m = document.querySelector('meta[name="theme-color"]');
-      if (m) m.setAttribute('content', t === 'light' ? '#F5F0E8' : '#0A0A0B');
+      if (m) m.setAttribute('content', t === 'light' ? '#F4EDE1' : '#1A1714');
     } catch (e) {}
   </script>
   <title>Privacy Policy · Claude Code Daily Digest</title>
   <meta name="author" content="Juan Pazmino B">
   <meta name="description" content="How the Claude Code Daily Digest handles your data: newsletter, analytics, and chat assistant.">
   <meta name="robots" content="all">
+  <link rel="canonical" href="https://www.claudecodedigest.com/privacy.html">
+  <meta property="og:title" content="Privacy Policy · Claude Code Daily Digest">
+  <meta property="og:description" content="How the Claude Code Daily Digest handles your data: newsletter, analytics, and chat assistant.">
+  <meta property="og:url" content="https://www.claudecodedigest.com/privacy.html">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://www.claudecodedigest.com/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,100;9..144,300;9..144,400&family=IBM+Plex+Mono:wght@300;400&family=Jost:ital,wght@0,200;0,300;0,400;1,200&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,100;9..144,300;9..144,400&family=IBM+Plex+Mono:wght@300;400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:         #0A0A0B;
-      --gold-rgb:   184, 147, 80;
-      --text-rgb:   245, 240, 232;
-      --shadow-rgb: 10, 10, 11;
+      /* BRAND v2 (2026-10-18), same tokens as juanpazminob.com: warm charcoal
+         instead of near-black + solid cream text, no halation on thin type */
+      --bg:         #1A1714;
+      --gold-rgb:   204, 168, 102;
+      --text-rgb:   221, 211, 194;
+      --shadow-rgb: 21, 19, 16;
 
-      --surface: rgba(13, 13, 15, 0.92);
-      --gold:    rgba(var(--gold-rgb), 0.90);
-      --gold-hi: rgba(212, 176, 104, 0.90);
-      --cream:   rgba(var(--text-rgb), 0.70);
-      --muted:   rgba(var(--text-rgb), 0.55);
+      --surface: rgba(30, 27, 23, 0.92);
+      --label-a: 0.90;  /* alpha for small gold labels that carry information */
+      --gold:    rgba(var(--gold-rgb), var(--label-a));
+      --gold-hi: rgba(222, 190, 128, 0.90);
+      --cream:   rgba(var(--text-rgb), 1);
+      --muted:   rgba(var(--text-rgb), 1);
+      --quiet:   rgba(var(--text-rgb), 0.75);  /* legal and secondary meta: still Lc ≥ 65 */
     }
 
     [data-theme="light"] {
-      --bg:         #F5F0E8;
-      --surface:    rgba(255, 252, 247, 0.95);
-      --gold-rgb:   140, 105, 40;
-      --text-rgb:   20, 18, 14;
+      --bg:         #F4EDE1;
+      --surface:    rgba(251, 246, 234, 0.88);
+      --gold-rgb:   122, 88, 24;
+      --text-rgb:   26, 26, 26;
       --shadow-rgb: 244, 237, 225;
-      --gold-hi:    rgba(110, 82, 30, 0.80);
+      --gold-hi:    rgba(92, 66, 18, 0.90);
+      --label-a:    1;  /* light gold already sits near its contrast ceiling */
+      --cream:      rgba(var(--text-rgb), 0.90);
+      --muted:      rgba(var(--text-rgb), 0.80);
     }
 
     html { background: var(--bg); min-height: 100%; }
@@ -149,7 +163,7 @@
       font-family: 'IBM Plex Mono', monospace;
       font-weight: 300;
       font-size: 13px;
-      color: rgba(var(--text-rgb), 0.4);
+      color: var(--muted);
       letter-spacing: 0.02em;
       padding-bottom: 24px;
       border-bottom: 1px solid rgba(var(--text-rgb), 0.1);
@@ -249,7 +263,7 @@
       font-family: 'IBM Plex Mono', monospace;
       font-weight: 300;
       font-size: 13px;
-      color: rgba(var(--text-rgb), 0.38);
+      color: var(--quiet);
       line-height: 1.85;
       margin-bottom: 24px;
     }
@@ -443,7 +457,7 @@
     document.documentElement.dataset.theme = next;
     try { localStorage.setItem('theme', next); } catch (e) {}
     applyAriaLabel(next);
-    if (metaTheme) metaTheme.setAttribute('content', next === 'light' ? '#F5F0E8' : '#0A0A0B');
+    if (metaTheme) metaTheme.setAttribute('content', next === 'light' ? '#F4EDE1' : '#1A1714');
   });
 })();
 </script>
