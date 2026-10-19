@@ -3393,5 +3393,82 @@
     "description": "Tell HN: Anthropic found 36 bugs (6 CVEs) in Pion, OpenAI missed them",
     "source": "Hacker News",
     "date": "2026-10-18"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.303",
+    "title": "v2.1.303",
+    "description": "## What's changed\n\n- Bug fixes and reliability improvements",
+    "source": "GitHub Releases",
+    "date": "2026-10-19"
+  },
+  {
+    "url": "https://www.youtube.com/shorts/sZ1Z6XfkELo",
+    "title": "This Secret Claude Feature Turns It Into An Orchestration BEAST",
+    "description": "This Secret Claude Feature Turns It Into An Orchestration BEAST",
+    "source": "Chase AI YouTube",
+    "date": "2026-10-19"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-303",
+    "title": "Claude Code 2.1.303",
+    "description": "- Bug fixes and reliability improvements",
+    "source": "Docs Changelog",
+    "date": "2026-10-19"
+  },
+  {
+    "url": "https://www.anthropic.com/news/public-benefit-fund",
+    "title": "Investing in the public benefit",
+    "description": "Investing in the public benefit",
+    "source": "Anthropic Blog",
+    "date": "2026-10-19"
+  },
+  {
+    "url": "https://support.claude.com/en/articles/12138966-release-notes",
+    "title": "Claude Haiku 5.5 launch",
+    "description": "Claude Haiku 5.5 launch\nWe just launched Claude Haiku 5.5, the cheapest, fastest, and most capable small model we\u2019ve released, designed for high-volum\u2026",
+    "source": "Claude Release Notes",
+    "date": "2026-10-07"
+  },
+  {
+    "url": "https://support.claude.com/en/articles/12138966-release-notes",
+    "title": "Claude Sonnet 5.5 launch",
+    "description": "Claude Sonnet 5.5 launch\nWe just launched Claude Sonnet 5.5, the second model in our Claude 5.5 family. Sonnet 5.5 is a faster, lower-cost complement \u2026",
+    "source": "Claude Release Notes",
+    "date": "2026-09-28"
+  },
+  {
+    "url": "https://support.claude.com/en/articles/12138966-release-notes",
+    "title": "Build plugins for Claude",
+    "description": "Build plugins for Claude\nYou can now submit plugins to the Claude directory through a new developer portal, track them through review, and see usage a\u2026",
+    "source": "Claude Release Notes",
+    "date": "2026-09-25"
+  },
+  {
+    "url": "https://support.claude.com/en/articles/12138966-release-notes",
+    "title": "Claude Opus 5.5 launch",
+    "description": "Claude Opus 5.5 launch\nWe just launched Claude Opus 5.5, the first model in our new Claude 5.5 family. It performs at the level of Claude Fable 5.1 on\u2026",
+    "source": "Claude Release Notes",
+    "date": "2026-09-22"
+  },
+  {
+    "url": "https://support.claude.com/en/articles/12138966-release-notes",
+    "title": "Claude Cowork comes to every conversation",
+    "description": "Claude Cowork comes to every conversation\nWe're rolling out a new Claude experience that makes everything Claude Cowork does available from any conver\u2026",
+    "source": "Claude Release Notes",
+    "date": "2026-09-16"
+  },
+  {
+    "url": "https://support.claude.com/en/articles/12138966-release-notes",
+    "title": "Launching Salesforce in Claude (beta)",
+    "description": "Launching Salesforce in Claude (beta)\nWe've launched Salesforce in Claude, a plugin that brings a seller\u2019s accounts, opportunities, and pipeline into \u2026",
+    "source": "Claude Release Notes",
+    "date": "2026-09-15"
+  },
+  {
+    "url": "https://support.claude.com/en/articles/12138966-release-notes",
+    "title": "Smart reports (beta)",
+    "description": "Smart reports (beta)\nWe\u2019ve launched smart reports, which analyze how a team uses Claude and report on the work getting done, what it costs, where sess\u2026",
+    "source": "Claude Release Notes",
+    "date": "2026-09-10"
   }
 ]

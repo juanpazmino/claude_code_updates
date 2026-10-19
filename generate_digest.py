@@ -17,6 +17,7 @@ import sys
 from datetime import datetime, timedelta, timezone
 
 import collectors
+import config
 import summarizer_v2 as summarizer
 from tips import get_tip_of_the_day
 
@@ -76,6 +77,19 @@ def _load_knowledge():
         return None
 
 
+def _publish_key(item):
+    """Identity of a published item: its archived URL (HN items archive their permalink).
+
+    Every Claude Release Notes entry shares one page URL, so for that page the
+    entry title is part of the key — otherwise the first entry ever archived
+    would block every later release.
+    """
+    url = item.get("permalink") or item.get("url", "")
+    if url == config.CLAUDE_RELEASE_NOTES_URL:
+        return f"{url}#{item.get('title', '')}"
+    return url
+
+
 def _save_knowledge(items, today):
     """Append newly published items to the permanent knowledge.json archive, deduped by URL.
 
@@ -86,14 +100,14 @@ def _save_knowledge(items, today):
     if knowledge is None:
         return  # corrupt file — leave it untouched rather than risk destroying the archive
 
-    existing_urls = {entry["url"] for entry in knowledge}
+    existing_keys = {_publish_key(entry) for entry in knowledge}
     for item in items:
         # Prefer the discussion permalink (HN carries one) over the
         # submitter-supplied external URL, so the chat bot never archives an
         # attacker-controlled domain into its set of linkable URLs. The digest
         # page keeps using item["url"] and is unaffected.
         url = item.get("permalink") or item.get("url", "")
-        if not url or url in existing_urls:
+        if not url or _publish_key(item) in existing_keys:
             continue
         content = (item.get("content") or "").strip()
         # Fall back to a truncated content snippet when no richer description exists
@@ -105,7 +119,7 @@ def _save_knowledge(items, today):
             "source": item.get("source", ""),
             "date": today,
         })
-        existing_urls.add(url)
+        existing_keys.add(_publish_key(item))
 
     try:
         with open(KNOWLEDGE_PATH, "w") as f:
@@ -222,6 +236,15 @@ def main():
     logger.info("Collecting updates from all sources...")
     items = collectors.collect_all()
     logger.info(f"Total items collected: {len(items)}")
+
+    # Never publish an item twice. Collectors like the Chase AI blog return their
+    # whole index stamped with today's date, and seen_urls.json forgets after 30
+    # days, so old posts came back as "new". knowledge.json never expires: any
+    # item already archived there has been published before and is dropped here.
+    published = {_publish_key(entry) for entry in (_load_knowledge() or [])}
+    fresh = [i for i in items if _publish_key(i) not in published]
+    logger.info(f"Already published, dropped: {len(items) - len(fresh)}")
+    items = fresh
 
     if args.collect:
         print(json.dumps(items, indent=2, default=str))
