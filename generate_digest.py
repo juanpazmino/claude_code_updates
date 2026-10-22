@@ -90,6 +90,19 @@ def _publish_key(item):
     return url
 
 
+def _release_version(item):
+    """Claude Code version an item announces ("2.1.308"), or None if it is not a release.
+
+    The same version arrives twice: as a GitHub release (tag in the URL) and as a
+    changelog entry ("Claude Code 2.1.308"). Comparing versions lets it appear once.
+    """
+    if item.get("source") == "GitHub Releases":
+        return item.get("url", "").rsplit("/", 1)[-1].lstrip("v") or None
+    if item.get("source") == "Docs Changelog":
+        return item.get("title", "").removeprefix("Claude Code ").strip() or None
+    return None
+
+
 def _save_knowledge(items, today):
     """Append newly published items to the permanent knowledge.json archive, deduped by URL.
 
@@ -241,8 +254,12 @@ def main():
     # whole index stamped with today's date, and seen_urls.json forgets after 30
     # days, so old posts came back as "new". knowledge.json never expires: any
     # item already archived there has been published before and is dropped here.
-    published = {_publish_key(entry) for entry in (_load_knowledge() or [])}
-    fresh = [i for i in items if _publish_key(i) not in published]
+    knowledge = _load_knowledge() or []
+    published = {_publish_key(entry) for entry in knowledge}
+    # A version already published from either source is not published again from the other
+    published_versions = {v for v in map(_release_version, knowledge) if v}
+    fresh = [i for i in items
+             if _publish_key(i) not in published and _release_version(i) not in published_versions]
     logger.info(f"Already published, dropped: {len(items) - len(fresh)}")
     items = fresh
 
@@ -276,7 +293,10 @@ def main():
     # Step 2b: Build General News items — only Anthropic Blog + Docs Changelog, never repeat features
     news_sources = {"Anthropic Blog", "Anthropic Engineering", "Docs Changelog", "Claude Release Notes", "Hacker News"}
     selected_urls = {i["url"] for i in selected}
-    news_items = [i for i in items if i["source"] in news_sources and i["url"] not in selected_urls]
+    # Same day: a version already in New Features (GitHub release) skips its changelog entry
+    selected_versions = {v for v in map(_release_version, selected) if v}
+    news_items = [i for i in items if i["source"] in news_sources and i["url"] not in selected_urls
+                  and _release_version(i) not in selected_versions]
 
     # Pin the 2 most recent Claude Release Notes entries — always shown first in General News
     release_notes_items = [i for i in news_items if i["source"] == "Claude Release Notes"]
