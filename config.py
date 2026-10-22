@@ -16,12 +16,16 @@ CHASE_AI_YOUTUBE_URL = "https://www.youtube.com/@Chase-H-AI/videos"
 CHASE_AI_YOUTUBE_CHANNEL_ID = "UCoy6cTJ7Tg0dqS-DI-_REsA"
 TYLERGERMAIN_GISTS_URL = "https://gist.github.com/tylergermain"
 HN_SEARCH_URL = "https://hn.algolia.com/api/v1/search"
+CLAUDE_DEV_RSS_URL = "https://claude.dev/rss.xml"
 
 # Keywords to filter relevant posts
 KEYWORDS = ["claude code", "claude-code", "claudecode", "cli"]
 
 # How many hours back to look for updates
 LOOKBACK_HOURS = 24
+
+# claude.dev posts about once a week, so it looks back further than the daily sources
+CLAUDE_DEV_LOOKBACK_DAYS = 7
 
 # Anthropic Model
 ANTHROPIC_MODEL = "claude-sonnet-5"

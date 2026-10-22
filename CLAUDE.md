@@ -26,7 +26,7 @@ Claude Code Daily Digest — a self-updating web page that collects, summarizes,
 ## Pipeline
 
 ```
-collect (9 sources) → seen-items filter → select features + news → summarize (Sonnet 5) → append New Versions (Python) → write digest.json → deploy (Vercel) → send email (Buttondown)
+collect (10 sources) → seen-items filter → select features + news → summarize (Sonnet 5) → append New Versions (Python) → write digest.json → deploy (Vercel) → send email (Buttondown)
 ```
 
 1. `collectors.py` scrapes: GitHub Releases, Anthropic Blog (direct scrape), Anthropic Engineering Blog, Claude Release Notes, Docs Changelog, Chase AI Blog, Chase AI YouTube, Tyler Germain Gists, Hacker News (Reddit r/ClaudeAI removed 2026-10-07 — its JSON API had returned 403 to unauthenticated scripts since 2026-05-13, and the RSS feed rate-limits after one request and carries no vote score)
@@ -44,7 +44,7 @@ collect (9 sources) → seen-items filter → select features + news → summari
 
 | Section | What goes in it | Sources |
 |---|---|---|
-| `## New Features` | Claude Code CLI capabilities, version updates, plugin/tool guides | Chase AI Blog (2) + GitHub Releases + Gists (fills to 5) |
+| `## New Features` | Claude Code CLI capabilities, version updates, plugin/tool guides | Chase AI Blog (2) + claude.dev (first pick) + GitHub Releases + Gists (fills to 5) |
 | `## General News` | Anthropic/Claude company-level news: product launches, funding, partnerships | Claude Release Notes (2 pinned) + Anthropic Blog + Anthropic Engineering + Docs Changelog + Hacker News |
 | `## New Versions` | Latest Claude Code GitHub release — deterministic Python, never LLM | GitHub Releases API |
 
@@ -113,6 +113,7 @@ python email_template.py                # Render email_sample.html for review on
 | `collect_changelog()` | Raw `CHANGELOG.md` from GitHub | Parses `## X.Y.Z` blocks; top 5 versions; each version gets unique URL anchor (`#X-Y-Z`) |
 | `collect_chase_ai()` | `chaseai.io/blog` | Uses `img[alt]` for clean article title (avoids tag-noise from `get_text()`) |
 | `collect_chase_ai_youtube()` | YouTube channel Atom RSS feed | Uses hardcoded `CHASE_AI_YOUTUBE_CHANNEL_ID` from config; falls back to page scrape if missing |
+| `collect_claude_dev()` | `claude.dev/rss.xml` (blog of Anthropic's developers) | Real `pubDate`; last `CLAUDE_DEV_LOOKBACK_DAYS` (7) only; listed before GitHub in `collect_all()` so it heads the Features "other" pool; link reads "Read on claude.dev" |
 | `collect_github_releases()` | GitHub API | Date-filtered by `LOOKBACK_HOURS`; release body (up to 2000 chars) passed as `content` to LLM for New Features; also used for New Versions (deterministic) |
 | `collect_tylergermain_gists()` | `gist.github.com/tylergermain` | Keyword-filtered |
 | `collect_hacker_news()` | Algolia HN search API (`hn.algolia.com`) | `LOOKBACK_HOURS * 2` cutoff; min 5 points; skips raw GitHub issue URLs; General News only |

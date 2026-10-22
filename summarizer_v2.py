@@ -36,6 +36,7 @@ PLATFORM_MAP = {
     "Claude Release Notes": "Anthropic",
     "Tyler Germain Gists": "GitHub",
     "Hacker News": "Hacker News",
+    "claude.dev": "claude.dev",
 }
 
 

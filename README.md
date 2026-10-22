@@ -110,4 +110,5 @@ python generate_digest.py --dry-run    # Collect + summarize, don't write file
 - [Anthropic Blog](https://www.anthropic.com/news)
 - [Claude Release Notes](https://support.claude.com/en/articles/12138966-release-notes)
 - [Anthropic Docs Changelog](https://code.claude.com/docs/en/changelog)
+- [claude.dev](https://claude.dev/) — blog of Anthropic's developers
 - [Chase AI Blog](https://www.chaseai.io/blog)

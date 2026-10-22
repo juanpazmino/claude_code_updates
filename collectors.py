@@ -477,6 +477,49 @@ def collect_tylergermain_gists():
     return items
 
 
+def collect_claude_dev():
+    """Fetch posts from claude.dev, the blog of Anthropic's developers, via its RSS feed.
+
+    The feed carries real publication dates, so only posts from the last
+    CLAUDE_DEV_LOOKBACK_DAYS are kept; knowledge.json keeps them from repeating.
+    """
+    items = []
+    cutoff = datetime.now(timezone.utc) - timedelta(days=config.CLAUDE_DEV_LOOKBACK_DAYS)
+
+    try:
+        resp = requests.get(config.CLAUDE_DEV_RSS_URL, headers=HEADERS, timeout=15)
+        resp.raise_for_status()
+        root = ET.fromstring(resp.content)
+
+        for entry in root.iter("item"):
+            title = (entry.findtext("title") or "").strip()
+            url = (entry.findtext("link") or "").strip()
+            if not title or not url.startswith("https://claude.dev/"):
+                continue
+            try:
+                published = parsedate_to_datetime(entry.findtext("pubDate") or "")
+            except (TypeError, ValueError):
+                continue
+            if published.tzinfo is None:  # "-0000" dates parse as naive; treat them as UTC
+                published = published.replace(tzinfo=timezone.utc)
+            if published < cutoff:
+                continue
+
+            items.append({
+                "title": title,
+                "date": published.isoformat(),
+                "content": (entry.findtext("description") or "").strip()[:2000],
+                "source": "claude.dev",
+                "url": url,
+            })
+
+        logger.info(f"claude.dev: found {len(items)} post(s) in the last {config.CLAUDE_DEV_LOOKBACK_DAYS} days")
+    except Exception as e:
+        logger.warning(f"claude.dev collector failed: {e}")
+
+    return items
+
+
 def get_latest_github_release():
     """Return {version, url} for the most recent Claude Code release, or None."""
     try:
@@ -500,6 +543,8 @@ def collect_all():
     collectors = [
         ("Chase AI Blog", collect_chase_ai),
         ("Chase AI YouTube", collect_chase_ai_youtube),
+        # Before GitHub: the Features "other" pool keeps collection order, so claude.dev gets first pick
+        ("claude.dev", collect_claude_dev),
         ("GitHub Releases", collect_github_releases),
         ("Anthropic Blog", collect_anthropic_blog),
         ("Anthropic Engineering", collect_anthropic_engineering),
