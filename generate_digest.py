@@ -267,6 +267,12 @@ def main():
         print(json.dumps(items, indent=2, default=str))
         return
 
+    # Nothing new (quiet day or every source failed): never publish an empty digest.
+    # Exit non-zero so run_updates.sh skips deploy and email; the site keeps yesterday's digest.
+    if not items:
+        logger.warning("No new items — skipping digest, deploy and email.")
+        sys.exit(1)
+
     # Step 2: Select feature items — Chase AI + non-GitHub, non-Chase sources
     seen_urls = _load_seen_urls()
 

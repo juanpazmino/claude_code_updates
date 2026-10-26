@@ -14,6 +14,14 @@ source "$VENV"
 cd "$SCRIPT_DIR"
 python generate_digest.py 2>&1 | tee -a "$LOG_FILE"
 
+# Stop if generation failed or found nothing new: no empty site, no empty or repeated email.
+# PIPESTATUS[0] is python's exit code (plain $? would be tee's).
+if [ "${PIPESTATUS[0]}" -ne 0 ]; then
+    echo "$(date): No digest generated — skipping deploy and email" >> "$LOG_FILE"
+    echo "---" >> "$LOG_FILE"
+    exit 0
+fi
+
 echo "$(date): Deploying to Vercel" >> "$LOG_FILE"
 npx vercel deploy --prod --yes --scope juan-pazmino-bs-projects 2>&1 | tee -a "$LOG_FILE"
 
