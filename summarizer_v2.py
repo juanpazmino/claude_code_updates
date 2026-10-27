@@ -1,4 +1,4 @@
-"""Summarize collected updates using Anthropic Haiku."""
+"""Summarize collected updates using Anthropic Sonnet 5 (model set in config.ANTHROPIC_MODEL)."""
 
 import logging
 import os
@@ -64,7 +64,7 @@ def _name_link_sources(summary, items):
 
 
 def summarize(items, feature_items=None, news_items=None, pinned_news_items=None):
-    """Send collected items to Anthropic Haiku for summarization.
+    """Send collected items to Anthropic Sonnet 5 for summarization.
 
     feature_items: pre-selected list of exactly 5 items for New Features.
     news_items: optional news pool (Anthropic Blog + Docs Changelog).

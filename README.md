@@ -16,7 +16,7 @@ python generate_digest.py             public/
 ```
 
 1. **Collect** — Fetches updates from GitHub Releases, Anthropic Blog, Claude Release Notes, Docs Changelog, and Chase AI Blog
-2. **Summarize** — Sends collected items to Anthropic Haiku for a concise newsletter-style summary
+2. **Summarize** — Sends collected items to Anthropic Sonnet 5 for a concise newsletter-style summary
 3. **Deploy** — Writes `public/digest.json` and deploys the static site to Vercel
 
 ## File structure
@@ -32,7 +32,7 @@ python generate_digest.py             public/
 ├── requirements.txt
 ├── config.py              # Settings
 ├── collectors.py          # Source collectors
-├── summarizer_v2.py       # Anthropic Haiku summarization (active)
+├── summarizer_v2.py       # Anthropic Sonnet 5 summarization (active)
 ├── summarizer.py          # Legacy Ollama summarizer (kept for reference)
 ├── tips.py                # Daily tips rotation
 ├── generate_digest.py     # Entry point
