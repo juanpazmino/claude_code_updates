@@ -10,3 +10,5 @@ node_modules/
 /package-lock.json
 # Secrets never leave the machine (the deploy uploads source, not just public/)
 .env*
+# Security scan reports stay local
+CLAUDE-SECURITY-*/
