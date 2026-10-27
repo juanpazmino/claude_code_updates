@@ -46,118 +46,87 @@ def collect_github_releases():
     return items
 
 
-def collect_anthropic_blog():
-    """Fetch Anthropic news by scraping anthropic.com/news directly.
+def _parse_anthropic_cards(html, href_prefixes):
+    """Extract (title, url, date) from anthropic.com listing cards.
 
-    Uses semantic <time> + <span> elements — avoids hashed CSS class names.
+    Since the Oct 2026 redesign the <time> sits in the card header and the post
+    link wraps only the headline, so each card is found from its <time> upwards
+    to the nearest element that also holds a headline.
     """
-    items = []
     BASE_URL = "https://www.anthropic.com"
-    seen_urls = set()
+    soup = BeautifulSoup(html, "html.parser")
+    cards, seen = [], set()
 
+    for time_el in soup.find_all("time"):
+        try:
+            published = datetime.strptime(time_el.get_text(strip=True), "%b %d, %Y").replace(tzinfo=timezone.utc)
+        except ValueError:
+            continue
+
+        card = time_el.parent
+        for _ in range(5):  # climb a few levels at most: header -> card
+            if card is None or card.find(["h2", "h3", "h4", "h5"]):
+                break
+            card = card.parent
+        heading = card.find(["h2", "h3", "h4", "h5"]) if card else None
+        link = heading.find_parent("a", href=True) if heading else None
+        if not link or not link["href"].startswith(href_prefixes):
+            continue
+
+        url = BASE_URL + link["href"]
+        if url in seen:  # carousels repeat cards
+            continue
+        seen.add(url)
+        cards.append({"title": heading.get_text(strip=True), "url": url, "date": published})
+
+    cards.sort(key=lambda c: c["date"], reverse=True)
+    return cards
+
+
+def collect_anthropic_blog():
+    """Fetch the latest Anthropic news posts from anthropic.com/news."""
+    items = []
     try:
-        resp = requests.get(f"{BASE_URL}/news", headers=HEADERS, timeout=15)
+        resp = requests.get("https://www.anthropic.com/news", headers=HEADERS, timeout=15)
         resp.raise_for_status()
-        soup = BeautifulSoup(resp.text, "html.parser")
-
-        # Accept any internal path with a <time> element; rely on that check to filter nav links
-        SKIP_EXACT = {"/news", "/"}
-        SKIP_PREFIXES = ("/company", "/careers", "/research", "/claude", "/api", "#", "http")
-        for a in soup.find_all("a", href=True):
-            href = a["href"]
-            if href in SKIP_EXACT:
-                continue
-            if not href.startswith("/") or any(href.startswith(p) for p in SKIP_PREFIXES):
-                continue
-            url = BASE_URL + href
-            if url in seen_urls:
-                continue
-            seen_urls.add(url)
-
-            # Rely on semantic elements rather than hashed class names
-            time_el = a.find("time")
-            if not time_el:
-                continue
-            try:
-                published = datetime.strptime(time_el.get_text(strip=True), "%b %d, %Y").replace(tzinfo=timezone.utc)
-            except ValueError:
-                continue
-
-            # Featured cards use a heading; list items use the last <span>
-            # Also check img[alt] for featured items that carry the title there
-            heading = a.find(["h2", "h3", "h4", "h5"])
-            if heading:
-                title = heading.get_text(strip=True)
-            else:
-                spans = a.find_all("span")
-                title = spans[-1].get_text(strip=True) if spans else ""
-            if not title:
-                img = a.find("img", alt=True)
-                title = img["alt"].strip() if img else ""
-            if not title:
-                continue
-
+        for card in _parse_anthropic_cards(resp.text, ("/news/",))[:10]:
             items.append({
-                "title": title,
-                "date": published.isoformat(),
+                "title": card["title"],
+                "date": card["date"].isoformat(),
                 "content": "",
                 "source": "Anthropic Blog",
-                "url": url,
+                "url": card["url"],
             })
-
-        items.sort(key=lambda x: x["date"], reverse=True)
-        logger.info(f"Anthropic blog: found {len(items[:10])} relevant post(s)")
+        logger.info(f"Anthropic blog: found {len(items)} relevant post(s)")
     except Exception as e:
         logger.warning(f"Anthropic blog collector failed: {e}")
 
-    return items[:10]
+    return items
 
 
 def collect_anthropic_engineering():
     """Fetch recent posts from anthropic.com/engineering.
 
-    The listing page has no dates, so items are assigned today's date —
-    seen_urls.json deduplicates across runs so stale articles don't resurface.
+    Posts now live under /research/ (old ones were archived as /engineering/),
+    so only posts from the last ENGINEERING_LOOKBACK_DAYS are kept — otherwise
+    every old post would come back as "new" under its new URL.
     """
     items = []
-    BASE_URL = "https://www.anthropic.com"
-    MAX_ITEMS = 8
-    seen_hrefs = set()
-    today = datetime.now(timezone.utc).isoformat()
-
+    cutoff = datetime.now(timezone.utc) - timedelta(days=config.ENGINEERING_LOOKBACK_DAYS)
     try:
-        resp = requests.get(f"{BASE_URL}/engineering", headers=HEADERS, timeout=15)
+        resp = requests.get("https://www.anthropic.com/engineering", headers=HEADERS, timeout=15)
         resp.raise_for_status()
-        soup = BeautifulSoup(resp.text, "html.parser")
-
-        for a in soup.find_all("a", href=True):
-            href = a["href"]
-            if not href.startswith("/engineering/"):
+        for card in _parse_anthropic_cards(resp.text, ("/engineering/", "/research/")):
+            if card["date"] < cutoff:
                 continue
-            if href in seen_hrefs:
-                continue
-            seen_hrefs.add(href)
-
-            heading = a.find(["h2", "h3", "h4", "h5"])
-            title = heading.get_text(strip=True) if heading else ""
-            if not title:
-                spans = a.find_all("span")
-                title = spans[-1].get_text(strip=True) if spans else ""
-            if not title:
-                continue
-
             items.append({
-                "title": title,
-                "date": today,
+                "title": card["title"],
+                "date": card["date"].isoformat(),
                 "content": "",
                 "source": "Anthropic Engineering",
-                "url": BASE_URL + href,
+                "url": card["url"],
             })
-
-            if len(items) >= MAX_ITEMS:
-                break
-
-        logger.info(f"Anthropic engineering: found {len(items)} post(s)")
+        logger.info(f"Anthropic engineering: found {len(items)} post(s) in the last {config.ENGINEERING_LOOKBACK_DAYS} days")
     except Exception as e:
         logger.warning(f"Anthropic engineering collector failed: {e}")
 

@@ -27,5 +27,9 @@ LOOKBACK_HOURS = 24
 # claude.dev posts about once a week, so it looks back further than the daily sources
 CLAUDE_DEV_LOOKBACK_DAYS = 7
 
+# Anthropic Engineering posts a few times a month; the window keeps old posts
+# (now under /research/ URLs) from coming back as new
+ENGINEERING_LOOKBACK_DAYS = 7
+
 # Anthropic Model
 ANTHROPIC_MODEL = "claude-sonnet-5"
