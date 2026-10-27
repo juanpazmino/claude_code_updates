@@ -8,3 +8,5 @@ requirements.txt
 node_modules/
 /package.json
 /package-lock.json
+# Secrets never leave the machine (the deploy uploads source, not just public/)
+.env*
