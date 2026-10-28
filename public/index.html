@@ -603,6 +603,8 @@
       .subscribe-headline { font-size: 22px; }
       .subscribe-row { flex-direction: column; }
       .subscribe-btn { width: 100%; }
+      /* Next to the theme toggle on a phone the decorative spiral reads as a menu button */
+      .phi-mark { display: none; }
     }
   </style>
 </head>
@@ -629,7 +631,7 @@
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
           </svg>
         </button>
-        <svg class="phi-mark" width="34" height="34" viewBox="0 0 34 34" fill="none" style="color: var(--gold-hi)">
+        <svg class="phi-mark" width="34" height="34" viewBox="0 0 34 34" fill="none" style="color: var(--gold-hi)" aria-hidden="true">
           <path d="M17 31C9.27 31 3 24.73 3 17C3 9.27 9.27 3 17 3C21.56 3 25.6 5.22 28.15 8.65" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round"/>
           <path d="M17 24.5C13.41 24.5 10.5 21.59 10.5 18C10.5 14.41 13.41 11.5 17 11.5" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round"/>
           <path d="M17 19.2C16.34 19.2 15.8 18.66 15.8 18C15.8 17.34 16.34 16.8 17 16.8" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round"/>
@@ -658,7 +660,7 @@
     <div class="subscribe-body">
       <p class="subscribe-headline">One email. Same digest. No feed to check.</p>
       <p class="subscribe-subtext">The daily Claude Code digest, delivered to your inbox every morning.</p>
-      <form class="subscribe-form" action="https://buttondown.com/api/emails/embed-subscribe/pazmino" method="post">
+      <form class="subscribe-form" action="https://buttondown.com/api/emails/embed-subscribe/jpazminob" method="post">
         <label for="subscribe-email" class="sr-only">Email address</label>
         <div class="subscribe-row">
           <input type="email" name="email" id="subscribe-email" class="subscribe-input" placeholder="you@example.com" required>
