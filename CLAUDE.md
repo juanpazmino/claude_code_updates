@@ -39,6 +39,7 @@ collect (10 sources) → seen-items filter → select features + news → summar
 8. `generate_digest.py` appends published items to `knowledge.json` (permanent archive, deduped by URL — feeds the chat assistant)
 9. `run_updates.sh` runs the pipeline + `npx vercel deploy --prod --yes --scope juan-pazmino-bs-projects`
 10. `run_updates.sh` then runs `send_email.py` — renders `public/digest.json` into an email-safe template and broadcasts it to Buttondown subscribers, **after** the deploy so the "read more" link points at a live site
+11. **Quiet day** (every source answered, nothing new): `generate_digest.py` exits 3 → no deploy, the site keeps the last digest, and `send_email.py --quiet` sends a short "Quiet day. You're up to date." email with the tip. If a source in `config.ALWAYS_ON_SOURCES` came back empty, the day counts as broken (exit 1): no deploy, no email.
 
 ### Section definitions
 

@@ -13,10 +13,21 @@ echo "$(date): Starting Claude Code Daily Digest" >> "$LOG_FILE"
 source "$VENV"
 cd "$SCRIPT_DIR"
 python generate_digest.py 2>&1 | tee -a "$LOG_FILE"
-
-# Stop if generation failed or found nothing new: no empty site, no empty or repeated email.
 # PIPESTATUS[0] is python's exit code (plain $? would be tee's).
-if [ "${PIPESTATUS[0]}" -ne 0 ]; then
+STATUS=${PIPESTATUS[0]}
+
+# 3 = quiet day (sources answered, nothing new): no deploy, the site keeps
+# yesterday's digest, subscribers get the short "you're up to date" email.
+if [ "$STATUS" -eq 3 ]; then
+    echo "$(date): Quiet day — no deploy, sending quiet email" >> "$LOG_FILE"
+    python send_email.py --quiet 2>&1 | tee -a "$LOG_FILE"
+    echo "$(date): Finished" >> "$LOG_FILE"
+    echo "---" >> "$LOG_FILE"
+    exit 0
+fi
+
+# Stop if generation failed or a source went silent: no empty site, no email.
+if [ "$STATUS" -ne 0 ]; then
     echo "$(date): No digest generated — skipping deploy and email" >> "$LOG_FILE"
     echo "---" >> "$LOG_FILE"
     exit 0

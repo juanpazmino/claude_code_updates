@@ -12,6 +12,9 @@ Two guards prevent an unwanted send:
      .email_sent.json (gitignored), so a re-run of the pipeline can't send
      the same digest twice.
 
+`--quiet` sends the short "you're up to date" email for a day with nothing
+new (no digest.json is read; the same double-send guard applies).
+
 All failure paths (missing digest, missing API key, network/API error) log a
 warning and return without raising, so this never kills the pipeline.
 """
@@ -19,11 +22,14 @@ warning and return without raising, so this never kills the pipeline.
 import json
 import logging
 import os
+import sys
+from datetime import datetime, timezone
 
 import requests
 from dotenv import load_dotenv
 
 from email_template import get_subject_line, render_email_html
+from tips import get_tip_of_the_day
 
 load_dotenv()
 
@@ -60,13 +66,27 @@ def _save_sent_marker(date_display):
         json.dump({"last_sent_date": date_display}, f, indent=2)
 
 
-def send_email():
-    try:
-        with open(DIGEST_PATH) as f:
-            digest = json.load(f)
-    except Exception as e:
-        logger.warning(f"Could not read {DIGEST_PATH}: {e}")
-        return
+def _quiet_digest():
+    """Digest-shaped dict for a quiet day: today's date and tip, no items."""
+    tip = get_tip_of_the_day()
+    return {
+        "date_display": datetime.now(timezone.utc).strftime("%B %d, %Y"),
+        "summary_html": "",
+        "tip": {"command": tip["command"], "description": tip["description"]},
+        "quiet": True,
+    }
+
+
+def send_email(quiet=False):
+    if quiet:
+        digest = _quiet_digest()
+    else:
+        try:
+            with open(DIGEST_PATH) as f:
+                digest = json.load(f)
+        except Exception as e:
+            logger.warning(f"Could not read {DIGEST_PATH}: {e}")
+            return
 
     # Guard 1: never email a degraded digest.
     if DEGRADED_MARKER in digest.get("summary_html", ""):
@@ -113,4 +133,5 @@ def send_email():
 
 
 if __name__ == "__main__":
-    send_email()
+    # --quiet: no digest today (generate_digest.py exited QUIET_DAY_EXIT), send the short notice
+    send_email(quiet="--quiet" in sys.argv)

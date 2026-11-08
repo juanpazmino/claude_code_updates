@@ -74,8 +74,11 @@ def summarize(items, feature_items=None, news_items=None, pinned_news_items=None
     if not items and not feature_items:
         return "No new Claude Code updates found today."
 
-    # Build feature section input (numbered to ensure all 5 are rendered)
-    feature_parts = [f"{n}. {_format_item(i)}" for n, i in enumerate((feature_items or items)[:5], 1)]
+    # Build feature section input (numbered to ensure all are rendered). An empty
+    # list means no features today: do not fall back to `items`, or news items get
+    # written up twice, once as features and once as news.
+    feature_pool = feature_items if feature_items is not None else items
+    feature_parts = [f"{n}. {_format_item(i)}" for n, i in enumerate(feature_pool[:5], 1)]
     feature_text = "\n".join(feature_parts)
 
     # Build General News input
@@ -86,11 +89,21 @@ def summarize(items, feature_items=None, news_items=None, pinned_news_items=None
     pinned_text = "\n".join(pinned_parts) if pinned_parts else ""
     news_text = "\n".join(optional_parts) if optional_parts else "(no news items available today)"
 
+    if feature_parts:
+        features_brief = (
+            f"Write a newsletter with two sections in this exact order: New Features, General News.\n\n"
+            f"## New Features\n"
+            f"Write exactly one entry per numbered item below — all {len(feature_parts)}, in order:\n{feature_text}\n\n"
+        )
+    else:
+        features_brief = (
+            "Write a newsletter with one section: General News. "
+            "There are no new features today: do not write a New Features section.\n\n"
+        )
+
     user_content = (
-        f"Write a newsletter with two sections in this exact order: New Features, General News.\n\n"
-        f"## New Features\n"
-        f"Write exactly one entry per numbered item below — all 5, in order:\n{feature_text}\n\n"
-        f"## General News\n"
+        features_brief
+        + f"## General News\n"
         + (f"Always include these pinned items first:\n{pinned_text}\n\n" if pinned_text else "")
         + f"Then include up to 4 additional items from below. These are Anthropic/Claude company-level "
         f"announcements — model releases, funding, partnerships, industry news:\n{news_text}\n\n"

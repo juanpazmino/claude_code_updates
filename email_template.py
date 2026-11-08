@@ -194,6 +194,17 @@ def _render_section(section, cta_html="", show_heading=True):
     )
 
 
+def _render_quiet():
+    """Body for a quiet day: sources checked, nothing new since the last digest."""
+    return f"""
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 36px;">
+      <tr><td style="padding:24px 0 0;">
+        <div style="font-family:{SERIF};font-style:italic;font-size:22px;line-height:1.3;color:{TEXT};margin:0 0 10px;">Quiet day. You're up to date.</div>
+        <div style="font-family:{SANS};font-size:14px;line-height:1.6;color:{MUTED};">No new Claude Code features or news since the last digest. We checked every source today.</div>
+      </td></tr>
+    </table>"""
+
+
 def _render_tip(tip):
     command = _esc(tip.get("command"))
     description = _esc(tip.get("description"))
@@ -230,12 +241,24 @@ def render_email_html(digest):
 
     features = next((s for s in sections if s["heading"] == "New Features"), None) or {"items": []}
     news = next((s for s in sections if s["heading"] == "General News"), None) or {"items": []}
-    merged_items = features["items"][:3] + news["items"][:1]
+    # Same link twice (the summarizer listed one item in both sections) is shown once
+    seen_links = set()
+    merged_items = []
+    for item in features["items"][:3] + news["items"]:
+        link = item.get("link_href") or item.get("title")
+        if link in seen_links:
+            continue
+        seen_links.add(link)
+        merged_items.append(item)
+        if len(merged_items) == len(features["items"][:3]) + 1:
+            break
 
     sections_html = ""
     if merged_items:
         merged_section = {"heading": "News & Features", "items": merged_items}
         sections_html = _render_section(merged_section, show_heading=False)
+    elif digest.get("quiet"):
+        sections_html = _render_quiet()
 
     tip_html = _render_tip(tip)
     cta_html = _render_cta() if merged_items else ""

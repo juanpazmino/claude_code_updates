@@ -21,6 +21,9 @@ import config
 import summarizer_v2 as summarizer
 from tips import get_tip_of_the_day
 
+# Exit code for "sources fine, nothing new" — run_updates.sh sends the quiet email
+QUIET_DAY_EXIT = 3
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
@@ -261,17 +264,23 @@ def main():
     fresh = [i for i in items
              if _publish_key(i) not in published and _release_version(i) not in published_versions]
     logger.info(f"Already published, dropped: {len(items) - len(fresh)}")
-    items = fresh
+    collected, items = items, fresh
 
     if args.collect:
         print(json.dumps(items, indent=2, default=str))
         return
 
-    # Nothing new (quiet day or every source failed): never publish an empty digest.
-    # Exit non-zero so run_updates.sh skips deploy and email; the site keeps yesterday's digest.
+    # Nothing new: never publish an empty digest; the site keeps yesterday's.
+    # A quiet day (sources answered, all already published) exits QUIET_DAY_EXIT so
+    # run_updates.sh sends the short "you're up to date" email. If a source that
+    # always lists something came back empty, the day is broken: exit 1, no email.
     if not items:
-        logger.warning("No new items — skipping digest, deploy and email.")
-        sys.exit(1)
+        silent = [s for s in config.ALWAYS_ON_SOURCES if not any(i["source"] == s for i in collected)]
+        if silent:
+            logger.warning(f"No new items and silent sources ({', '.join(silent)}) — skipping digest, deploy and email.")
+            sys.exit(1)
+        logger.info("Quiet day: nothing new — skipping digest and deploy, quiet email only.")
+        sys.exit(QUIET_DAY_EXIT)
 
     # Step 2: Select feature items — Chase AI + non-GitHub, non-Chase sources
     seen_urls = _load_seen_urls()

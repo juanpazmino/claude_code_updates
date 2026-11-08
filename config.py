@@ -33,3 +33,6 @@ ENGINEERING_LOOKBACK_DAYS = 7
 
 # Anthropic Model
 ANTHROPIC_MODEL = "claude-sonnet-5"
+# Sources that list recent entries every day, new or not. If one of them comes
+# back empty, the day is broken, not quiet: no "you're up to date" email.
+ALWAYS_ON_SOURCES = ["Anthropic Blog", "Claude Release Notes", "Docs Changelog"]
