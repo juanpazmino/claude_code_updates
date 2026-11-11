@@ -3631,5 +3631,467 @@
     "description": "Show HN: Omnara \u2013 Open-source alternative to Claude Managed Agents",
     "source": "Hacker News",
     "date": "2026-10-22"
+  },
+  {
+    "url": "https://www.youtube.com/shorts/tdAxWLRPSAo",
+    "title": "We Just Got An Open Source Clone of Claude Motion",
+    "description": "We Just Got An Open Source Clone of Claude Motion",
+    "source": "Chase AI YouTube",
+    "date": "2026-10-24"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.310",
+    "title": "v2.1.310",
+    "description": "## What's changed\n\n- Added the Monitor tool and plugin monitors on Bedrock, Vertex, and Foundry, and when telemetry or nonessential traffic is disable\u2026",
+    "source": "GitHub Releases",
+    "date": "2026-10-24"
+  },
+  {
+    "url": "https://code.claude.com/docs/en/changelog#2-1-309",
+    "title": "Claude Code 2.1.309",
+    "description": "- Fixed sandboxed Bash commands on macOS and Linux running the shell's startup files outside the sandbox before each command\n- Fixed macOS sandbox `de\u2026",
+    "source": "Docs Changelog",
+    "date": "2026-10-24"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50222339",
+    "title": "Claude did not invent scorpion antivenom",
+    "description": "Claude did not invent scorpion antivenom",
+    "source": "Hacker News",
+    "date": "2026-10-25"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.311",
+    "title": "v2.1.311",
+    "description": "## What's changed\n\n- Added `--hold-idle-file` and `--max-hold-min` to `self-hosted-runner`, to keep an idle session while your host reports processes \u2026",
+    "source": "GitHub Releases",
+    "date": "2026-10-27"
+  },
+  {
+    "url": "https://www.anthropic.com/news/s1-sec",
+    "title": "Anthropic files S-1 with the SEC for proposed initial public offering",
+    "description": "Anthropic files S-1 with the SEC for proposed initial public offering",
+    "source": "Anthropic Blog",
+    "date": "2026-10-27"
+  },
+  {
+    "url": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
+    "title": "Donating Agent Skills to the Agentic AI Foundation",
+    "description": "Donating Agent Skills to the Agentic AI Foundation",
+    "source": "Anthropic Blog",
+    "date": "2026-10-27"
+  },
+  {
+    "url": "https://www.anthropic.com/news/open-call-guest-investigators-life-sciences",
+    "title": "Open call for guest investigators in the life sciences",
+    "description": "Open call for guest investigators in the life sciences",
+    "source": "Anthropic Blog",
+    "date": "2026-10-27"
+  },
+  {
+    "url": "https://www.anthropic.com/news/christopher-stubbs-joins-long-term-benefit-trust",
+    "title": "Physicist Christopher Stubbs joins Anthropic's Long-Term Benefit Trust",
+    "description": "Physicist Christopher Stubbs joins Anthropic's Long-Term Benefit Trust",
+    "source": "Anthropic Blog",
+    "date": "2026-10-27"
+  },
+  {
+    "url": "https://www.anthropic.com/news/distillation-defenses",
+    "title": "Strengthening our defenses against distillation attacks",
+    "description": "Strengthening our defenses against distillation attacks",
+    "source": "Anthropic Blog",
+    "date": "2026-10-27"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.312",
+    "title": "v2.1.312",
+    "description": "## What's changed\n\n- Added `oidc.user_id_claim` to the Claude apps gateway, to identify people by an id_token claim other than `sub`, such as Microsof\u2026",
+    "source": "GitHub Releases",
+    "date": "2026-10-28"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50260814",
+    "title": "Anthropic trained Claude on illegally obtained Stanford professors' books",
+    "description": "Anthropic trained Claude on illegally obtained Stanford professors' books",
+    "source": "Hacker News",
+    "date": "2026-10-28"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50265609",
+    "title": "Early progress on accelerating drug development with Claude",
+    "description": "Early progress on accelerating drug development with Claude",
+    "source": "Hacker News",
+    "date": "2026-10-28"
+  },
+  {
+    "url": "https://www.anthropic.com/news/expanding-partnership-gsa",
+    "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
+    "description": "Expanding our partnership with GSA to bring Claude to all levels of government",
+    "source": "Anthropic Blog",
+    "date": "2026-10-28"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50266701",
+    "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
+    "description": "Expanding our partnership with GSA to bring Claude to all levels of government",
+    "source": "Hacker News",
+    "date": "2026-10-28"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50265205",
+    "title": "Discovering and exploiting vulnerabilities in real-world software with Claude",
+    "description": "Discovering and exploiting vulnerabilities in real-world software with Claude",
+    "source": "Hacker News",
+    "date": "2026-10-28"
+  },
+  {
+    "url": "https://www.anthropic.com/news/ai-for-science-expands-foundations-research-institutions",
+    "title": "AI for Science expands to foundations and research institutions",
+    "description": "AI for Science expands to foundations and research institutions",
+    "source": "Anthropic Blog",
+    "date": "2026-10-29"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50274666",
+    "title": "Anthropic now lets Claude users jump out of plane without parachute",
+    "description": "Anthropic now lets Claude users jump out of plane without parachute",
+    "source": "Hacker News",
+    "date": "2026-10-29"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50259872",
+    "title": "Anthropic model accessed voter information",
+    "description": "Anthropic model accessed voter information",
+    "source": "Hacker News",
+    "date": "2026-10-29"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50270131",
+    "title": "Discovering and exploiting vulnerabilities in critical software with Claude",
+    "description": "Discovering and exploiting vulnerabilities in critical software with Claude",
+    "source": "Hacker News",
+    "date": "2026-10-29"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/ponytail-5-claude-code-skill-tested",
+    "title": "Is Ponytail 5 Worth It? I Tested It Across 700 Claude Code Sessions",
+    "description": "Is Ponytail 5 Worth It? I Tested It Across 700 Claude Code Sessions",
+    "source": "Chase AI Blog",
+    "date": "2026-10-30"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-projects-cloud-orchestration",
+    "title": "Claude Projects: Cloud Multi-Agent Orchestration",
+    "description": "Claude Projects: Cloud Multi-Agent Orchestration",
+    "source": "Chase AI Blog",
+    "date": "2026-10-30"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.314",
+    "title": "v2.1.314",
+    "description": "## What's changed\n\n- Added `permissions.blockWritesOutsideWorkingDirectories`: Write, Edit and NotebookEdit refuse paths outside the working directori\u2026",
+    "source": "GitHub Releases",
+    "date": "2026-10-30"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/rea-claude-reverse-engineer-anything",
+    "title": "REA: The Open-Source Repo That Lets Claude Reverse-Engineer Anything",
+    "description": "REA: The Open-Source Repo That Lets Claude Reverse-Engineer Anything",
+    "source": "Chase AI Blog",
+    "date": "2026-10-30"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-haiku-5-5-cheap-fast-model",
+    "title": "Claude Haiku 5.5: The Cheap, Fast Model Anthropic Was Missing",
+    "description": "Claude Haiku 5.5: The Cheap, Fast Model Anthropic Was Missing",
+    "source": "Chase AI Blog",
+    "date": "2026-10-30"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50301983",
+    "title": "Anthropic hacked to deliver remote access trojan",
+    "description": "Anthropic hacked to deliver remote access trojan",
+    "source": "Hacker News",
+    "date": "2026-10-30"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50302187",
+    "title": "Anthropic hacked to deliver remote access trojan to Claude developer laptops",
+    "description": "Anthropic hacked to deliver remote access trojan to Claude developer laptops",
+    "source": "Hacker News",
+    "date": "2026-10-30"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50286306",
+    "title": "Tell HN: Claude Code adds your email to the prompt, the LLM sends it to websites",
+    "description": "Tell HN: Claude Code adds your email to the prompt, the LLM sends it to websites",
+    "source": "Hacker News",
+    "date": "2026-10-30"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50285539",
+    "title": "Claude's new smart reports tell bosses when workers are 'off-topic'",
+    "description": "Claude's new smart reports tell bosses when workers are 'off-topic'",
+    "source": "Hacker News",
+    "date": "2026-10-30"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50300277",
+    "title": "Anthropic now lets Claude users jump out of plane without parachute",
+    "description": "Anthropic now lets Claude users jump out of plane without parachute",
+    "source": "Hacker News",
+    "date": "2026-10-30"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-video-javascript-free",
+    "title": "How Claude Makes Videos With JavaScript (For Free)",
+    "description": "How Claude Makes Videos With JavaScript (For Free)",
+    "source": "Chase AI Blog",
+    "date": "2026-10-31"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-mods-claude-code-explained",
+    "title": "Claude Mods: The Biggest Claude Code Upgrade Yet",
+    "description": "Claude Mods: The Biggest Claude Code Upgrade Yet",
+    "source": "Chase AI Blog",
+    "date": "2026-10-31"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.316",
+    "title": "v2.1.316",
+    "description": "## What's changed\n\n- Added `CLAUDE_CODE_DISABLE_ULTRATHINK`, which turns the `ultrathink` keyword off\n- Added pooled group budgets to the Claude apps \u2026",
+    "source": "GitHub Releases",
+    "date": "2026-10-31"
+  },
+  {
+    "url": "https://www.youtube.com/shorts/fXzTB8f9JMw",
+    "title": "Claude Max 20x Plan Is No More",
+    "description": "Claude Max 20x Plan Is No More",
+    "source": "Chase AI YouTube",
+    "date": "2026-10-31"
+  },
+  {
+    "url": "https://www.youtube.com/shorts/it3kt7rEQoE",
+    "title": "The Only Claude OS Breakdown You'll Ever Need",
+    "description": "The Only Claude OS Breakdown You'll Ever Need",
+    "source": "Chase AI YouTube",
+    "date": "2026-10-31"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50307370",
+    "title": "Anthropic is renaming their Max plans",
+    "description": "Anthropic is renaming their Max plans",
+    "source": "Hacker News",
+    "date": "2026-10-31"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50307475",
+    "title": "Anthropic hacked to deliver remote access trojan to Claude developer laptops",
+    "description": "Anthropic hacked to deliver remote access trojan to Claude developer laptops",
+    "source": "Hacker News",
+    "date": "2026-10-31"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50320255",
+    "title": "Anthropic takes steps to block Claude from reverse-engineering video games",
+    "description": "Anthropic takes steps to block Claude from reverse-engineering video games",
+    "source": "Hacker News",
+    "date": "2026-11-01"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50315987",
+    "title": "Anthropic's Claude AI blocks video game cloning and reverse-engineering",
+    "description": "Anthropic's Claude AI blocks video game cloning and reverse-engineering",
+    "source": "Hacker News",
+    "date": "2026-11-01"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50316635",
+    "title": "Anthropic orders AI tool Claude to stop remaking video games",
+    "description": "Anthropic orders AI tool Claude to stop remaking video games",
+    "source": "Hacker News",
+    "date": "2026-11-01"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50327436",
+    "title": "Anthropic Removes Daily Usage Limits",
+    "description": "Anthropic Removes Daily Usage Limits",
+    "source": "Hacker News",
+    "date": "2026-11-02"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.317",
+    "title": "v2.1.317",
+    "description": "## What's changed\n\n- Added a warning to `/schedule` when a new cloud scheduled task gets connectors you did not ask for, with how to remove them\n- Add\u2026",
+    "source": "GitHub Releases",
+    "date": "2026-11-03"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50339494",
+    "title": "Anthropic's internal AI use, at retail prices, now exceeds its employee pay",
+    "description": "Anthropic's internal AI use, at retail prices, now exceeds its employee pay",
+    "source": "Hacker News",
+    "date": "2026-11-03"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50339956",
+    "title": "Anthropic confirms blocking reverse engineering requests",
+    "description": "Anthropic confirms blocking reverse engineering requests",
+    "source": "Hacker News",
+    "date": "2026-11-03"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50336409",
+    "title": "Anthropic Bans Reverse Engineering with Claude",
+    "description": "Anthropic Bans Reverse Engineering with Claude",
+    "source": "Hacker News",
+    "date": "2026-11-03"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.318",
+    "title": "v2.1.318",
+    "description": "## What's changed\n\n- Added a record of your answer when Claude Code asks to turn on the mods it writes in a session\n- Added `assume_role` on `mantle` \u2026",
+    "source": "GitHub Releases",
+    "date": "2026-11-04"
+  },
+  {
+    "url": "https://support.claude.com/en/articles/12138966-release-notes",
+    "title": "New security and admin controls for Enterprise plans",
+    "description": "New security and admin controls for Enterprise plans\nClaude Enterprise has new security and admin features, including a security center, inference hoo\u2026",
+    "source": "Claude Release Notes",
+    "date": "2026-11-06"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.319",
+    "title": "v2.1.319",
+    "description": "## What's changed\n\n- Changed auto mode with telemetry or feature flags off, including behind LLM gateways: calls the server can't check are asked abou\u2026",
+    "source": "GitHub Releases",
+    "date": "2026-11-07"
+  },
+  {
+    "url": "https://support.claude.com/en/articles/12138966-release-notes",
+    "title": "Track spend by cost code with project tags (beta)",
+    "description": "Track spend by cost code with project tags (beta)\nEligible Enterprise organizations can now tag projects with the codes they already use, like a charg\u2026",
+    "source": "Claude Release Notes",
+    "date": "2026-11-07"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50389990",
+    "title": "AI for scientific discovery: How researchers use Claude",
+    "description": "AI for scientific discovery: How researchers use Claude",
+    "source": "Hacker News",
+    "date": "2026-11-07"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50390830",
+    "title": "Anthropic is rapidly accelerating AI development amid slowdown calls",
+    "description": "Anthropic is rapidly accelerating AI development amid slowdown calls",
+    "source": "Hacker News",
+    "date": "2026-11-07"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50407966",
+    "title": "Now Anthropic is blocking Russian users",
+    "description": "Now Anthropic is blocking Russian users",
+    "source": "Hacker News",
+    "date": "2026-11-08"
+  },
+  {
+    "url": "https://www.anthropic.com/research/components-of-agent-memory",
+    "title": "The components of agent memory",
+    "description": "The components of agent memory",
+    "source": "Anthropic Engineering",
+    "date": "2026-11-09"
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=NzVuLc_mc5Y",
+    "title": "Claude Fable 5.2 is LIVE: Cheaper, Faster, Stronger",
+    "description": "Claude Fable 5.2 is LIVE: Cheaper, Faster, Stronger",
+    "source": "Chase AI YouTube",
+    "date": "2026-11-10"
+  },
+  {
+    "url": "https://claude.dev/blog/which-claude-model-should-you-build-with/",
+    "title": "Which Claude model should you build with? Fable, Opus, Sonnet, or Haiku",
+    "description": "Which Claude model to pick, what they cost, and how to use them together.",
+    "source": "claude.dev",
+    "date": "2026-11-10"
+  },
+  {
+    "url": "https://claude.dev/blog/safely-scaling-multi-agent-teams-with-fable-5-2/",
+    "title": "Safely scaling multi-agent teams with Claude Fable 5.2",
+    "description": "How a team of 1,000 agents running an early version of Claude Fable 5.2 reproduced a formal proof of Fermat's Last Theorem with general tools, a share\u2026",
+    "source": "claude.dev",
+    "date": "2026-11-10"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.322",
+    "title": "v2.1.322",
+    "description": "## What's changed\n\n- Added fast mode on Vertex in the global, us and eu regions, falling back to standard speed if Vertex refuses it",
+    "source": "GitHub Releases",
+    "date": "2026-11-10"
+  },
+  {
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.321",
+    "title": "v2.1.321",
+    "description": "## What's changed\n\n- Added Claude Fable 5.2 (`claude-fable-5-2`), now the default Fable model \u2014 1M context, $8/$40 per Mtok with $0.20/Mtok cache read\u2026",
+    "source": "GitHub Releases",
+    "date": "2026-11-10"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50434100",
+    "title": "Anthropic must face lawsuit over Claude subscription marketing",
+    "description": "Anthropic must face lawsuit over Claude subscription marketing",
+    "source": "Hacker News",
+    "date": "2026-11-10"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50429906",
+    "title": "Claude Fable 5.2 and Mythos 5.2",
+    "description": "Claude Fable 5.2 and Mythos 5.2",
+    "source": "Hacker News",
+    "date": "2026-11-10"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50429068",
+    "title": "Claude Fable 5.2 and Mythos 5.2",
+    "description": "Claude Fable 5.2 and Mythos 5.2",
+    "source": "Hacker News",
+    "date": "2026-11-10"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50429952",
+    "title": "Testing Claude on real-world electronics design",
+    "description": "Testing Claude on real-world electronics design",
+    "source": "Hacker News",
+    "date": "2026-11-10"
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=50430026",
+    "title": "Anthropic launches new Claude Fable and Mythos 5.2 models",
+    "description": "Anthropic launches new Claude Fable and Mythos 5.2 models",
+    "source": "Hacker News",
+    "date": "2026-11-10"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-fable-5-2-cheaper-faster-stronger",
+    "title": "Claude Fable 5.2: Cheaper, Faster, Stronger",
+    "description": "Claude Fable 5.2: Cheaper, Faster, Stronger",
+    "source": "Chase AI Blog",
+    "date": "2026-11-11"
+  },
+  {
+    "url": "https://www.chaseai.io/blog/claude-duet-explained",
+    "title": "Claude Duet: What It Is and How to Get Access",
+    "description": "Claude Duet: What It Is and How to Get Access",
+    "source": "Chase AI Blog",
+    "date": "2026-11-11"
+  },
+  {
+    "url": "https://www.anthropic.com/news/roadshow-launch",
+    "title": "Anthropic launches roadshow for proposed initial public offering",
+    "description": "Anthropic launches roadshow for proposed initial public offering",
+    "source": "Anthropic Blog",
+    "date": "2026-11-11"
   }
 ]
